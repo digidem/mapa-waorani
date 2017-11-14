@@ -4,8 +4,150 @@ module.exports = {
   backButton: require('./src/back_button'),
   popup: require('./src/yo-popup'),
   button: require('./src/button')
-};
-},{"./src/back_button":15,"./src/button":16,"./src/language":17,"./src/yo-popup":18}],2:[function(require,module,exports){
+}
+
+},{"./src/back_button":2,"./src/button":3,"./src/language":4,"./src/yo-popup":5}],2:[function(require,module,exports){
+const yo = require('yo-yo')
+var button = require('./button')
+
+module.exports = BackButton
+
+function BackButton (map, opts, onclick) {
+  if (!(this instanceof BackButton)) return new BackButton(map, opts, onclick)
+  if (typeof opts === 'function') {
+    onclick = opts
+    opts = {}
+  }
+  this.onclick = onclick
+  this.map = map
+  this.stop = opts.stop || 10
+  this.language = opts.language || 'es'
+  this.redraw.bind(this)
+  this.el = this._getElement()
+  document.body.appendChild(this.el)
+  this.map.on('zoom', this.redraw.bind(this))
+  this.redraw()
+}
+
+BackButton.prototype.update = function () {
+  yo.update(this.el, this._getElement())
+  this.redraw()
+}
+
+BackButton.prototype.redraw = function () {
+  if (this.map.getZoom() > this.stop) this.el.style.display = ''
+  else this.el.style.display = 'none'
+}
+
+BackButton.prototype._getElement = function () {
+  var self = this
+  var translations = {
+    'es': 'VER MAPA COMPLETO',
+    'en': 'SEE FULL MAP'
+  }
+  var backButton = button({
+    title: translations[self.lang],
+    onclick: self.onclick
+  })
+  backButton.style.filter = 'alpha(opacity=0.8)'
+  backButton.style.position = 'absolute'
+  backButton.style.right = '0'
+  backButton.style.top = '0px'
+  backButton.style.margin = '10px'
+  return backButton
+}
+
+},{"./button":3,"yo-yo":28}],3:[function(require,module,exports){
+const yo = require('yo-yo')
+
+module.exports = function (props) {
+  return yo`
+    <button class="btn ${props.class}" onclick=${props.onclick}>${props.title}</button>
+  `
+}
+
+},{"yo-yo":28}],4:[function(require,module,exports){
+const yo = require('yo-yo')
+const qs = require('querystring')
+const css = 0
+
+module.exports = function (updateLang, lang) {
+  var style = ((require('sheetify/insert')("._71f07279 {\n      position: absolute;\n      top: 20px;\n      right: 20px;\n    }\n    ._71f07279 > .btn:not(.active):not(:hover) {\n      background-color: #fff;\n    }\n    ._71f07279 > .btn:hover {\n      cursor: pointer;\n    }\n    ._71f07279 input[type=\"radio\"] {\n      display: none;\n    }\n    ._71f07279 input[type=\"radio\"] {\n      display: none;\n    }\n    ._71f07279 .btn.active {\n      background: white;\n    }\n    ._71f07279 .btn {\n      font-size: 14px;\n      font-family: sans-serif;\n      text-transform: uppercase;\n      font-weight: bold;\n    }") || true) && "_71f07279")
+
+  var el = yo`<div class=${style}>
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn ${lang === 'es' ? 'active' : ''}">
+        <input type="radio" onclick=${handleClick} checked="${lang === 'es'}" name="language" id="es" autocomplete="off" />
+        Español
+      </label>
+      <label class="btn ${lang === 'en' ? 'active' : ''}">
+        <input type="radio" onclick=${handleClick} checked="${lang === 'en'}" name="language" id="en" autocomplete="off" />
+        English
+      </label>
+    </div>
+  </div>`
+
+  function handleClick (e) {
+    e.stopPropagation()
+    var checked = el.querySelector('input[type=radio]:checked')
+    var unChecked = el.querySelector('input[type=radio]:not(:checked)')
+    checked.parentNode.classList.add('active')
+    unChecked.parentNode.classList.remove('active')
+    var query = qs.parse(window.location.search.replace('?', ''))
+    query.lang = checked.id
+    var newurl = window.location.origin + window.location.pathname + '?' + qs.stringify(query) + window.location.hash
+    window.history.replaceState({},'',newurl);
+    updateLang(checked.id)
+  }
+
+  return el
+}
+
+},{"querystring":23,"sheetify/insert":24,"yo-yo":28}],5:[function(require,module,exports){
+const xtend = require('xtend')
+const yo = require('yo-yo')
+const css = 0
+const mapboxgl = require('mapbox-gl')
+
+module.exports = Popup
+
+function Popup (map, opts) {
+  if (!(this instanceof Popup)) return new Popup(map, opts)
+  this.map = map
+  this.popup = new mapboxgl.Popup(xtend({
+    closeButton: true,
+    closeOnClick: false
+  }, opts))
+
+  var styles = ((require('sheetify/insert')("html .mapboxgl-popup-tip {\n      opacity: 0;\n    }\n    html .mapboxgl-popup-content {\n      padding: 0;\n    }\n    html .mapboxgl-popup-close-button {\n      color: white;\n      z-index: 99;\n      right: -4.5px;\n      top: -13.5px;\n      width: 5px;\n      height: 13px;\n      margin-left: 0px;\n      font-size: 18px;\n    }\n    html .mapboxgl-popup-close-button:hover {\n      background-color: transparent;\n      color: #eee;\n      border-color: #eee;\n    }\n    html .mapboxgl-popup-close-button:hover:before {\n      background-color: rgba(0,0,0,0.9);\n    }\n    html .mapboxgl-popup-close-button:before {\n      content: '';\n      position: absolute;\n      background-color: rgba(0,0,0,0.8);\n      border-radius: 10px;\n      border: 2px solid white;\n      width: 100%;\n      height: 100%;\n      left: 1.5px;\n      top: 3px;\n      z-index: -1;\n    }") || true) && "_7608c164")
+
+  this.popupNode = yo`<div class=${styles}></div>`
+  this.popup.setDOMContent(this.popupNode)
+
+  // Clear previous IMG before updating to new image
+  // Avoids initial load of previous popup image before new image loads
+  this.yoOptions = {
+    onBeforeElUpdated: function (fromEl) {
+      if (fromEl.tagName.toUpperCase() === 'IMG') {
+        fromEl.src = ''
+      }
+    }
+  }
+}
+
+Popup.prototype.update = function (dom) {
+  yo.update(this.popupNode, dom, this.yoOptions)
+}
+
+Popup.prototype.remove = function () {
+  this.popup.remove()
+}
+
+Popup.prototype.setLngLat = function (lngLat) {
+  this.popup.setLngLat(lngLat).addTo(this.map)
+}
+
+},{"mapbox-gl":16,"sheetify/insert":24,"xtend":27,"yo-yo":28}],6:[function(require,module,exports){
 var document = require('global/document')
 var hyperx = require('hyperx')
 var onload = require('on-load')
@@ -160,7 +302,57 @@ module.exports = hyperx(belCreateElement, {comments: true})
 module.exports.default = module.exports
 module.exports.createElement = belCreateElement
 
-},{"global/document":3,"hyperx":6,"on-load":10}],3:[function(require,module,exports){
+},{"global/document":9,"hyperx":12,"on-load":19}],7:[function(require,module,exports){
+
+},{}],8:[function(require,module,exports){
+var isFunction = require('is-function')
+
+module.exports = forEach
+
+var toString = Object.prototype.toString
+var hasOwnProperty = Object.prototype.hasOwnProperty
+
+function forEach(list, iterator, context) {
+    if (!isFunction(iterator)) {
+        throw new TypeError('iterator must be a function')
+    }
+
+    if (arguments.length < 3) {
+        context = this
+    }
+    
+    if (toString.call(list) === '[object Array]')
+        forEachArray(list, iterator, context)
+    else if (typeof list === 'string')
+        forEachString(list, iterator, context)
+    else
+        forEachObject(list, iterator, context)
+}
+
+function forEachArray(array, iterator, context) {
+    for (var i = 0, len = array.length; i < len; i++) {
+        if (hasOwnProperty.call(array, i)) {
+            iterator.call(context, array[i], i, array)
+        }
+    }
+}
+
+function forEachString(string, iterator, context) {
+    for (var i = 0, len = string.length; i < len; i++) {
+        // no such thing as a sparse string.
+        iterator.call(context, string.charAt(i), i, string)
+    }
+}
+
+function forEachObject(object, iterator, context) {
+    for (var k in object) {
+        if (hasOwnProperty.call(object, k)) {
+            iterator.call(context, object[k], k, object)
+        }
+    }
+}
+
+},{"is-function":14}],9:[function(require,module,exports){
 (function (global){
 var topLevel = typeof global !== 'undefined' ? global :
     typeof window !== 'undefined' ? window : {}
@@ -181,7 +373,7 @@ if (typeof document !== 'undefined') {
 module.exports = doccy;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":20}],4:[function(require,module,exports){
+},{"min-document":7}],10:[function(require,module,exports){
 (function (global){
 var win;
 
@@ -198,7 +390,7 @@ if (typeof window !== "undefined") {
 module.exports = win;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],5:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = attributeToProperty
 
 var transform = {
@@ -219,7 +411,7 @@ function attributeToProperty (h) {
   }
 }
 
-},{}],6:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var attrToProp = require('hyperscript-attribute-to-property')
 
 var VAR = 0, TEXT = 1, OPEN = 2, CLOSE = 3, ATTR = 4
@@ -297,17 +489,20 @@ module.exports = function (h, opts) {
         for (; i < parts.length; i++) {
           if (parts[i][0] === ATTR_VALUE || parts[i][0] === ATTR_KEY) {
             if (!cur[1][key]) cur[1][key] = strfn(parts[i][1])
-            else cur[1][key] = concat(cur[1][key], parts[i][1])
+            else parts[i][1]==="" || (cur[1][key] = concat(cur[1][key], parts[i][1]));
           } else if (parts[i][0] === VAR
           && (parts[i][1] === ATTR_VALUE || parts[i][1] === ATTR_KEY)) {
             if (!cur[1][key]) cur[1][key] = strfn(parts[i][2])
-            else cur[1][key] = concat(cur[1][key], parts[i][2])
+            else parts[i][2]==="" || (cur[1][key] = concat(cur[1][key], parts[i][2]));
           } else {
             if (key.length && !cur[1][key] && i === j
             && (parts[i][0] === CLOSE || parts[i][0] === ATTR_BREAK)) {
               // https://html.spec.whatwg.org/multipage/infrastructure.html#boolean-attributes
               // empty string is falsy, not well behaved value in browser
               cur[1][key] = key.toLowerCase()
+            }
+            if (parts[i][0] === CLOSE) {
+              i--
             }
             break
           }
@@ -499,7 +694,7 @@ var closeRE = RegExp('^(' + [
 ].join('|') + ')(?:[\.#][a-zA-Z0-9\u007F-\uFFFF_:-]+)*$')
 function selfClosing (tag) { return closeRE.test(tag) }
 
-},{"hyperscript-attribute-to-property":5}],7:[function(require,module,exports){
+},{"hyperscript-attribute-to-property":11}],13:[function(require,module,exports){
 var containers = []; // will store container HTMLElement references
 var styleElements = []; // will store {prepend: HTMLElement, append: HTMLElement}
 
@@ -559,7 +754,85 @@ function createStyleElement() {
 module.exports = insertCss;
 module.exports.insertCss = insertCss;
 
-},{}],8:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
+module.exports = isFunction
+
+var toString = Object.prototype.toString
+
+function isFunction (fn) {
+  var string = toString.call(fn)
+  return string === '[object Function]' ||
+    (typeof fn === 'function' && string !== '[object RegExp]') ||
+    (typeof window !== 'undefined' &&
+     // IE8 and below
+     (fn === window.setTimeout ||
+      fn === window.alert ||
+      fn === window.confirm ||
+      fn === window.prompt))
+};
+
+},{}],15:[function(require,module,exports){
+function createEl (tagName, className, container) {
+  const el = window.document.createElement(tagName)
+  if (className) el.className = className
+  if (container) container.appendChild(el)
+  return el
+}
+
+function Toggle (el, contents) {
+  if (!(this instanceof Toggle)) return new Toggle(el, contents)
+  this._map = null // mapbox-gl Map
+  this._mapContainer = null // HTMLElement
+  this._className = 'mapboxgl-ctrl' // string
+  this._contents = contents || ''
+  this._container = null // HTMLelement
+  this._toggleButton = null // HTMLElement
+  this.toggle = this.toggle.bind(this)
+  this.show = this.show.bind(this)
+  this.hide = this.hide.bind(this)
+  this.isOpen = this.isOpen.bind(this)
+  this._el = (typeof el === 'function') ? el(this.toggle) : el
+}
+
+Toggle.prototype.onAdd = function (map) {
+  this._map = map
+  this._mapContainer = this._map.getContainer()
+  this._container = createEl('div', `${this._className} mapboxgl-ctrl-group`)
+  const button = this._toggleButton = createEl('button', (`${this._className}-icon ${this._className}-toggle`), this._container)
+  button.innerHTML = this._contents
+  button.type = 'button'
+  this._toggleButton.addEventListener('click', this.toggle)
+  return this._container
+}
+
+Toggle.prototype.onRemove = function () {
+  var node = this._container
+  if (node.parentNode) {
+     node.parentNode.removeChild(node);
+  }
+  this._map = null
+}
+
+Toggle.prototype.toggle = function () {
+  if (this.isOpen()) this.hide()
+  else this.show()
+}
+
+Toggle.prototype.hide = function () {
+  this._el.style.display = 'none'
+}
+
+Toggle.prototype.show = function () {
+  this._el.style.display = ''
+}
+
+Toggle.prototype.isOpen = function () {
+  return this._el.style.display !== 'none'
+}
+
+module.exports = Toggle
+
+},{}],16:[function(require,module,exports){
 (function (global){
 'use strict';(function (f) {
     if (typeof exports === 'object' && typeof module !== 'undefined') {
@@ -20725,7 +20998,7 @@ module.exports.insertCss = insertCss;
     }, {}, [75])(75);
 }));
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],9:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 var range; // Create a range object for efficently rendering strings to elements.
@@ -21409,10 +21682,35 @@ var morphdom = morphdomFactory(morphAttrs);
 
 module.exports = morphdom;
 
-},{}],10:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
+assert.notEqual = notEqual
+assert.notOk = notOk
+assert.equal = equal
+assert.ok = assert
+
+module.exports = assert
+
+function equal (a, b, m) {
+  assert(a == b, m) // eslint-disable-line eqeqeq
+}
+
+function notEqual (a, b, m) {
+  assert(a != b, m) // eslint-disable-line eqeqeq
+}
+
+function notOk (t, m) {
+  assert(!t, m)
+}
+
+function assert (t, m) {
+  if (!t) throw new Error(m || 'AssertionError')
+}
+
+},{}],19:[function(require,module,exports){
 /* global MutationObserver */
 var document = require('global/document')
 var window = require('global/window')
+var assert = require('assert')
 var watch = Object.create(null)
 var KEY_ID = 'onloadid' + (new Date() % 9e6).toString(36)
 var KEY_ATTR = 'data-' + KEY_ID
@@ -21430,6 +21728,16 @@ if (window && window.MutationObserver) {
       eachMutation(mutations[i].addedNodes, turnon)
     }
   })
+  if (document.body) {
+    beginObserve(observer)
+  } else {
+    document.addEventListener('DOMContentLoaded', function (event) {
+      beginObserve(observer)
+    })
+  }
+}
+
+function beginObserve (observer) {
   observer.observe(document.body, {
     childList: true,
     subtree: true,
@@ -21440,6 +21748,7 @@ if (window && window.MutationObserver) {
 }
 
 module.exports = function onload (el, on, off, caller) {
+  assert(document.body, 'on-load: will not work prior to DOMContentLoaded')
   on = on || function () {}
   off = off || function () {}
   el.setAttribute(KEY_ATTR, 'o' + INDEX)
@@ -21447,6 +21756,9 @@ module.exports = function onload (el, on, off, caller) {
   INDEX += 1
   return el
 }
+
+module.exports.KEY_ATTR = KEY_ATTR
+module.exports.KEY_ID = KEY_ID
 
 function turnon (index, el) {
   if (watch[index][0] && watch[index][2] === 0) {
@@ -21498,301 +21810,39 @@ function eachMutation (nodes, fn) {
   }
 }
 
-},{"global/document":3,"global/window":4}],11:[function(require,module,exports){
-module.exports = require('insert-css')
+},{"assert":18,"global/document":9,"global/window":10}],20:[function(require,module,exports){
+var trim = require('trim')
+  , forEach = require('for-each')
+  , isArray = function(arg) {
+      return Object.prototype.toString.call(arg) === '[object Array]';
+    }
 
-},{"insert-css":7}],12:[function(require,module,exports){
-module.exports = extend
+module.exports = function (headers) {
+  if (!headers)
+    return {}
 
-var hasOwnProperty = Object.prototype.hasOwnProperty;
+  var result = {}
 
-function extend() {
-    var target = {}
+  forEach(
+      trim(headers).split('\n')
+    , function (row) {
+        var index = row.indexOf(':')
+          , key = trim(row.slice(0, index)).toLowerCase()
+          , value = trim(row.slice(index + 1))
 
-    for (var i = 0; i < arguments.length; i++) {
-        var source = arguments[i]
-
-        for (var key in source) {
-            if (hasOwnProperty.call(source, key)) {
-                target[key] = source[key]
-            }
+        if (typeof(result[key]) === 'undefined') {
+          result[key] = value
+        } else if (isArray(result[key])) {
+          result[key].push(value)
+        } else {
+          result[key] = [ result[key], value ]
         }
-    }
-
-    return target
-}
-
-},{}],13:[function(require,module,exports){
-var bel = require('bel') // turns template tag into DOM elements
-var morphdom = require('morphdom') // efficiently diffs + morphs two DOM elements
-var defaultEvents = require('./update-events.js') // default events to be copied when dom elements update
-
-module.exports = bel
-
-// TODO move this + defaultEvents to a new module once we receive more feedback
-module.exports.update = function (fromNode, toNode, opts) {
-  if (!opts) opts = {}
-  if (opts.events !== false) {
-    if (!opts.onBeforeElUpdated) opts.onBeforeElUpdated = copier
-  }
-
-  return morphdom(fromNode, toNode, opts)
-
-  // morphdom only copies attributes. we decided we also wanted to copy events
-  // that can be set via attributes
-  function copier (f, t) {
-    // copy events:
-    var events = opts.events || defaultEvents
-    for (var i = 0; i < events.length; i++) {
-      var ev = events[i]
-      if (t[ev]) { // if new element has a whitelisted attribute
-        f[ev] = t[ev] // update existing element
-      } else if (f[ev]) { // if existing element has it and new one doesnt
-        f[ev] = undefined // remove it from existing element
       }
-    }
-    var oldValue = f.value
-    var newValue = t.value
-    // copy values for form elements
-    if ((f.nodeName === 'INPUT' && f.type !== 'file') || f.nodeName === 'SELECT') {
-      if (!newValue && !t.hasAttribute('value')) {
-        t.value = f.value
-      } else if (newValue !== oldValue) {
-        f.value = newValue
-      }
-    } else if (f.nodeName === 'TEXTAREA') {
-      if (t.getAttribute('value') === null) f.value = t.value
-    }
-  }
+  )
+
+  return result
 }
-
-},{"./update-events.js":14,"bel":2,"morphdom":9}],14:[function(require,module,exports){
-module.exports = [
-  // attribute events (can be set with attributes)
-  'onclick',
-  'ondblclick',
-  'onmousedown',
-  'onmouseup',
-  'onmouseover',
-  'onmousemove',
-  'onmouseout',
-  'ondragstart',
-  'ondrag',
-  'ondragenter',
-  'ondragleave',
-  'ondragover',
-  'ondrop',
-  'ondragend',
-  'onkeydown',
-  'onkeypress',
-  'onkeyup',
-  'onunload',
-  'onabort',
-  'onerror',
-  'onresize',
-  'onscroll',
-  'onselect',
-  'onchange',
-  'onsubmit',
-  'onreset',
-  'onfocus',
-  'onblur',
-  'oninput',
-  // other common events
-  'oncontextmenu',
-  'onfocusin',
-  'onfocusout'
-]
-
-},{}],15:[function(require,module,exports){
-var yo = require('yo-yo');
-var button = require('./button');
-
-module.exports = BackButton;
-
-function BackButton(map, opts, onclick) {
-  if (!(this instanceof BackButton)) return new BackButton(map, opts, onclick);
-  if (typeof opts === 'function') {
-    onclick = opts;
-    opts = {};
-  }
-  this.onclick = onclick;
-  this.map = map;
-  this.stop = opts.stop || 10;
-  this.language = opts.language || 'es';
-  this.redraw.bind(this);
-  this.el = this._getElement();
-  document.body.appendChild(this.el);
-  this.map.on('zoom', this.redraw.bind(this));
-  this.redraw();
-}
-
-BackButton.prototype.update = function () {
-  yo.update(this.el, this._getElement());
-  this.redraw();
-};
-
-BackButton.prototype.redraw = function () {
-  if (this.map.getZoom() > this.stop) this.el.style.display = '';else this.el.style.display = 'none';
-};
-
-BackButton.prototype._getElement = function () {
-  var self = this;
-  var translations = {
-    'es': 'VER MAPA COMPLETO',
-    'en': 'SEE FULL MAP'
-  };
-  var backButton = button({
-    title: translations[self.language],
-    onclick: self.onclick
-  });
-  backButton.style.filter = 'alpha(opacity=0.8)';
-  backButton.style.position = 'absolute';
-  backButton.style.right = '0';
-  backButton.style.top = '0px';
-  backButton.style.margin = '10px';
-  return backButton;
-};
-},{"./button":16,"yo-yo":13}],16:[function(require,module,exports){
-var yo = require('yo-yo');
-
-module.exports = function (props) {
-    return function () {
-
-        var ac = require('/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
-        var bel0 = document.createElement("button");
-        bel0["onclick"] = arguments[0];
-        bel0.setAttribute("class", "btn " + arguments[1]);
-        ac(bel0, [arguments[2]]);
-        return bel0;
-    }(props.onclick, props.class, props.title);
-};
-},{"/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js":35,"yo-yo":13}],17:[function(require,module,exports){
-var yo = require('yo-yo');
-var qs = require('querystring');
-var css = 0;
-
-module.exports = function (updateLang, lang) {
-  var style = (require('sheetify/insert')("._71f07279 {\n      position: absolute;\n      top: 20px;\n      right: 20px;\n    }\n    ._71f07279 > .btn:not(.active):not(:hover) {\n      background-color: #fff;\n    }\n    ._71f07279 > .btn:hover {\n      cursor: pointer;\n    }\n    ._71f07279 input[type=\"radio\"] {\n      display: none;\n    }\n    ._71f07279 input[type=\"radio\"] {\n      display: none;\n    }\n    ._71f07279 .btn.active {\n      background: white;\n    }\n    ._71f07279 .btn {\n      font-size: 14px;\n      font-family: sans-serif;\n      text-transform: uppercase;\n      font-weight: bold;\n    }") || true) && "_71f07279";
-
-  var el = function () {
-
-    var ac = require('/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
-    var bel5 = document.createElement("div");
-    bel5.setAttribute("class", arguments[6]);
-    var bel4 = document.createElement("div");
-    bel4.setAttribute("data-toggle", "buttons");
-    bel4.setAttribute("class", "btn-group");
-    var bel1 = document.createElement("label");
-    bel1.setAttribute("class", "btn " + arguments[2]);
-    var bel0 = document.createElement("input");
-    bel0.setAttribute("type", "radio");
-    bel0["onclick"] = arguments[0];
-    if (arguments[1] && "checked") bel0.setAttribute("checked", "checked");
-    bel0.setAttribute("name", "language");
-    bel0.setAttribute("id", "es");
-    bel0.setAttribute("autocomplete", "off");
-    ac(bel1, ["\n        ", bel0, "\n        Español\n      "]);
-    var bel3 = document.createElement("label");
-    bel3.setAttribute("class", "btn " + arguments[5]);
-    var bel2 = document.createElement("input");
-    bel2.setAttribute("type", "radio");
-    bel2["onclick"] = arguments[3];
-    if (arguments[4] && "checked") bel2.setAttribute("checked", "checked");
-    bel2.setAttribute("name", "language");
-    bel2.setAttribute("id", "en");
-    bel2.setAttribute("autocomplete", "off");
-    ac(bel3, ["\n        ", bel2, "\n        English\n      "]);
-    ac(bel4, ["\n      ", bel1, "\n      ", bel3, "\n    "]);
-    ac(bel5, ["\n    ", bel4, "\n  "]);
-    return bel5;
-  }(handleClick, lang === 'es', lang === 'es' ? 'active' : '', handleClick, lang === 'en', lang === 'en' ? 'active' : '', style);
-
-  function handleClick(e) {
-    e.stopPropagation();
-    var checked = el.querySelector('input[type=radio]:checked');
-    var unChecked = el.querySelector('input[type=radio]:not(:checked)');
-    checked.parentNode.classList.add('active');
-    unChecked.parentNode.classList.remove('active');
-    var query = qs.parse(window.location.search.replace('?', ''));
-    query.lang = checked.id;
-    var newurl = window.location.origin + window.location.pathname + '?' + qs.stringify(query) + window.location.hash;
-    window.history.replaceState({}, '', newurl);
-    updateLang(checked.id);
-  }
-
-  return el;
-};
-},{"/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js":35,"querystring":31,"sheetify/insert":11,"yo-yo":13}],18:[function(require,module,exports){
-var xtend = require('xtend');
-var yo = require('yo-yo');
-var css = 0;
-var mapboxgl = require('mapbox-gl');
-
-module.exports = Popup;
-
-function Popup(map, opts) {
-  if (!(this instanceof Popup)) return new Popup(map, opts);
-  this.map = map;
-  this.popup = new mapboxgl.Popup(xtend({
-    closeButton: true,
-    closeOnClick: false
-  }, opts));
-
-  var styles = (require('sheetify/insert')("html .mapboxgl-popup-tip {\n      opacity: 0;\n    }\n    html .mapboxgl-popup-content {\n      padding: 0;\n    }\n    html .mapboxgl-popup-close-button {\n      color: white;\n      z-index: 99;\n      right: -4.5px;\n      top: -13.5px;\n      width: 5px;\n      height: 13px;\n      margin-left: 0px;\n      font-size: 18px;\n    }\n    html .mapboxgl-popup-close-button:hover {\n      background-color: transparent;\n      color: #eee;\n      border-color: #eee;\n    }\n    html .mapboxgl-popup-close-button:hover:before {\n      background-color: rgba(0,0,0,0.9);\n    }\n    html .mapboxgl-popup-close-button:before {\n      content: '';\n      position: absolute;\n      background-color: rgba(0,0,0,0.8);\n      border-radius: 10px;\n      border: 2px solid white;\n      width: 100%;\n      height: 100%;\n      left: 1.5px;\n      top: 3px;\n      z-index: -1;\n    }") || true) && "_7608c164";
-
-  this.popupNode = function () {
-
-    var ac = require('/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
-    var bel0 = document.createElement("div");
-    bel0.setAttribute("class", arguments[0]);
-    return bel0;
-  }(styles);
-  this.popup.setDOMContent(this.popupNode);
-
-  // Clear previous IMG before updating to new image
-  // Avoids initial load of previous popup image before new image loads
-  this.yoOptions = {
-    onBeforeElUpdated: function (fromEl) {
-      if (fromEl.tagName.toUpperCase() === 'IMG') {
-        fromEl.src = '';
-      }
-    }
-  };
-}
-
-Popup.prototype.update = function (dom) {
-  yo.update(this.popupNode, dom, this.yoOptions);
-};
-
-Popup.prototype.remove = function () {
-  this.popup.remove();
-};
-
-Popup.prototype.setLngLat = function (lngLat) {
-  this.popup.setLngLat(lngLat).addTo(this.map);
-};
-},{"/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js":35,"mapbox-gl":8,"sheetify/insert":11,"xtend":12,"yo-yo":13}],19:[function(require,module,exports){
-arguments[4][2][0].apply(exports,arguments)
-},{"dup":2,"global/document":21,"hyperx":24,"on-load":28}],20:[function(require,module,exports){
-
-},{}],21:[function(require,module,exports){
-arguments[4][3][0].apply(exports,arguments)
-},{"dup":3,"min-document":20}],22:[function(require,module,exports){
-arguments[4][4][0].apply(exports,arguments)
-},{"dup":4}],23:[function(require,module,exports){
-arguments[4][5][0].apply(exports,arguments)
-},{"dup":5}],24:[function(require,module,exports){
-arguments[4][6][0].apply(exports,arguments)
-},{"dup":6,"hyperscript-attribute-to-property":23}],25:[function(require,module,exports){
-arguments[4][7][0].apply(exports,arguments)
-},{"dup":7}],26:[function(require,module,exports){
-arguments[4][8][0].apply(exports,arguments)
-},{"dup":8}],27:[function(require,module,exports){
-arguments[4][9][0].apply(exports,arguments)
-},{"dup":9}],28:[function(require,module,exports){
-arguments[4][10][0].apply(exports,arguments)
-},{"dup":10,"global/document":21,"global/window":22}],29:[function(require,module,exports){
+},{"for-each":8,"trim":25}],21:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -21878,7 +21928,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],30:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -21965,19 +22015,378 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],31:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":29,"./encode":30}],32:[function(require,module,exports){
-arguments[4][11][0].apply(exports,arguments)
-},{"dup":11,"insert-css":25}],33:[function(require,module,exports){
-arguments[4][13][0].apply(exports,arguments)
-},{"./update-events.js":34,"bel":19,"dup":13,"morphdom":27}],34:[function(require,module,exports){
-arguments[4][14][0].apply(exports,arguments)
-},{"dup":14}],35:[function(require,module,exports){
+},{"./decode":21,"./encode":22}],24:[function(require,module,exports){
+module.exports = require('insert-css')
+
+},{"insert-css":13}],25:[function(require,module,exports){
+
+exports = module.exports = trim;
+
+function trim(str){
+  return str.replace(/^\s*|\s*$/g, '');
+}
+
+exports.left = function(str){
+  return str.replace(/^\s*/, '');
+};
+
+exports.right = function(str){
+  return str.replace(/\s*$/, '');
+};
+
+},{}],26:[function(require,module,exports){
+"use strict";
+var window = require("global/window")
+var isFunction = require("is-function")
+var parseHeaders = require("parse-headers")
+var xtend = require("xtend")
+
+module.exports = createXHR
+createXHR.XMLHttpRequest = window.XMLHttpRequest || noop
+createXHR.XDomainRequest = "withCredentials" in (new createXHR.XMLHttpRequest()) ? createXHR.XMLHttpRequest : window.XDomainRequest
+
+forEachArray(["get", "put", "post", "patch", "head", "delete"], function(method) {
+    createXHR[method === "delete" ? "del" : method] = function(uri, options, callback) {
+        options = initParams(uri, options, callback)
+        options.method = method.toUpperCase()
+        return _createXHR(options)
+    }
+})
+
+function forEachArray(array, iterator) {
+    for (var i = 0; i < array.length; i++) {
+        iterator(array[i])
+    }
+}
+
+function isEmpty(obj){
+    for(var i in obj){
+        if(obj.hasOwnProperty(i)) return false
+    }
+    return true
+}
+
+function initParams(uri, options, callback) {
+    var params = uri
+
+    if (isFunction(options)) {
+        callback = options
+        if (typeof uri === "string") {
+            params = {uri:uri}
+        }
+    } else {
+        params = xtend(options, {uri: uri})
+    }
+
+    params.callback = callback
+    return params
+}
+
+function createXHR(uri, options, callback) {
+    options = initParams(uri, options, callback)
+    return _createXHR(options)
+}
+
+function _createXHR(options) {
+    if(typeof options.callback === "undefined"){
+        throw new Error("callback argument missing")
+    }
+
+    var called = false
+    var callback = function cbOnce(err, response, body){
+        if(!called){
+            called = true
+            options.callback(err, response, body)
+        }
+    }
+
+    function readystatechange() {
+        if (xhr.readyState === 4) {
+            setTimeout(loadFunc, 0)
+        }
+    }
+
+    function getBody() {
+        // Chrome with requestType=blob throws errors arround when even testing access to responseText
+        var body = undefined
+
+        if (xhr.response) {
+            body = xhr.response
+        } else {
+            body = xhr.responseText || getXml(xhr)
+        }
+
+        if (isJson) {
+            try {
+                body = JSON.parse(body)
+            } catch (e) {}
+        }
+
+        return body
+    }
+
+    function errorFunc(evt) {
+        clearTimeout(timeoutTimer)
+        if(!(evt instanceof Error)){
+            evt = new Error("" + (evt || "Unknown XMLHttpRequest Error") )
+        }
+        evt.statusCode = 0
+        return callback(evt, failureResponse)
+    }
+
+    // will load the data & process the response in a special response object
+    function loadFunc() {
+        if (aborted) return
+        var status
+        clearTimeout(timeoutTimer)
+        if(options.useXDR && xhr.status===undefined) {
+            //IE8 CORS GET successful response doesn't have a status field, but body is fine
+            status = 200
+        } else {
+            status = (xhr.status === 1223 ? 204 : xhr.status)
+        }
+        var response = failureResponse
+        var err = null
+
+        if (status !== 0){
+            response = {
+                body: getBody(),
+                statusCode: status,
+                method: method,
+                headers: {},
+                url: uri,
+                rawRequest: xhr
+            }
+            if(xhr.getAllResponseHeaders){ //remember xhr can in fact be XDR for CORS in IE
+                response.headers = parseHeaders(xhr.getAllResponseHeaders())
+            }
+        } else {
+            err = new Error("Internal XMLHttpRequest Error")
+        }
+        return callback(err, response, response.body)
+    }
+
+    var xhr = options.xhr || null
+
+    if (!xhr) {
+        if (options.cors || options.useXDR) {
+            xhr = new createXHR.XDomainRequest()
+        }else{
+            xhr = new createXHR.XMLHttpRequest()
+        }
+    }
+
+    var key
+    var aborted
+    var uri = xhr.url = options.uri || options.url
+    var method = xhr.method = options.method || "GET"
+    var body = options.body || options.data
+    var headers = xhr.headers = options.headers || {}
+    var sync = !!options.sync
+    var isJson = false
+    var timeoutTimer
+    var failureResponse = {
+        body: undefined,
+        headers: {},
+        statusCode: 0,
+        method: method,
+        url: uri,
+        rawRequest: xhr
+    }
+
+    if ("json" in options && options.json !== false) {
+        isJson = true
+        headers["accept"] || headers["Accept"] || (headers["Accept"] = "application/json") //Don't override existing accept header declared by user
+        if (method !== "GET" && method !== "HEAD") {
+            headers["content-type"] || headers["Content-Type"] || (headers["Content-Type"] = "application/json") //Don't override existing accept header declared by user
+            body = JSON.stringify(options.json === true ? body : options.json)
+        }
+    }
+
+    xhr.onreadystatechange = readystatechange
+    xhr.onload = loadFunc
+    xhr.onerror = errorFunc
+    // IE9 must have onprogress be set to a unique function.
+    xhr.onprogress = function () {
+        // IE must die
+    }
+    xhr.onabort = function(){
+        aborted = true;
+    }
+    xhr.ontimeout = errorFunc
+    xhr.open(method, uri, !sync, options.username, options.password)
+    //has to be after open
+    if(!sync) {
+        xhr.withCredentials = !!options.withCredentials
+    }
+    // Cannot set timeout with sync request
+    // not setting timeout on the xhr object, because of old webkits etc. not handling that correctly
+    // both npm's request and jquery 1.x use this kind of timeout, so this is being consistent
+    if (!sync && options.timeout > 0 ) {
+        timeoutTimer = setTimeout(function(){
+            if (aborted) return
+            aborted = true//IE9 may still call readystatechange
+            xhr.abort("timeout")
+            var e = new Error("XMLHttpRequest timeout")
+            e.code = "ETIMEDOUT"
+            errorFunc(e)
+        }, options.timeout )
+    }
+
+    if (xhr.setRequestHeader) {
+        for(key in headers){
+            if(headers.hasOwnProperty(key)){
+                xhr.setRequestHeader(key, headers[key])
+            }
+        }
+    } else if (options.headers && !isEmpty(options.headers)) {
+        throw new Error("Headers cannot be set on an XDomainRequest object")
+    }
+
+    if ("responseType" in options) {
+        xhr.responseType = options.responseType
+    }
+
+    if ("beforeSend" in options &&
+        typeof options.beforeSend === "function"
+    ) {
+        options.beforeSend(xhr)
+    }
+
+    // Microsoft Edge browser sends "undefined" when send is called with undefined value.
+    // XMLHttpRequest spec says to pass null as body to indicate no body
+    // See https://github.com/naugtur/xhr/issues/100.
+    xhr.send(body || null)
+
+    return xhr
+
+
+}
+
+function getXml(xhr) {
+    if (xhr.responseType === "document") {
+        return xhr.responseXML
+    }
+    var firefoxBugTakenEffect = xhr.responseXML && xhr.responseXML.documentElement.nodeName === "parsererror"
+    if (xhr.responseType === "" && !firefoxBugTakenEffect) {
+        return xhr.responseXML
+    }
+
+    return null
+}
+
+function noop() {}
+
+},{"global/window":10,"is-function":14,"parse-headers":20,"xtend":27}],27:[function(require,module,exports){
+module.exports = extend
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+function extend() {
+    var target = {}
+
+    for (var i = 0; i < arguments.length; i++) {
+        var source = arguments[i]
+
+        for (var key in source) {
+            if (hasOwnProperty.call(source, key)) {
+                target[key] = source[key]
+            }
+        }
+    }
+
+    return target
+}
+
+},{}],28:[function(require,module,exports){
+var bel = require('bel') // turns template tag into DOM elements
+var morphdom = require('morphdom') // efficiently diffs + morphs two DOM elements
+var defaultEvents = require('./update-events.js') // default events to be copied when dom elements update
+
+module.exports = bel
+
+// TODO move this + defaultEvents to a new module once we receive more feedback
+module.exports.update = function (fromNode, toNode, opts) {
+  if (!opts) opts = {}
+  if (opts.events !== false) {
+    if (!opts.onBeforeElUpdated) opts.onBeforeElUpdated = copier
+  }
+
+  return morphdom(fromNode, toNode, opts)
+
+  // morphdom only copies attributes. we decided we also wanted to copy events
+  // that can be set via attributes
+  function copier (f, t) {
+    // copy events:
+    var events = opts.events || defaultEvents
+    for (var i = 0; i < events.length; i++) {
+      var ev = events[i]
+      if (t[ev]) { // if new element has a whitelisted attribute
+        f[ev] = t[ev] // update existing element
+      } else if (f[ev]) { // if existing element has it and new one doesnt
+        f[ev] = undefined // remove it from existing element
+      }
+    }
+    var oldValue = f.value
+    var newValue = t.value
+    // copy values for form elements
+    if ((f.nodeName === 'INPUT' && f.type !== 'file') || f.nodeName === 'SELECT') {
+      if (!newValue && !t.hasAttribute('value')) {
+        t.value = f.value
+      } else if (newValue !== oldValue) {
+        f.value = newValue
+      }
+    } else if (f.nodeName === 'TEXTAREA') {
+      if (t.getAttribute('value') === null) f.value = t.value
+    }
+  }
+}
+
+},{"./update-events.js":29,"bel":6,"morphdom":17}],29:[function(require,module,exports){
+module.exports = [
+  // attribute events (can be set with attributes)
+  'onclick',
+  'ondblclick',
+  'onmousedown',
+  'onmouseup',
+  'onmouseover',
+  'onmousemove',
+  'onmouseout',
+  'ondragstart',
+  'ondrag',
+  'ondragenter',
+  'ondragleave',
+  'ondragover',
+  'ondrop',
+  'ondragend',
+  'onkeydown',
+  'onkeypress',
+  'onkeyup',
+  'onunload',
+  'onabort',
+  'onerror',
+  'onresize',
+  'onscroll',
+  'onselect',
+  'onchange',
+  'onsubmit',
+  'onreset',
+  'onfocus',
+  'onblur',
+  'oninput',
+  // other common events
+  'oncontextmenu',
+  'onfocusin',
+  'onfocusout'
+]
+
+},{}],30:[function(require,module,exports){
 module.exports = function yoyoifyAppendChild (el, childs) {
   for (var i = 0; i < childs.length; i++) {
     var node = childs[i]
@@ -22005,54 +22414,41 @@ module.exports = function yoyoifyAppendChild (el, childs) {
   }
 }
 
-},{}],36:[function(require,module,exports){
-var translate = require('./translate');
+},{}],31:[function(require,module,exports){
+var css = 0;
 var yo = require('yo-yo');
 
-var blacklistProps = ['id', 'version', 'source:gps', 'raiz_grande', 'icon', 'source_gps', 'comunidad'];
+var lookup = {
+  'es': 'Nombre Español',
+  'en': 'Nombre Ingles',
+  'wa': 'Nombre Wao'
+};
 
-module.exports = function (feature, opts) {
-  if (!opts) opts = {};
-  var symbol = feature.properties.icon && feature.properties.icon + '-100px';
+module.exports = function (opts) {
+  if (!opts.feature) throw new Error('need feature');
+  if (!opts.lang) opts.lang = 'es';
+  var symbol = opts.data && opts.data.Symbol && opts.data.Symbol[0];
+  var name = opts.data && opts.data[lookup[opts.lang]] || opts.feature.properties.Nombre;
+  var style = (require('sheetify/insert')("._f44320bf {\n      margin: 10px;\n    }\n._f44320bf img {\n      width: 100%;\n}") || true) && "_f44320bf";
   return function () {
 
     var ac = require('/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
-    var bel6 = document.createElement("div");
-    var bel0 = document.createElement("div");
-    bel0.setAttribute("style", "float: left;");
-    bel0.setAttribute("class", arguments[0]);
-    var bel5 = document.createElement("table");
-    var bel4 = document.createElement("tr");
-    var bel2 = document.createElement("td");
-    bel2.setAttribute("style", "text-align: right;");
-    var bel1 = document.createElement("strong");
-    ac(bel1, ["Preset"]);
-    ac(bel2, [bel1]);
-    var bel3 = document.createElement("td");
-    ac(bel3, [arguments[1]]);
-    ac(bel4, ["\n        ", bel2, "\n        ", bel3, "\n      "]);
-    ac(bel5, ["\n      ", bel4, "\n      ", arguments[2], "\n  "]);
-    ac(bel6, ["\n  ", bel0, "\n    ", bel5, "\n  "]);
-    return bel6;
-  }(symbol, feature.properties.preset || 'no preset defined', Object.keys(feature.properties).map(function (p) {
-    if (blacklistProps.indexOf(p) > -1) return;
-    return function () {
+    var bel1 = document.createElement("div");
+    bel1.setAttribute("class", arguments[1]);
+    var bel0 = document.createElement("h3");
+    ac(bel0, [arguments[0]]);
+    ac(bel1, ["\n    ", arguments[2], "\n    ", bel0, "\n  "]);
+    return bel1;
+  }(name, style, symbol ? function () {
 
-      var ac = require('/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
-      var bel3 = document.createElement("tr");
-      var bel1 = document.createElement("td");
-      bel1.setAttribute("style", "text-align: right;");
-      var bel0 = document.createElement("strong");
-      ac(bel0, [arguments[0]]);
-      ac(bel1, ["\n          ", bel0]);
-      var bel2 = document.createElement("td");
-      ac(bel2, [arguments[1]]);
-      ac(bel3, [bel1, "\n          ", bel2]);
-      return bel3;
-    }(translate(p), translate(feature.properties[p]));
-  }));
+    var ac = require('/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
+    var bel0 = document.createElement("img");
+    bel0.setAttribute("src", arguments[0]);
+    return bel0;
+  }(symbol.url) : '');
 };
-},{"./translate":39,"/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js":35,"yo-yo":33}],37:[function(require,module,exports){
+},{"/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js":30,"sheetify/insert":24,"yo-yo":28}],32:[function(require,module,exports){
+var xhr = require('xhr');
 var css = 0;
 var elements = require('alianza-elements');
 var mapboxgl = require('mapbox-gl');
@@ -22060,7 +22456,9 @@ var ToggleControl = require('mapbox-gl-toggle-control');
 var querystring = require('querystring');
 
 var Legend = require('./legend');
-var communityDOM = require('./community_popup');(require('sheetify/insert')(".mapboxgl-map {\n    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;\n    overflow: hidden;\n    position: relative;\n    -webkit-tap-highlight-color: rgba(0,0,0,0);\n}\n\n.mapboxgl-canvas-container.mapboxgl-interactive,\n.mapboxgl-ctrl-nav-compass {\n    cursor: -webkit-grab;\n    cursor: -moz-grab;\n    cursor: grab;\n}\n.mapboxgl-canvas-container.mapboxgl-interactive:active,\n.mapboxgl-ctrl-nav-compass:active {\n    cursor: -webkit-grabbing;\n    cursor: -moz-grabbing;\n    cursor: grabbing;\n}\n\n.mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate {\n    -ms-touch-action: pan-x pan-y;\n    touch-action: pan-x pan-y;\n}\n.mapboxgl-canvas-container.mapboxgl-touch-drag-pan {\n    -ms-touch-action: pinch-zoom;\n}\n.mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan {\n    -ms-touch-action: none;\n    touch-action: none;\n}\n.mapboxgl-ctrl-top-left,\n.mapboxgl-ctrl-top-right,\n.mapboxgl-ctrl-bottom-left,\n.mapboxgl-ctrl-bottom-right  { position:absolute; pointer-events:none; z-index:2; }\n.mapboxgl-ctrl-top-left      { top:0; left:0; }\n.mapboxgl-ctrl-top-right     { top:0; right:0; }\n.mapboxgl-ctrl-bottom-left   { bottom:0; left:0; }\n.mapboxgl-ctrl-bottom-right  { right:0; bottom:0; }\n\n.mapboxgl-ctrl { clear:both; pointer-events:auto }\n.mapboxgl-ctrl-top-left .mapboxgl-ctrl { margin:10px 0 0 10px; float:left; }\n.mapboxgl-ctrl-top-right .mapboxgl-ctrl{ margin:10px 10px 0 0; float:right; }\n.mapboxgl-ctrl-bottom-left .mapboxgl-ctrl { margin:0 0 10px 10px; float:left; }\n.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl { margin:0 10px 10px 0; float:right; }\n\n.mapboxgl-ctrl-group {\n    border-radius: 4px;\n    -moz-box-shadow: 0px 0px 2px rgba(0,0,0,0.1);\n    -webkit-box-shadow: 0px 0px 2px rgba(0,0,0,0.1);\n    box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.1);\n    overflow: hidden;\n    background: #fff;\n}\n.mapboxgl-ctrl-group > button {\n    width: 30px;\n    height: 30px;\n    display: block;\n    padding: 0;\n    outline: none;\n    border: none;\n    border-bottom: 1px solid #ddd;\n    box-sizing: border-box;\n    background-color: rgba(0,0,0,0);\n    cursor: pointer;\n}\n/* https://bugzilla.mozilla.org/show_bug.cgi?id=140562 */\n.mapboxgl-ctrl > button::-moz-focus-inner {\n    border: 0;\n    padding: 0;\n}\n.mapboxgl-ctrl > button:last-child {\n    border-bottom: 0;\n}\n.mapboxgl-ctrl > button:hover {\n    background-color: rgba(0,0,0,0.05);\n}\n.mapboxgl-ctrl-icon,\n.mapboxgl-ctrl-icon > .mapboxgl-ctrl-compass-arrow {\n    speak: none;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n}\n.mapboxgl-ctrl-icon {\n    padding: 5px;\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-zoom-out {\n    background-image: url(\"data:image/svg+xml;charset=utf8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0A%20%20%3Cpath%20style%3D%27fill%3A%23333333%3B%27%20d%3D%27m%207%2C9%20c%20-0.554%2C0%20-1%2C0.446%20-1%2C1%200%2C0.554%200.446%2C1%201%2C1%20l%206%2C0%20c%200.554%2C0%201%2C-0.446%201%2C-1%200%2C-0.554%20-0.446%2C-1%20-1%2C-1%20z%27%20%2F%3E%0A%3C%2Fsvg%3E%0A\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-zoom-in {\n    background-image: url(\"data:image/svg+xml;charset=utf8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0A%20%20%3Cpath%20style%3D%27fill%3A%23333333%3B%27%20d%3D%27M%2010%206%20C%209.446%206%209%206.4459904%209%207%20L%209%209%20L%207%209%20C%206.446%209%206%209.446%206%2010%20C%206%2010.554%206.446%2011%207%2011%20L%209%2011%20L%209%2013%20C%209%2013.55401%209.446%2014%2010%2014%20C%2010.554%2014%2011%2013.55401%2011%2013%20L%2011%2011%20L%2013%2011%20C%2013.554%2011%2014%2010.554%2014%2010%20C%2014%209.446%2013.554%209%2013%209%20L%2011%209%20L%2011%207%20C%2011%206.4459904%2010.554%206%2010%206%20z%27%20%2F%3E%0A%3C%2Fsvg%3E%0A\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate {\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0D%0A%20%20%3Cpath%20style%3D%27fill%3A%23333%3B%27%20d%3D%27M10%204C9%204%209%205%209%205L9%205.1A5%205%200%200%200%205.1%209L5%209C5%209%204%209%204%2010%204%2011%205%2011%205%2011L5.1%2011A5%205%200%200%200%209%2014.9L9%2015C9%2015%209%2016%2010%2016%2011%2016%2011%2015%2011%2015L11%2014.9A5%205%200%200%200%2014.9%2011L15%2011C15%2011%2016%2011%2016%2010%2016%209%2015%209%2015%209L14.9%209A5%205%200%200%200%2011%205.1L11%205C11%205%2011%204%2010%204zM10%206.5A3.5%203.5%200%200%201%2013.5%2010%203.5%203.5%200%200%201%2010%2013.5%203.5%203.5%200%200%201%206.5%2010%203.5%203.5%200%200%201%2010%206.5zM10%208.3A1.8%201.8%200%200%200%208.3%2010%201.8%201.8%200%200%200%2010%2011.8%201.8%201.8%200%200%200%2011.8%2010%201.8%201.8%200%200%200%2010%208.3z%27%20%2F%3E%0D%0A%3C%2Fsvg%3E\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate:disabled {\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0D%0A%20%20%3Cpath%20style%3D%27fill%3A%23aaa%3B%27%20d%3D%27M10%204C9%204%209%205%209%205L9%205.1A5%205%200%200%200%205.1%209L5%209C5%209%204%209%204%2010%204%2011%205%2011%205%2011L5.1%2011A5%205%200%200%200%209%2014.9L9%2015C9%2015%209%2016%2010%2016%2011%2016%2011%2015%2011%2015L11%2014.9A5%205%200%200%200%2014.9%2011L15%2011C15%2011%2016%2011%2016%2010%2016%209%2015%209%2015%209L14.9%209A5%205%200%200%200%2011%205.1L11%205C11%205%2011%204%2010%204zM10%206.5A3.5%203.5%200%200%201%2013.5%2010%203.5%203.5%200%200%201%2010%2013.5%203.5%203.5%200%200%201%206.5%2010%203.5%203.5%200%200%201%2010%206.5zM10%208.3A1.8%201.8%200%200%200%208.3%2010%201.8%201.8%200%200%200%2010%2011.8%201.8%201.8%200%200%200%2011.8%2010%201.8%201.8%200%200%200%2010%208.3z%27%20%2F%3E%0D%0A%3C%2Fsvg%3E\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate.mapboxgl-ctrl-geolocate-active {\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0D%0A%20%20%3Cpath%20style%3D%27fill%3A%2333b5e5%3B%27%20d%3D%27M10%204C9%204%209%205%209%205L9%205.1A5%205%200%200%200%205.1%209L5%209C5%209%204%209%204%2010%204%2011%205%2011%205%2011L5.1%2011A5%205%200%200%200%209%2014.9L9%2015C9%2015%209%2016%2010%2016%2011%2016%2011%2015%2011%2015L11%2014.9A5%205%200%200%200%2014.9%2011L15%2011C15%2011%2016%2011%2016%2010%2016%209%2015%209%2015%209L14.9%209A5%205%200%200%200%2011%205.1L11%205C11%205%2011%204%2010%204zM10%206.5A3.5%203.5%200%200%201%2013.5%2010%203.5%203.5%200%200%201%2010%2013.5%203.5%203.5%200%200%201%206.5%2010%203.5%203.5%200%200%201%2010%206.5zM10%208.3A1.8%201.8%200%200%200%208.3%2010%201.8%201.8%200%200%200%2010%2011.8%201.8%201.8%200%200%200%2011.8%2010%201.8%201.8%200%200%200%2010%208.3z%27%20%2F%3E%0D%0A%3C%2Fsvg%3E\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate.mapboxgl-ctrl-geolocate-active-error {\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0D%0A%20%20%3Cpath%20style%3D%27fill%3A%23e58978%3B%27%20d%3D%27M10%204C9%204%209%205%209%205L9%205.1A5%205%200%200%200%205.1%209L5%209C5%209%204%209%204%2010%204%2011%205%2011%205%2011L5.1%2011A5%205%200%200%200%209%2014.9L9%2015C9%2015%209%2016%2010%2016%2011%2016%2011%2015%2011%2015L11%2014.9A5%205%200%200%200%2014.9%2011L15%2011C15%2011%2016%2011%2016%2010%2016%209%2015%209%2015%209L14.9%209A5%205%200%200%200%2011%205.1L11%205C11%205%2011%204%2010%204zM10%206.5A3.5%203.5%200%200%201%2013.5%2010%203.5%203.5%200%200%201%2010%2013.5%203.5%203.5%200%200%201%206.5%2010%203.5%203.5%200%200%201%2010%206.5zM10%208.3A1.8%201.8%200%200%200%208.3%2010%201.8%201.8%200%200%200%2010%2011.8%201.8%201.8%200%200%200%2011.8%2010%201.8%201.8%200%200%200%2010%208.3z%27%20%2F%3E%0D%0A%3C%2Fsvg%3E\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate.mapboxgl-ctrl-geolocate-background {\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0A%20%20%3Cpath%20style%3D%27fill%3A%2333b5e5%3B%27%20d%3D%27M%2010%2C4%20C%209%2C4%209%2C5%209%2C5%20L%209%2C5.1%20C%207.0357113%2C5.5006048%205.5006048%2C7.0357113%205.1%2C9%20L%205%2C9%20c%200%2C0%20-1%2C0%20-1%2C1%200%2C1%201%2C1%201%2C1%20l%200.1%2C0%20c%200.4006048%2C1.964289%201.9357113%2C3.499395%203.9%2C3.9%20L%209%2C15%20c%200%2C0%200%2C1%201%2C1%201%2C0%201%2C-1%201%2C-1%20l%200%2C-0.1%20c%201.964289%2C-0.400605%203.499395%2C-1.935711%203.9%2C-3.9%20l%200.1%2C0%20c%200%2C0%201%2C0%201%2C-1%20C%2016%2C9%2015%2C9%2015%2C9%20L%2014.9%2C9%20C%2014.499395%2C7.0357113%2012.964289%2C5.5006048%2011%2C5.1%20L%2011%2C5%20c%200%2C0%200%2C-1%20-1%2C-1%20z%20m%200%2C2.5%20c%201.932997%2C0%203.5%2C1.5670034%203.5%2C3.5%200%2C1.932997%20-1.567003%2C3.5%20-3.5%2C3.5%20C%208.0670034%2C13.5%206.5%2C11.932997%206.5%2C10%206.5%2C8.0670034%208.0670034%2C6.5%2010%2C6.5%20Z%27%20%2F%3E%0A%3C%2Fsvg%3E\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate.mapboxgl-ctrl-geolocate-background-error {\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0A%20%20%3Cpath%20style%3D%27fill%3A%23e54e33%3B%27%20d%3D%27M%2010%2C4%20C%209%2C4%209%2C5%209%2C5%20L%209%2C5.1%20C%207.0357113%2C5.5006048%205.5006048%2C7.0357113%205.1%2C9%20L%205%2C9%20c%200%2C0%20-1%2C0%20-1%2C1%200%2C1%201%2C1%201%2C1%20l%200.1%2C0%20c%200.4006048%2C1.964289%201.9357113%2C3.499395%203.9%2C3.9%20L%209%2C15%20c%200%2C0%200%2C1%201%2C1%201%2C0%201%2C-1%201%2C-1%20l%200%2C-0.1%20c%201.964289%2C-0.400605%203.499395%2C-1.935711%203.9%2C-3.9%20l%200.1%2C0%20c%200%2C0%201%2C0%201%2C-1%20C%2016%2C9%2015%2C9%2015%2C9%20L%2014.9%2C9%20C%2014.499395%2C7.0357113%2012.964289%2C5.5006048%2011%2C5.1%20L%2011%2C5%20c%200%2C0%200%2C-1%20-1%2C-1%20z%20m%200%2C2.5%20c%201.932997%2C0%203.5%2C1.5670034%203.5%2C3.5%200%2C1.932997%20-1.567003%2C3.5%20-3.5%2C3.5%20C%208.0670034%2C13.5%206.5%2C11.932997%206.5%2C10%206.5%2C8.0670034%208.0670034%2C6.5%2010%2C6.5%20Z%27%20%2F%3E%0A%3C%2Fsvg%3E\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate.mapboxgl-ctrl-geolocate-waiting {\n    -webkit-animation: mapboxgl-spin 2s infinite linear;\n    -moz-animation: mapboxgl-spin 2s infinite linear;\n    -o-animation: mapboxgl-spin 2s infinite linear;\n    -ms-animation: mapboxgl-spin 2s infinite linear;\n    animation: mapboxgl-spin 2s infinite linear;\n}\n\n@-webkit-keyframes mapboxgl-spin {\n    0% { -webkit-transform: rotate(0deg); }\n    100% { -webkit-transform: rotate(360deg); }\n}\n@-moz-keyframes mapboxgl-spin {\n    0% { -moz-transform: rotate(0deg); }\n    100% { -moz-transform: rotate(360deg); }\n}\n@-o-keyframes mapboxgl-spin {\n    0% { -o-transform: rotate(0deg); }\n    100% { -o-transform: rotate(360deg); }\n}\n@-ms-keyframes mapboxgl-spin {\n    0% { -ms-transform: rotate(0deg); }\n    100% { -ms-transform: rotate(360deg); }\n}\n@-keyframes mapboxgl-spin {\n    0% { transform: rotate(0deg); }\n    100% { transform: rotate(360deg); }\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-fullscreen  {\n    background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4wLjEsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4KCjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgdmVyc2lvbj0iMS4xIgogICBpZD0iTGF5ZXJfMSIKICAgeD0iMHB4IgogICB5PSIwcHgiCiAgIHZpZXdCb3g9IjAgMCAyMCAyMCIKICAgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMjAgMjA7IgogICB4bWw6c3BhY2U9InByZXNlcnZlIgogICBpbmtzY2FwZTp2ZXJzaW9uPSIwLjkxIHIxMzcyNSIKICAgc29kaXBvZGk6ZG9jbmFtZT0iZnVsbHNjcmVlbi5zdmciPjxtZXRhZGF0YQogICAgIGlkPSJtZXRhZGF0YTQxODUiPjxyZGY6UkRGPjxjYzpXb3JrCiAgICAgICAgIHJkZjphYm91dD0iIj48ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD48ZGM6dHlwZQogICAgICAgICAgIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiIC8+PGRjOnRpdGxlPjwvZGM6dGl0bGU+PC9jYzpXb3JrPjwvcmRmOlJERj48L21ldGFkYXRhPjxkZWZzCiAgICAgaWQ9ImRlZnM0MTgzIiAvPjxzb2RpcG9kaTpuYW1lZHZpZXcKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMSIKICAgICBvYmplY3R0b2xlcmFuY2U9IjEwIgogICAgIGdyaWR0b2xlcmFuY2U9IjEwIgogICAgIGd1aWRldG9sZXJhbmNlPSIxMCIKICAgICBpbmtzY2FwZTpwYWdlb3BhY2l0eT0iMCIKICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTQ3MSIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSI2OTUiCiAgICAgaWQ9Im5hbWVkdmlldzQxODEiCiAgICAgc2hvd2dyaWQ9ImZhbHNlIgogICAgIGlua3NjYXBlOnpvb209IjExLjMxMzcwOCIKICAgICBpbmtzY2FwZTpjeD0iMTQuNjk4MjgiCiAgICAgaW5rc2NhcGU6Y3k9IjEwLjUyNjY4OSIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iNjk3IgogICAgIGlua3NjYXBlOndpbmRvdy15PSIyOTgiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMCIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJMYXllcl8xIgogICAgIGlua3NjYXBlOnNuYXAtYmJveD0idHJ1ZSIKICAgICBpbmtzY2FwZTpiYm94LXBhdGhzPSJ0cnVlIgogICAgIGlua3NjYXBlOm9iamVjdC1wYXRocz0idHJ1ZSIKICAgICBpbmtzY2FwZTpiYm94LW5vZGVzPSJ0cnVlIgogICAgIGlua3NjYXBlOm9iamVjdC1ub2Rlcz0idHJ1ZSI+PGlua3NjYXBlOmdyaWQKICAgICAgIHR5cGU9Inh5Z3JpZCIKICAgICAgIGlkPSJncmlkNjA3NiIgLz48L3NvZGlwb2RpOm5hbWVkdmlldz48cGF0aAogICAgIGQ9Ik0gNSA0IEMgNC41IDQgNCA0LjUgNCA1IEwgNCA2IEwgNCA5IEwgNC41IDkgTCA1Ljc3NzM0MzggNy4yOTY4NzUgQyA2Ljc3NzEzMTkgOC4wNjAyMTMxIDcuODM1NzY1IDguOTU2NTcyOCA4Ljg5MDYyNSAxMCBDIDcuODI1NzEyMSAxMS4wNjMzIDYuNzc2MTc5MSAxMS45NTE2NzUgNS43ODEyNSAxMi43MDcwMzEgTCA0LjUgMTEgTCA0IDExIEwgNCAxNSBDIDQgMTUuNSA0LjUgMTYgNSAxNiBMIDkgMTYgTCA5IDE1LjUgTCA3LjI3MzQzNzUgMTQuMjA1MDc4IEMgOC4wNDI4OTMxIDEzLjE4Nzg4NiA4LjkzOTU0NDEgMTIuMTMzNDgxIDkuOTYwOTM3NSAxMS4wNjgzNTkgQyAxMS4wNDIzNzEgMTIuMTQ2OTkgMTEuOTQyMDkzIDEzLjIxMTIgMTIuNzA3MDMxIDE0LjIxODc1IEwgMTEgMTUuNSBMIDExIDE2IEwgMTQgMTYgTCAxNSAxNiBDIDE1LjUgMTYgMTYgMTUuNSAxNiAxNSBMIDE2IDE0IEwgMTYgMTEgTCAxNS41IDExIEwgMTQuMjA1MDc4IDEyLjcyNjU2MiBDIDEzLjE3Nzk4NSAxMS45NDk2MTcgMTIuMTEyNzE4IDExLjA0MzU3NyAxMS4wMzcxMDkgMTAuMDA5NzY2IEMgMTIuMTUxODU2IDguOTgxMDYxIDEzLjIyNDM0NSA4LjA3OTg2MjQgMTQuMjI4NTE2IDcuMzA0Njg3NSBMIDE1LjUgOSBMIDE2IDkgTCAxNiA1IEMgMTYgNC41IDE1LjUgNCAxNSA0IEwgMTEgNCBMIDExIDQuNSBMIDEyLjcwMzEyNSA1Ljc3NzM0MzggQyAxMS45MzI2NDcgNi43ODY0ODM0IDExLjAyNjY5MyA3Ljg1NTQ3MTIgOS45NzA3MDMxIDguOTE5OTIxOSBDIDguOTU4NDczOSA3LjgyMDQ5NDMgOC4wNjk4NzY3IDYuNzYyNzE4OCA3LjMwNDY4NzUgNS43NzE0ODQ0IEwgOSA0LjUgTCA5IDQgTCA2IDQgTCA1IDQgeiAiCiAgICAgaWQ9InBhdGg0MTY5IiAvPjwvc3ZnPg==\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-shrink  {\n    background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4wLjEsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4KCjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgdmVyc2lvbj0iMS4xIgogICBpZD0iTGF5ZXJfMSIKICAgeD0iMHB4IgogICB5PSIwcHgiCiAgIHZpZXdCb3g9IjAgMCAyMCAyMCIKICAgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMjAgMjA7IgogICB4bWw6c3BhY2U9InByZXNlcnZlIgogICBpbmtzY2FwZTp2ZXJzaW9uPSIwLjkxIHIxMzcyNSIKICAgc29kaXBvZGk6ZG9jbmFtZT0ic2hyaW5rLnN2ZyI+PG1ldGFkYXRhCiAgICAgaWQ9Im1ldGFkYXRhMTkiPjxyZGY6UkRGPjxjYzpXb3JrCiAgICAgICAgIHJkZjphYm91dD0iIj48ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD48ZGM6dHlwZQogICAgICAgICAgIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiIC8+PGRjOnRpdGxlPjwvZGM6dGl0bGU+PC9jYzpXb3JrPjwvcmRmOlJERj48L21ldGFkYXRhPjxkZWZzCiAgICAgaWQ9ImRlZnMxNyIgLz48c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IgogICAgIGJvcmRlcm9wYWNpdHk9IjEiCiAgICAgb2JqZWN0dG9sZXJhbmNlPSIxMCIKICAgICBncmlkdG9sZXJhbmNlPSIxMCIKICAgICBndWlkZXRvbGVyYW5jZT0iMTAiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAiCiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIKICAgICBpbmtzY2FwZTp3aW5kb3ctd2lkdGg9IjIwMjEiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iOTA4IgogICAgIGlkPSJuYW1lZHZpZXcxNSIKICAgICBzaG93Z3JpZD0iZmFsc2UiCiAgICAgaW5rc2NhcGU6em9vbT0iMSIKICAgICBpbmtzY2FwZTpjeD0iNC45NTAxMDgyIgogICAgIGlua3NjYXBlOmN5PSIxMC44NTQ3NDciCiAgICAgaW5rc2NhcGU6d2luZG93LXg9IjAiCiAgICAgaW5rc2NhcGU6d2luZG93LXk9IjAiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMCIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJMYXllcl8xIgogICAgIGlua3NjYXBlOnNuYXAtYmJveD0idHJ1ZSIKICAgICBpbmtzY2FwZTpiYm94LXBhdGhzPSJ0cnVlIgogICAgIGlua3NjYXBlOnNuYXAtYmJveC1lZGdlLW1pZHBvaW50cz0idHJ1ZSIKICAgICBpbmtzY2FwZTpiYm94LW5vZGVzPSJ0cnVlIgogICAgIGlua3NjYXBlOnNuYXAtYmJveC1taWRwb2ludHM9InRydWUiCiAgICAgaW5rc2NhcGU6b2JqZWN0LXBhdGhzPSJ0cnVlIgogICAgIGlua3NjYXBlOm9iamVjdC1ub2Rlcz0idHJ1ZSI+PGlua3NjYXBlOmdyaWQKICAgICAgIHR5cGU9Inh5Z3JpZCIKICAgICAgIGlkPSJncmlkNDE0NyIgLz48L3NvZGlwb2RpOm5hbWVkdmlldz48cGF0aAogICAgIHN0eWxlPSJmaWxsOiMwMDAwMDAiCiAgICAgZD0iTSA0LjI0MjE4NzUgMy40OTIxODc1IEEgMC43NTAwNzUgMC43NTAwNzUgMCAwIDAgMy43MTg3NSA0Ljc4MTI1IEwgNS45NjQ4NDM4IDcuMDI3MzQzOCBMIDQgOC41IEwgNCA5IEwgOCA5IEMgOC41MDAwMDEgOC45OTk5OTg4IDkgOC40OTk5OTkyIDkgOCBMIDkgNCBMIDguNSA0IEwgNy4wMTc1NzgxIDUuOTU1MDc4MSBMIDQuNzgxMjUgMy43MTg3NSBBIDAuNzUwMDc1IDAuNzUwMDc1IDAgMCAwIDQuMjQyMTg3NSAzLjQ5MjE4NzUgeiBNIDE1LjczNDM3NSAzLjQ5MjE4NzUgQSAwLjc1MDA3NSAwLjc1MDA3NSAwIDAgMCAxNS4yMTg3NSAzLjcxODc1IEwgMTIuOTg0Mzc1IDUuOTUzMTI1IEwgMTEuNSA0IEwgMTEgNCBMIDExIDggQyAxMSA4LjQ5OTk5OTIgMTEuNDk5OTk5IDguOTk5OTk4OCAxMiA5IEwgMTYgOSBMIDE2IDguNSBMIDE0LjAzNTE1NiA3LjAyNzM0MzggTCAxNi4yODEyNSA0Ljc4MTI1IEEgMC43NTAwNzUgMC43NTAwNzUgMCAwIDAgMTUuNzM0Mzc1IDMuNDkyMTg3NSB6IE0gNCAxMSBMIDQgMTEuNSBMIDUuOTY0ODQzOCAxMi45NzI2NTYgTCAzLjcxODc1IDE1LjIxODc1IEEgMC43NTEzMDA5NiAwLjc1MTMwMDk2IDAgMSAwIDQuNzgxMjUgMTYuMjgxMjUgTCA3LjAyNzM0MzggMTQuMDM1MTU2IEwgOC41IDE2IEwgOSAxNiBMIDkgMTIgQyA5IDExLjUwMDAwMSA4LjUwMDAwMSAxMS4wMDAwMDEgOCAxMSBMIDQgMTEgeiBNIDEyIDExIEMgMTEuNDk5OTk5IDExLjAwMDAwMSAxMSAxMS41MDAwMDEgMTEgMTIgTCAxMSAxNiBMIDExLjUgMTYgTCAxMi45NzI2NTYgMTQuMDM1MTU2IEwgMTUuMjE4NzUgMTYuMjgxMjUgQSAwLjc1MTMwMDk2IDAuNzUxMzAwOTYgMCAxIDAgMTYuMjgxMjUgMTUuMjE4NzUgTCAxNC4wMzUxNTYgMTIuOTcyNjU2IEwgMTYgMTEuNSBMIDE2IDExIEwgMTIgMTEgeiAiCiAgICAgaWQ9InBhdGg3IiAvPjwvc3ZnPg==\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-compass > .mapboxgl-ctrl-compass-arrow {\n    width: 20px;\n    height: 20px;\n    margin: 5px;\n    background-image: url(\"data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%0A%09%3Cpolygon%20fill%3D%27%23333333%27%20points%3D%276%2C9%2010%2C1%2014%2C9%27%2F%3E%0A%09%3Cpolygon%20fill%3D%27%23CCCCCC%27%20points%3D%276%2C11%2010%2C19%2014%2C11%20%27%2F%3E%0A%3C%2Fsvg%3E\");\n    background-repeat: no-repeat;\n    display: inline-block;\n}\n\na.mapboxgl-ctrl-logo {\n    width: 85px;\n    height: 21px;\n    margin: 0 0 -3px -3px;\n    display: block;\n    background-repeat: no-repeat;\n    cursor: pointer;\n    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiAgIHZpZXdCb3g9IjAgMCA4NC40OSAyMSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgODQuNDkgMjE7IiB4bWw6c3BhY2U9InByZXNlcnZlIj48Zz4gIDxwYXRoIGNsYXNzPSJzdDAiIHN0eWxlPSJvcGFjaXR5OjAuOTsgZmlsbDogI0ZGRkZGRjsgZW5hYmxlLWJhY2tncm91bmQ6IG5ldzsiIGQ9Ik04My4yNSwxNC4yNmMwLDAuMTItMC4wOSwwLjIxLTAuMjEsMC4yMWgtMS42MWMtMC4xMywwLTAuMjQtMC4wNi0wLjMtMC4xN2wtMS40NC0yLjM5bC0xLjQ0LDIuMzkgICAgYy0wLjA2LDAuMTEtMC4xOCwwLjE3LTAuMywwLjE3aC0xLjYxYy0wLjA0LDAtMC4wOC0wLjAxLTAuMTItMC4wM2MtMC4wOS0wLjA2LTAuMTMtMC4xOS0wLjA2LTAuMjhsMCwwbDIuNDMtMy42OEw3Ni4yLDYuODQgICAgYy0wLjAyLTAuMDMtMC4wMy0wLjA3LTAuMDMtMC4xMmMwLTAuMTIsMC4wOS0wLjIxLDAuMjEtMC4yMWgxLjYxYzAuMTMsMCwwLjI0LDAuMDYsMC4zLDAuMTdsMS40MSwyLjM2bDEuNC0yLjM1ICAgIGMwLjA2LTAuMTEsMC4xOC0wLjE3LDAuMy0wLjE3SDgzYzAuMDQsMCwwLjA4LDAuMDEsMC4xMiwwLjAzYzAuMDksMC4wNiwwLjEzLDAuMTksMC4wNiwwLjI4bDAsMGwtMi4zNywzLjYzbDIuNDMsMy42NyAgICBDODMuMjQsMTQuMTgsODMuMjUsMTQuMjIsODMuMjUsMTQuMjZ6Ii8+ICA8cGF0aCBjbGFzcz0ic3QwIiBzdHlsZT0ib3BhY2l0eTowLjk7IGZpbGw6ICNGRkZGRkY7IGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXc7IiBkPSJNNjYuMjQsOS41OWMtMC4zOS0xLjg4LTEuOTYtMy4yOC0zLjg0LTMuMjhjLTEuMDMsMC0yLjAzLDAuNDItMi43MywxLjE4VjMuNTFjMC0wLjEzLTAuMS0wLjIzLTAuMjMtMC4yM2gtMS40ICAgIGMtMC4xMywwLTAuMjMsMC4xMS0wLjIzLDAuMjN2MTAuNzJjMCwwLjEzLDAuMSwwLjIzLDAuMjMsMC4yM2gxLjRjMC4xMywwLDAuMjMtMC4xMSwwLjIzLTAuMjNWMTMuNWMwLjcxLDAuNzUsMS43LDEuMTgsMi43MywxLjE4ICAgIGMxLjg4LDAsMy40NS0xLjQxLDMuODQtMy4yOUM2Ni4zNywxMC43OSw2Ni4zNywxMC4xOCw2Ni4yNCw5LjU5TDY2LjI0LDkuNTl6IE02Mi4wOCwxM2MtMS4zMiwwLTIuMzktMS4xMS0yLjQxLTIuNDh2LTAuMDYgICAgYzAuMDItMS4zOCwxLjA5LTIuNDgsMi40MS0yLjQ4czIuNDIsMS4xMiwyLjQyLDIuNTFTNjMuNDEsMTMsNjIuMDgsMTN6Ii8+ICA8cGF0aCBjbGFzcz0ic3QwIiBzdHlsZT0ib3BhY2l0eTowLjk7IGZpbGw6ICNGRkZGRkY7IGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXc7IiBkPSJNNzEuNjcsNi4zMmMtMS45OC0wLjAxLTMuNzIsMS4zNS00LjE2LDMuMjljLTAuMTMsMC41OS0wLjEzLDEuMTksMCwxLjc3YzAuNDQsMS45NCwyLjE3LDMuMzIsNC4xNywzLjMgICAgYzIuMzUsMCw0LjI2LTEuODcsNC4yNi00LjE5Uzc0LjA0LDYuMzIsNzEuNjcsNi4zMnogTTcxLjY1LDEzLjAxYy0xLjMzLDAtMi40Mi0xLjEyLTIuNDItMi41MXMxLjA4LTIuNTIsMi40Mi0yLjUyICAgIGMxLjMzLDAsMi40MiwxLjEyLDIuNDIsMi41MVM3Mi45OSwxMyw3MS42NSwxMy4wMUw3MS42NSwxMy4wMXoiLz4gIDxwYXRoIGNsYXNzPSJzdDEiIHN0eWxlPSJvcGFjaXR5OjAuMzU7IGVuYWJsZS1iYWNrZ3JvdW5kOm5ldzsiIGQ9Ik02Mi4wOCw3Ljk4Yy0xLjMyLDAtMi4zOSwxLjExLTIuNDEsMi40OHYwLjA2QzU5LjY4LDExLjksNjAuNzUsMTMsNjIuMDgsMTNzMi40Mi0xLjEyLDIuNDItMi41MSAgICBTNjMuNDEsNy45OCw2Mi4wOCw3Ljk4eiBNNjIuMDgsMTEuNzZjLTAuNjMsMC0xLjE0LTAuNTYtMS4xNy0xLjI1di0wLjA0YzAuMDEtMC42OSwwLjU0LTEuMjUsMS4xNy0xLjI1ICAgIGMwLjYzLDAsMS4xNywwLjU3LDEuMTcsMS4yN0M2My4yNCwxMS4yLDYyLjczLDExLjc2LDYyLjA4LDExLjc2eiIvPiAgPHBhdGggY2xhc3M9InN0MSIgc3R5bGU9Im9wYWNpdHk6MC4zNTsgZW5hYmxlLWJhY2tncm91bmQ6bmV3OyIgZD0iTTcxLjY1LDcuOThjLTEuMzMsMC0yLjQyLDEuMTItMi40MiwyLjUxUzcwLjMyLDEzLDcxLjY1LDEzczIuNDItMS4xMiwyLjQyLTIuNTFTNzIuOTksNy45OCw3MS42NSw3Ljk4eiAgICAgTTcxLjY1LDExLjc2Yy0wLjY0LDAtMS4xNy0wLjU3LTEuMTctMS4yN2MwLTAuNywwLjUzLTEuMjYsMS4xNy0xLjI2czEuMTcsMC41NywxLjE3LDEuMjdDNzIuODIsMTEuMjEsNzIuMjksMTEuNzYsNzEuNjUsMTEuNzZ6IiAgICAvPiAgPHBhdGggY2xhc3M9InN0MCIgc3R5bGU9Im9wYWNpdHk6MC45OyBmaWxsOiAjRkZGRkZGOyBlbmFibGUtYmFja2dyb3VuZDogbmV3OyIgZD0iTTQ1Ljc0LDYuNTNoLTEuNGMtMC4xMywwLTAuMjMsMC4xMS0wLjIzLDAuMjN2MC43M2MtMC43MS0wLjc1LTEuNy0xLjE4LTIuNzMtMS4xOCAgICBjLTIuMTcsMC0zLjk0LDEuODctMy45NCw0LjE5czEuNzcsNC4xOSwzLjk0LDQuMTljMS4wNCwwLDIuMDMtMC40MywyLjczLTEuMTl2MC43M2MwLDAuMTMsMC4xLDAuMjMsMC4yMywwLjIzaDEuNCAgICBjMC4xMywwLDAuMjMtMC4xMSwwLjIzLTAuMjNWNi43NGMwLTAuMTItMC4wOS0wLjIyLTAuMjItMC4yMkM0NS43NSw2LjUzLDQ1Ljc1LDYuNTMsNDUuNzQsNi41M3ogTTQ0LjEyLDEwLjUzICAgIEM0NC4xMSwxMS45LDQzLjAzLDEzLDQxLjcxLDEzcy0yLjQyLTEuMTItMi40Mi0yLjUxczEuMDgtMi41MiwyLjQtMi41MmMxLjMzLDAsMi4zOSwxLjExLDIuNDEsMi40OEw0NC4xMiwxMC41M3oiLz4gIDxwYXRoIGNsYXNzPSJzdDEiIHN0eWxlPSJvcGFjaXR5OjAuMzU7IGVuYWJsZS1iYWNrZ3JvdW5kOm5ldzsiIGQ9Ik00MS43MSw3Ljk4Yy0xLjMzLDAtMi40MiwxLjEyLTIuNDIsMi41MVM0MC4zNywxMyw0MS43MSwxM3MyLjM5LTEuMTEsMi40MS0yLjQ4di0wLjA2ICAgIEM0NC4xLDkuMDksNDMuMDMsNy45OCw0MS43MSw3Ljk4eiBNNDAuNTUsMTAuNDljMC0wLjcsMC41Mi0xLjI3LDEuMTctMS4yN2MwLjY0LDAsMS4xNCwwLjU2LDEuMTcsMS4yNXYwLjA0ICAgIGMtMC4wMSwwLjY4LTAuNTMsMS4yNC0xLjE3LDEuMjRDNDEuMDgsMTEuNzUsNDAuNTUsMTEuMTksNDAuNTUsMTAuNDl6Ii8+ICA8cGF0aCBjbGFzcz0ic3QwIiBzdHlsZT0ib3BhY2l0eTowLjk7IGZpbGw6ICNGRkZGRkY7IGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXc7IiBkPSJNNTIuNDEsNi4zMmMtMS4wMywwLTIuMDMsMC40Mi0yLjczLDEuMThWNi43NWMwLTAuMTMtMC4xLTAuMjMtMC4yMy0wLjIzaC0xLjRjLTAuMTMsMC0wLjIzLDAuMTEtMC4yMywwLjIzICAgIHYxMC43MmMwLDAuMTMsMC4xLDAuMjMsMC4yMywwLjIzaDEuNGMwLjEzLDAsMC4yMy0wLjEsMC4yMy0wLjIzVjEzLjVjMC43MSwwLjc1LDEuNywxLjE4LDIuNzQsMS4xOGMyLjE3LDAsMy45NC0xLjg3LDMuOTQtNC4xOSAgICBTNTQuNTgsNi4zMiw1Mi40MSw2LjMyeiBNNTIuMDgsMTMuMDFjLTEuMzIsMC0yLjM5LTEuMTEtMi40Mi0yLjQ4di0wLjA3YzAuMDItMS4zOCwxLjA5LTIuNDksMi40LTIuNDljMS4zMiwwLDIuNDEsMS4xMiwyLjQxLDIuNTEgICAgUzUzLjQsMTMsNTIuMDgsMTMuMDFMNTIuMDgsMTMuMDF6Ii8+ICA8cGF0aCBjbGFzcz0ic3QxIiBzdHlsZT0ib3BhY2l0eTowLjM1OyBlbmFibGUtYmFja2dyb3VuZDpuZXc7IiBkPSJNNTIuMDgsNy45OGMtMS4zMiwwLTIuMzksMS4xMS0yLjQyLDIuNDh2MC4wNmMwLjAzLDEuMzgsMS4xLDIuNDgsMi40MiwyLjQ4czIuNDEtMS4xMiwyLjQxLTIuNTEgICAgUzUzLjQsNy45OCw1Mi4wOCw3Ljk4eiBNNTIuMDgsMTEuNzZjLTAuNjMsMC0xLjE0LTAuNTYtMS4xNy0xLjI1di0wLjA0YzAuMDEtMC42OSwwLjU0LTEuMjUsMS4xNy0xLjI1YzAuNjMsMCwxLjE3LDAuNTgsMS4xNywxLjI3ICAgIFM1Mi43MiwxMS43Niw1Mi4wOCwxMS43NnoiLz4gIDxwYXRoIGNsYXNzPSJzdDAiIHN0eWxlPSJvcGFjaXR5OjAuOTsgZmlsbDogI0ZGRkZGRjsgZW5hYmxlLWJhY2tncm91bmQ6IG5ldzsiIGQ9Ik0zNi4wOCwxNC4yNGMwLDAuMTMtMC4xLDAuMjMtMC4yMywwLjIzaC0xLjQxYy0wLjEzLDAtMC4yMy0wLjExLTAuMjMtMC4yM1Y5LjY4YzAtMC45OC0wLjc0LTEuNzEtMS42Mi0xLjcxICAgIGMtMC44LDAtMS40NiwwLjctMS41OSwxLjYybDAuMDEsNC42NmMwLDAuMTMtMC4xMSwwLjIzLTAuMjMsMC4yM2gtMS40MWMtMC4xMywwLTAuMjMtMC4xMS0wLjIzLTAuMjNWOS42OCAgICBjMC0wLjk4LTAuNzQtMS43MS0xLjYyLTEuNzFjLTAuODUsMC0xLjU0LDAuNzktMS42LDEuOHY0LjQ4YzAsMC4xMy0wLjEsMC4yMy0wLjIzLDAuMjNoLTEuNGMtMC4xMywwLTAuMjMtMC4xMS0wLjIzLTAuMjNWNi43NCAgICBjMC4wMS0wLjEzLDAuMS0wLjIyLDAuMjMtMC4yMmgxLjRjMC4xMywwLDAuMjIsMC4xMSwwLjIzLDAuMjJWNy40YzAuNS0wLjY4LDEuMy0xLjA5LDIuMTYtMS4xaDAuMDNjMS4wOSwwLDIuMDksMC42LDIuNiwxLjU1ICAgIGMwLjQ1LTAuOTUsMS40LTEuNTUsMi40NC0xLjU2YzEuNjIsMCwyLjkzLDEuMjUsMi45LDIuNzhMMzYuMDgsMTQuMjR6Ii8+ICA8cGF0aCBjbGFzcz0ic3QxIiBzdHlsZT0ib3BhY2l0eTowLjM1OyBlbmFibGUtYmFja2dyb3VuZDpuZXc7IiBkPSJNODQuMzQsMTMuNTlsLTAuMDctMC4xM2wtMS45Ni0yLjk5bDEuOTQtMi45NWMwLjQ0LTAuNjcsMC4yNi0xLjU2LTAuNDEtMi4wMmMtMC4wMiwwLTAuMDMsMC0wLjA0LTAuMDEgICAgYy0wLjIzLTAuMTUtMC41LTAuMjItMC43OC0wLjIyaC0xLjYxYy0wLjU2LDAtMS4wOCwwLjI5LTEuMzcsMC43OEw3OS43Miw2LjZsLTAuMzQtMC41NkM3OS4wOSw1LjU2LDc4LjU3LDUuMjcsNzgsNS4yN2gtMS42ICAgIGMtMC42LDAtMS4xMywwLjM3LTEuMzUsMC45MmMtMi4xOS0xLjY2LTUuMjgtMS40Ny03LjI2LDAuNDVjLTAuMzUsMC4zNC0wLjY1LDAuNzItMC44OSwxLjE0Yy0wLjktMS42Mi0yLjU4LTIuNzItNC41LTIuNzIgICAgYy0wLjUsMC0xLjAxLDAuMDctMS40OCwwLjIzVjMuNTFjMC0wLjgyLTAuNjYtMS40OC0xLjQ3LTEuNDhoLTEuNGMtMC44MSwwLTEuNDcsMC42Ni0xLjQ3LDEuNDd2My43NSAgICBjLTAuOTUtMS4zNi0yLjUtMi4xOC00LjE3LTIuMTljLTAuNzQsMC0xLjQ2LDAuMTYtMi4xMiwwLjQ3Yy0wLjI0LTAuMTctMC41NC0wLjI2LTAuODQtMC4yNmgtMS40Yy0wLjQ1LDAtMC44NywwLjIxLTEuMTUsMC41NiAgICBjLTAuMDItMC4wMy0wLjA0LTAuMDUtMC4wNy0wLjA4Yy0wLjI4LTAuMy0wLjY4LTAuNDctMS4wOS0wLjQ3aC0xLjM5Yy0wLjMsMC0wLjYsMC4wOS0wLjg0LDAuMjZjLTAuNjctMC4zLTEuMzktMC40Ni0yLjEyLTAuNDYgICAgYy0xLjgzLDAtMy40MywxLTQuMzcsMi41Yy0wLjItMC40Ni0wLjQ4LTAuODktMC44My0xLjI1Yy0wLjgtMC44MS0xLjg5LTEuMjUtMy4wMi0xLjI1aC0wLjAxYy0wLjg5LDAuMDEtMS43NSwwLjMzLTIuNDYsMC44OCAgICBjLTAuNzQtMC41Ny0xLjY0LTAuODgtMi41Ny0wLjg4SDI4LjFjLTAuMjksMC0wLjU4LDAuMDMtMC44NiwwLjExYy0wLjI4LDAuMDYtMC41NiwwLjE2LTAuODIsMC4yOGMtMC4yMS0wLjEyLTAuNDUtMC4xOC0wLjctMC4xOCAgICBoLTEuNGMtMC44MiwwLTEuNDcsMC42Ni0xLjQ3LDEuNDd2Ny41YzAsMC44MiwwLjY2LDEuNDcsMS40NywxLjQ3aDEuNGMwLjgyLDAsMS40OC0wLjY2LDEuNDgtMS40OGwwLDBWOS43OSAgICBjMC4wMy0wLjM2LDAuMjMtMC41OSwwLjM2LTAuNTljMC4xOCwwLDAuMzgsMC4xOCwwLjM4LDAuNDd2NC41N2MwLDAuODIsMC42NiwxLjQ3LDEuNDcsMS40N2gxLjQxYzAuODIsMCwxLjQ3LTAuNjYsMS40Ny0xLjQ3ICAgIGwtMC4wMS00LjU3YzAuMDYtMC4zMiwwLjI1LTAuNDcsMC4zNS0wLjQ3YzAuMTgsMCwwLjM4LDAuMTgsMC4zOCwwLjQ3djQuNTdjMCwwLjgyLDAuNjYsMS40NywxLjQ3LDEuNDdoMS40MSAgICBjMC44MiwwLDEuNDctMC42NiwxLjQ3LTEuNDd2LTAuMzhjMC45NiwxLjI5LDIuNDYsMi4wNiw0LjA2LDIuMDZjMC43NCwwLDEuNDYtMC4xNiwyLjEyLTAuNDdjMC4yNCwwLjE3LDAuNTQsMC4yNiwwLjg0LDAuMjZoMS4zOSAgICBjMC4zLDAsMC42LTAuMDksMC44NC0wLjI2djIuMDFjMCwwLjgyLDAuNjYsMS40NywxLjQ3LDEuNDdoMS40YzAuODIsMCwxLjQ3LTAuNjYsMS40Ny0xLjQ3di0xLjc3YzAuNDgsMC4xNSwwLjk5LDAuMjMsMS40OSwwLjIyICAgIGMxLjcsMCwzLjIyLTAuODcsNC4xNy0yLjJ2MC41MmMwLDAuODIsMC42NiwxLjQ3LDEuNDcsMS40N2gxLjRjMC4zLDAsMC42LTAuMDksMC44NC0wLjI2YzAuNjYsMC4zMSwxLjM5LDAuNDcsMi4xMiwwLjQ3ICAgIGMxLjkyLDAsMy42LTEuMSw0LjQ5LTIuNzNjMS41NCwyLjY1LDQuOTUsMy41Myw3LjU4LDEuOThjMC4xOC0wLjExLDAuMzYtMC4yMiwwLjUzLTAuMzZjMC4yMiwwLjU1LDAuNzYsMC45MSwxLjM1LDAuOUg3OCAgICBjMC41NiwwLDEuMDgtMC4yOSwxLjM3LTAuNzhsMC4zNy0wLjYxbDAuMzcsMC42MWMwLjI5LDAuNDgsMC44MSwwLjc4LDEuMzgsMC43OGgxLjZjMC44MSwwLDEuNDYtMC42NiwxLjQ1LTEuNDYgICAgQzg0LjQ5LDE0LjAyLDg0LjQ0LDEzLjgsODQuMzQsMTMuNTlMODQuMzQsMTMuNTl6IE0zNS44NiwxNC40N2gtMS40MWMtMC4xMywwLTAuMjMtMC4xMS0wLjIzLTAuMjNWOS42OCAgICBjMC0wLjk4LTAuNzQtMS43MS0xLjYyLTEuNzFjLTAuOCwwLTEuNDYsMC43LTEuNTksMS42MmwwLjAxLDQuNjZjMCwwLjEzLTAuMSwwLjIzLTAuMjMsMC4yM2gtMS40MWMtMC4xMywwLTAuMjMtMC4xMS0wLjIzLTAuMjMgICAgVjkuNjhjMC0wLjk4LTAuNzQtMS43MS0xLjYyLTEuNzFjLTAuODUsMC0xLjU0LDAuNzktMS42LDEuOHY0LjQ4YzAsMC4xMy0wLjEsMC4yMy0wLjIzLDAuMjNoLTEuNGMtMC4xMywwLTAuMjMtMC4xMS0wLjIzLTAuMjMgICAgVjYuNzRjMC4wMS0wLjEzLDAuMTEtMC4yMiwwLjIzLTAuMjJoMS40YzAuMTMsMCwwLjIyLDAuMTEsMC4yMywwLjIyVjcuNGMwLjUtMC42OCwxLjMtMS4wOSwyLjE2LTEuMWgwLjAzICAgIGMxLjA5LDAsMi4wOSwwLjYsMi42LDEuNTVjMC40NS0wLjk1LDEuNC0xLjU1LDIuNDQtMS41NmMxLjYyLDAsMi45MywxLjI1LDIuOSwyLjc4bDAuMDEsNS4xNkMzNi4wOSwxNC4zNiwzNS45OCwxNC40NiwzNS44NiwxNC40NyAgICBMMzUuODYsMTQuNDd6IE00NS45NywxNC4yNGMwLDAuMTMtMC4xLDAuMjMtMC4yMywwLjIzaC0xLjRjLTAuMTMsMC0wLjIzLTAuMTEtMC4yMy0wLjIzVjEzLjVjLTAuNywwLjc2LTEuNjksMS4xOC0yLjcyLDEuMTggICAgYy0yLjE3LDAtMy45NC0xLjg3LTMuOTQtNC4xOXMxLjc3LTQuMTksMy45NC00LjE5YzEuMDMsMCwyLjAyLDAuNDMsMi43MywxLjE4VjYuNzRjMC0wLjEzLDAuMS0wLjIzLDAuMjMtMC4yM2gxLjQgICAgYzAuMTItMC4wMSwwLjIyLDAuMDgsMC4yMywwLjIxYzAsMC4wMSwwLDAuMDEsMCwwLjAydjcuNTFoLTAuMDFWMTQuMjR6IE01Mi40MSwxNC42N2MtMS4wMywwLTIuMDItMC40My0yLjczLTEuMTh2My45NyAgICBjMCwwLjEzLTAuMSwwLjIzLTAuMjMsMC4yM2gtMS40Yy0wLjEzLDAtMC4yMy0wLjEtMC4yMy0wLjIzVjYuNzVjMC0wLjEzLDAuMS0wLjIyLDAuMjMtMC4yMmgxLjRjMC4xMywwLDAuMjMsMC4xMSwwLjIzLDAuMjN2MC43MyAgICBjMC43MS0wLjc2LDEuNy0xLjE4LDIuNzMtMS4xOGMyLjE3LDAsMy45NCwxLjg2LDMuOTQsNC4xOFM1NC41OCwxNC42Nyw1Mi40MSwxNC42N3ogTTY2LjI0LDExLjM5Yy0wLjM5LDEuODctMS45NiwzLjI5LTMuODQsMy4yOSAgICBjLTEuMDMsMC0yLjAyLTAuNDMtMi43My0xLjE4djAuNzNjMCwwLjEzLTAuMSwwLjIzLTAuMjMsMC4yM2gtMS40Yy0wLjEzLDAtMC4yMy0wLjExLTAuMjMtMC4yM1YzLjUxYzAtMC4xMywwLjEtMC4yMywwLjIzLTAuMjMgICAgaDEuNGMwLjEzLDAsMC4yMywwLjExLDAuMjMsMC4yM3YzLjk3YzAuNzEtMC43NSwxLjctMS4xOCwyLjczLTEuMTdjMS44OCwwLDMuNDUsMS40LDMuODQsMy4yOEM2Ni4zNywxMC4xOSw2Ni4zNywxMC44LDY2LjI0LDExLjM5ICAgIEw2Ni4yNCwxMS4zOUw2Ni4yNCwxMS4zOXogTTcxLjY3LDE0LjY4Yy0yLDAuMDEtMy43My0xLjM1LTQuMTctMy4zYy0wLjEzLTAuNTktMC4xMy0xLjE5LDAtMS43N2MwLjQ0LTEuOTQsMi4xNy0zLjMxLDQuMTctMy4zICAgIGMyLjM2LDAsNC4yNiwxLjg3LDQuMjYsNC4xOVM3NC4wMywxNC42OCw3MS42NywxNC42OEw3MS42NywxNC42OHogTTgzLjA0LDE0LjQ3aC0xLjYxYy0wLjEzLDAtMC4yNC0wLjA2LTAuMy0wLjE3bC0xLjQ0LTIuMzkgICAgbC0xLjQ0LDIuMzljLTAuMDYsMC4xMS0wLjE4LDAuMTctMC4zLDAuMTdoLTEuNjFjLTAuMDQsMC0wLjA4LTAuMDEtMC4xMi0wLjAzYy0wLjA5LTAuMDYtMC4xMy0wLjE5LTAuMDYtMC4yOGwwLDBsMi40My0zLjY4ICAgIEw3Ni4yLDYuODRjLTAuMDItMC4wMy0wLjAzLTAuMDctMC4wMy0wLjEyYzAtMC4xMiwwLjA5LTAuMjEsMC4yMS0wLjIxaDEuNjFjMC4xMywwLDAuMjQsMC4wNiwwLjMsMC4xN2wxLjQxLDIuMzZsMS40MS0yLjM2ICAgIGMwLjA2LTAuMTEsMC4xOC0wLjE3LDAuMy0wLjE3aDEuNjFjMC4wNCwwLDAuMDgsMC4wMSwwLjEyLDAuMDNjMC4wOSwwLjA2LDAuMTMsMC4xOSwwLjA2LDAuMjhsMCwwbC0yLjM4LDMuNjRsMi40MywzLjY3ICAgIGMwLjAyLDAuMDMsMC4wMywwLjA3LDAuMDMsMC4xMkM4My4yNSwxNC4zOCw4My4xNiwxNC40Nyw4My4wNCwxNC40N0w4My4wNCwxNC40N0w4My4wNCwxNC40N3oiLz4gIDxwYXRoIGNsYXNzPSJzdDAiIHN0eWxlPSJvcGFjaXR5OjAuOTsgZmlsbDogI0ZGRkZGRjsgZW5hYmxlLWJhY2tncm91bmQ6IG5ldzsiIGQ9Ik0xMC41LDEuMjRjLTUuMTEsMC05LjI1LDQuMTUtOS4yNSw5LjI1czQuMTUsOS4yNSw5LjI1LDkuMjVzOS4yNS00LjE1LDkuMjUtOS4yNSAgICBDMTkuNzUsNS4zOCwxNS42MSwxLjI0LDEwLjUsMS4yNHogTTE0Ljg5LDEyLjc3Yy0xLjkzLDEuOTMtNC43OCwyLjMxLTYuNywyLjMxYy0wLjcsMC0xLjQxLTAuMDUtMi4xLTAuMTZjMCwwLTEuMDItNS42NCwyLjE0LTguODEgICAgYzAuODMtMC44MywxLjk1LTEuMjgsMy4xMy0xLjI4YzEuMjcsMCwyLjQ5LDAuNTEsMy4zOSwxLjQyQzE2LjU5LDguMDksMTYuNjQsMTEsMTQuODksMTIuNzd6Ii8+ICA8cGF0aCBjbGFzcz0ic3QxIiBzdHlsZT0ib3BhY2l0eTowLjM1OyBlbmFibGUtYmFja2dyb3VuZDpuZXc7IiBkPSJNMTAuNS0wLjAxQzQuNy0wLjAxLDAsNC43LDAsMTAuNDlzNC43LDEwLjUsMTAuNSwxMC41UzIxLDE2LjI5LDIxLDEwLjQ5QzIwLjk5LDQuNywxNi4zLTAuMDEsMTAuNS0wLjAxeiAgICAgTTEwLjUsMTkuNzRjLTUuMTEsMC05LjI1LTQuMTUtOS4yNS05LjI1czQuMTQtOS4yNiw5LjI1LTkuMjZzOS4yNSw0LjE1LDkuMjUsOS4yNUMxOS43NSwxNS42MSwxNS42MSwxOS43NCwxMC41LDE5Ljc0eiIvPiAgPHBhdGggY2xhc3M9InN0MSIgc3R5bGU9Im9wYWNpdHk6MC4zNTsgZW5hYmxlLWJhY2tncm91bmQ6bmV3OyIgZD0iTTE0Ljc0LDYuMjVDMTIuOSw0LjQxLDkuOTgsNC4zNSw4LjIzLDYuMWMtMy4xNiwzLjE3LTIuMTQsOC44MS0yLjE0LDguODFzNS42NCwxLjAyLDguODEtMi4xNCAgICBDMTYuNjQsMTEsMTYuNTksOC4wOSwxNC43NCw2LjI1eiBNMTIuNDcsMTAuMzRsLTAuOTEsMS44N2wtMC45LTEuODdMOC44LDkuNDNsMS44Ni0wLjlsMC45LTEuODdsMC45MSwxLjg3bDEuODYsMC45TDEyLjQ3LDEwLjM0eiIgICAgLz4gIDxwb2x5Z29uIGNsYXNzPSJzdDAiIHN0eWxlPSJvcGFjaXR5OjAuOTsgZmlsbDogI0ZGRkZGRjsgZW5hYmxlLWJhY2tncm91bmQ6IG5ldzsiIHBvaW50cz0iMTQuMzMsOS40MyAxMi40NywxMC4zNCAxMS41NiwxMi4yMSAxMC42NiwxMC4zNCA4LjgsOS40MyAxMC42Niw4LjUzIDExLjU2LDYuNjYgMTIuNDcsOC41MyAgICIvPjwvZz48L3N2Zz4=);\n}\n\n.mapboxgl-ctrl.mapboxgl-ctrl-attrib {\n    padding: 0 5px;\n    background-color: rgba(255, 255, 255, .5);\n    margin: 0;\n}\n.mapboxgl-ctrl-attrib.mapboxgl-compact {\n    padding-top: 2px;\n    padding-bottom: 2px;\n    margin: 0 10px 10px 10px;\n    position: relative;\n    padding-right: 24px;\n    background-color: #fff;\n    border-radius: 3px 12px 12px 3px;\n    visibility: hidden;\n}\n.mapboxgl-ctrl-attrib.mapboxgl-compact:hover {\n    visibility: visible;\n}\n.mapboxgl-ctrl-attrib.mapboxgl-compact:after {\n    content: '';\n    cursor: pointer;\n    position: absolute;\n    bottom: 0;\n    right: 0;\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0D%0A%09%3Cpath%20fill%3D%27%23333333%27%20fill-rule%3D%27evenodd%27%20d%3D%27M4%2C10a6%2C6%200%201%2C0%2012%2C0a6%2C6%200%201%2C0%20-12%2C0%20M9%2C7a1%2C1%200%201%2C0%202%2C0a1%2C1%200%201%2C0%20-2%2C0%20M9%2C10a1%2C1%200%201%2C1%202%2C0l0%2C3a1%2C1%200%201%2C1%20-2%2C0%27%20%2F%3E%0D%0A%3C%2Fsvg%3E\");\n    background-color: rgba(255, 255, 255, .5);\n    width: 24px;\n    height: 24px;\n    box-sizing: border-box;\n    visibility: visible;\n    border-radius: 12px;\n}\n.mapboxgl-ctrl-attrib a {\n    color: rgba(0,0,0,0.75);\n    text-decoration: none;\n}\n.mapboxgl-ctrl-attrib a:hover {\n    color: inherit;\n    text-decoration: underline;\n}\n/* stylelint-disable */\n.mapboxgl-ctrl-attrib .mapbox-improve-map {\n    font-weight: bold;\n    margin-left: 2px;\n}\n/*stylelint-enable*/\n.mapboxgl-ctrl-scale {\n    background-color: rgba(255,255,255,0.75);\n    font-size: 10px;\n    border-width: medium 2px 2px;\n    border-style: none solid solid;\n    border-color: #333;\n    padding: 0 5px;\n    color: #333;\n}\n\n.mapboxgl-popup {\n    position: absolute;\n    top: 0;\n    left: 0;\n    display: -webkit-flex;\n    display: flex;\n    will-change: transform;\n    pointer-events: none;\n}\n.mapboxgl-popup-anchor-top,\n.mapboxgl-popup-anchor-top-left,\n.mapboxgl-popup-anchor-top-right {\n    -webkit-flex-direction: column;\n    flex-direction: column;\n}\n.mapboxgl-popup-anchor-bottom,\n.mapboxgl-popup-anchor-bottom-left,\n.mapboxgl-popup-anchor-bottom-right {\n    -webkit-flex-direction: column-reverse;\n    flex-direction: column-reverse;\n}\n.mapboxgl-popup-anchor-left {\n    -webkit-flex-direction: row;\n    flex-direction: row;\n}\n.mapboxgl-popup-anchor-right {\n    -webkit-flex-direction: row-reverse;\n    flex-direction: row-reverse;\n}\n.mapboxgl-popup-tip {\n    width: 0;\n    height: 0;\n    border: 10px solid transparent;\n    z-index: 1;\n}\n.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {\n    -webkit-align-self: center;\n    align-self: center;\n    border-top: none;\n    border-bottom-color: #fff;\n}\n.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip {\n    -webkit-align-self: flex-start;\n    align-self: flex-start;\n    border-top: none;\n    border-left: none;\n    border-bottom-color: #fff;\n}\n.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {\n    -webkit-align-self: flex-end;\n    align-self: flex-end;\n    border-top: none;\n    border-right: none;\n    border-bottom-color: #fff;\n}\n.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {\n    -webkit-align-self: center;\n    align-self: center;\n    border-bottom: none;\n    border-top-color: #fff;\n}\n.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip {\n    -webkit-align-self: flex-start;\n    align-self: flex-start;\n    border-bottom: none;\n    border-left: none;\n    border-top-color: #fff;\n}\n.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {\n    -webkit-align-self: flex-end;\n    align-self: flex-end;\n    border-bottom: none;\n    border-right: none;\n    border-top-color: #fff;\n}\n.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {\n    -webkit-align-self: center;\n    align-self: center;\n    border-left: none;\n    border-right-color: #fff;\n}\n.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {\n    -webkit-align-self: center;\n    align-self: center;\n    border-right: none;\n    border-left-color: #fff;\n}\n.mapboxgl-popup-close-button {\n    position: absolute;\n    right: 0;\n    top: 0;\n    border: none;\n    border-radius: 0 3px 0 0;\n    cursor: pointer;\n    background-color: rgba(0,0,0,0);\n}\n.mapboxgl-popup-close-button:hover {\n    background-color: rgba(0,0,0,0.05);\n}\n.mapboxgl-popup-content {\n    position: relative;\n    background: #fff;\n    border-radius: 3px;\n    box-shadow: 0 1px 2px rgba(0,0,0,0.10);\n    padding: 10px 10px 15px;\n    pointer-events: auto;\n}\n.mapboxgl-popup-anchor-top-left .mapboxgl-popup-content {\n    border-top-left-radius: 0;\n}\n.mapboxgl-popup-anchor-top-right .mapboxgl-popup-content {\n    border-top-right-radius: 0;\n}\n.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-content {\n    border-bottom-left-radius: 0;\n}\n.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-content {\n    border-bottom-right-radius: 0;\n}\n\n.mapboxgl-marker {\n    position: absolute;\n    top: 0;\n    left: 0;\n    will-change: transform;\n}\n\n.mapboxgl-user-location-dot {\n    background-color: #1DA1F2;\n    width: 16px;\n    height: 16px;\n    border-radius: 50%;\n    box-shadow: 0 0 2px rgba(0,0,0,0.25);\n    border: 2px solid #fff;\n}\n.mapboxgl-user-location-dot:after {\n    content: '';\n    display: block;\n    box-shadow: #1DA1F2 0 0 0 2px;\n    width: 16px;\n    height: 16px;\n    border-radius: 50%;\n    position: relative;\n    z-index: -1;\n\n    -webkit-animation: mapboxgl-user-location-dot-pulse 2s;\n    -moz-animation: mapboxgl-user-location-dot-pulse 2s;\n    -ms-animation: mapboxgl-user-location-dot-pulse 2s;\n    animation: mapboxgl-user-location-dot-pulse 2s;\n\n    -webkit-animation-iteration-count: infinite;\n    -moz-animation-iteration-count: infinite;\n    -ms-animation-iteration-count: infinite;\n    animation-iteration-count: infinite;\n}\n@-webkit-keyframes mapboxgl-user-location-dot-pulse {\n    0%   {   -webkit-box-shadow: 0 0 0 0 rgba(29, 161, 242, 0.8); }\n    70%  {   -webkit-box-shadow: 0 0 0 15px rgba(29, 161, 242, 0); }\n    242% {   -webkit-box-shadow: 0 0 0 0 rgba(29, 161, 242, 0); }\n}\n@-ms-keyframes mapboxgl-user-location-dot-pulse {\n    0%   {   -ms-box-shadow: 0 0 0 0 rgba(29, 161, 242, 0.8); }\n    70%  {   -ms-box-shadow: 0 0 0 15px rgba(29, 161, 242, 0); }\n    242% {   -ms-box-shadow: 0 0 0 0 rgba(29, 161, 242, 0); }\n}\n@keyframes mapboxgl-user-location-dot-pulse {\n    0% {\n        -moz-box-shadow: 0 0 0 0 rgba(29, 161, 242, 0.8);\n             box-shadow: 0 0 0 0 rgba(29, 161, 242, 0.4);\n    }\n    70% {\n        -moz-box-shadow: 0 0 0 15px rgba(29, 161, 242, 0);\n             box-shadow: 0 0 0 15px rgba(29, 161, 242, 0);\n    }\n    100% {\n        -moz-box-shadow: 0 0 0 0 rgba(29, 161, 242, 0);\n             box-shadow: 0 0 0 0 rgba(29, 161, 242, 0);\n    }\n}\n.mapboxgl-user-location-dot-stale {\n    background-color: #aaa;\n}\n.mapboxgl-user-location-dot-stale:after {\n    display: none\n}\n\n.mapboxgl-crosshair,\n.mapboxgl-crosshair .mapboxgl-interactive,\n.mapboxgl-crosshair .mapboxgl-interactive:active {\n    cursor: crosshair;\n}\n.mapboxgl-boxzoom {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 0;\n    height: 0;\n    background: #fff;\n    border: 2px dotted #202020;\n    opacity: 0.5;\n}\n\n@media print {\n/* stylelint-disable */\n    .mapbox-improve-map {\n        display:none;\n    }\n/* stylelint-enable */\n}") || true) && "_8d1e4ec9";(require('sheetify/insert')(".mapboxgl-map {\n  font-size: 12px;\n  line-height: 20px; \n  font: inherit !important;\n}\n\n/** tidbits from Bootstrap for the popups **/\n.btn {\n  z-index: 1;\n  padding: 15px;\n  border: 1px solid black;\n  background: transparent;\n  font-weight: bold;\n  font-size: 14px;\n}\n.btn:hover {\n  cursor: pointer;\n  background-color: rgba(225,225,225,0.8);\n\n}\n.btn:active, .btn:focus {\n  outline: 0;\n  box-shadow: 0;\n}\n[role=button], a, area, button, input, label, select, summary, textarea {\n    -ms-touch-action: manipulation;\n    touch-action: manipulation;\n}\n.embed-responsive {\n  position: relative;\n  display: block;\n  width: 100%;\n  padding: 0;\n  overflow: hidden;\n}\n.embed-responsive::before {\n  display: block;\n  content: \"\";\n}\n.embed-responsive .embed-responsive-item,\n.embed-responsive embed,\n.embed-responsive iframe,\n.embed-responsive object,\n.embed-responsive video {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  border: 0;\n}\nimg {\n  object-fit: cover;\n}\n*, ::after, ::before {\n  box-sizing: inherit;\n}\nimg {\n  vertical-align: middle;\n  border-style: none;\n}\n\n.mapboxgl-ctrl-toggle {\n\tbackground-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgNTEyIDUxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHBhdGggaWQ9ImhlbHAtaWNvbiIgZD0iTTI1OS40NjIsNDYyYy0yNC44NjQsMC00NS4wMy0yMC4xNjYtNDUuMDMtNDUuMDM5YzAtMjQuODYsMjAuMTY2LTQ1LjAyLDQ1LjAzLTQ1LjAyYzI0Ljg3LDAsNDUuMDI5LDIwLjE1OSw0NS4wMjksNDUuMDJDMzA0LjQ5MSw0NDEuODM0LDI4NC4zMzIsNDYyLDI1OS40NjIsNDYyeiBNMjk0Ljg2NSwzMjguOXY4LjFjMCwwLTY3LjUxMywwLTc0LjIyOSwwdi04LjFjMC0yMi45MjIsMy4zNDQtNTIuMzI2LDI5Ljk1Ni03Ny44OWMyNi42MTMtMjUuNTY3LDU5Ljg3LTQ2LjY4Nyw1OS44Ny03OC42MjVjMC0zNS4zMDktMjQuNTAzLTUzLjk4NS01NS4zOTktNTMuOTg1Yy01MS40ODMsMC01NC44NDYsNTMuMzkzLTU2LjExNSw2NS4xNDlIMTI2Ljc1QzEyOC42NzMsMTI3Ljg3NCwxNTIuMjA2LDUwLDI1NS40OTQsNTBjODkuNTEzLDAsMTI5Ljc1Niw1OS45NDksMTI5Ljc1NiwxMTYuMTY2QzM4NS4yNSwyNTUuNjQ2LDI5NC44NjUsMjcxLjE4OSwyOTQuODY1LDMyOC45eiIvPjwvc3ZnPg==);\n  background-size: 20px;\n  background-repeat: no-repeat;\n  background-position: center;\n}") || true) && "_62ff2c16";
+var communityDOM = require('./community_popup');
+var data = {};
+var dataIndex = {};(require('sheetify/insert')(".mapboxgl-map {\n    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;\n    overflow: hidden;\n    position: relative;\n    -webkit-tap-highlight-color: rgba(0,0,0,0);\n}\n\n.mapboxgl-canvas-container.mapboxgl-interactive,\n.mapboxgl-ctrl-nav-compass {\n    cursor: -webkit-grab;\n    cursor: -moz-grab;\n    cursor: grab;\n}\n.mapboxgl-canvas-container.mapboxgl-interactive:active,\n.mapboxgl-ctrl-nav-compass:active {\n    cursor: -webkit-grabbing;\n    cursor: -moz-grabbing;\n    cursor: grabbing;\n}\n\n.mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate {\n    -ms-touch-action: pan-x pan-y;\n    touch-action: pan-x pan-y;\n}\n.mapboxgl-canvas-container.mapboxgl-touch-drag-pan {\n    -ms-touch-action: pinch-zoom;\n}\n.mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan {\n    -ms-touch-action: none;\n    touch-action: none;\n}\n.mapboxgl-ctrl-top-left,\n.mapboxgl-ctrl-top-right,\n.mapboxgl-ctrl-bottom-left,\n.mapboxgl-ctrl-bottom-right  { position:absolute; pointer-events:none; z-index:2; }\n.mapboxgl-ctrl-top-left      { top:0; left:0; }\n.mapboxgl-ctrl-top-right     { top:0; right:0; }\n.mapboxgl-ctrl-bottom-left   { bottom:0; left:0; }\n.mapboxgl-ctrl-bottom-right  { right:0; bottom:0; }\n\n.mapboxgl-ctrl { clear:both; pointer-events:auto }\n.mapboxgl-ctrl-top-left .mapboxgl-ctrl { margin:10px 0 0 10px; float:left; }\n.mapboxgl-ctrl-top-right .mapboxgl-ctrl{ margin:10px 10px 0 0; float:right; }\n.mapboxgl-ctrl-bottom-left .mapboxgl-ctrl { margin:0 0 10px 10px; float:left; }\n.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl { margin:0 10px 10px 0; float:right; }\n\n.mapboxgl-ctrl-group {\n    border-radius: 4px;\n    -moz-box-shadow: 0px 0px 2px rgba(0,0,0,0.1);\n    -webkit-box-shadow: 0px 0px 2px rgba(0,0,0,0.1);\n    box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.1);\n    overflow: hidden;\n    background: #fff;\n}\n.mapboxgl-ctrl-group > button {\n    width: 30px;\n    height: 30px;\n    display: block;\n    padding: 0;\n    outline: none;\n    border: none;\n    border-bottom: 1px solid #ddd;\n    box-sizing: border-box;\n    background-color: rgba(0,0,0,0);\n    cursor: pointer;\n}\n/* https://bugzilla.mozilla.org/show_bug.cgi?id=140562 */\n.mapboxgl-ctrl > button::-moz-focus-inner {\n    border: 0;\n    padding: 0;\n}\n.mapboxgl-ctrl > button:last-child {\n    border-bottom: 0;\n}\n.mapboxgl-ctrl > button:hover {\n    background-color: rgba(0,0,0,0.05);\n}\n.mapboxgl-ctrl-icon,\n.mapboxgl-ctrl-icon > .mapboxgl-ctrl-compass-arrow {\n    speak: none;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n}\n.mapboxgl-ctrl-icon {\n    padding: 5px;\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-zoom-out {\n    background-image: url(\"data:image/svg+xml;charset=utf8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0A%20%20%3Cpath%20style%3D%27fill%3A%23333333%3B%27%20d%3D%27m%207%2C9%20c%20-0.554%2C0%20-1%2C0.446%20-1%2C1%200%2C0.554%200.446%2C1%201%2C1%20l%206%2C0%20c%200.554%2C0%201%2C-0.446%201%2C-1%200%2C-0.554%20-0.446%2C-1%20-1%2C-1%20z%27%20%2F%3E%0A%3C%2Fsvg%3E%0A\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-zoom-in {\n    background-image: url(\"data:image/svg+xml;charset=utf8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0A%20%20%3Cpath%20style%3D%27fill%3A%23333333%3B%27%20d%3D%27M%2010%206%20C%209.446%206%209%206.4459904%209%207%20L%209%209%20L%207%209%20C%206.446%209%206%209.446%206%2010%20C%206%2010.554%206.446%2011%207%2011%20L%209%2011%20L%209%2013%20C%209%2013.55401%209.446%2014%2010%2014%20C%2010.554%2014%2011%2013.55401%2011%2013%20L%2011%2011%20L%2013%2011%20C%2013.554%2011%2014%2010.554%2014%2010%20C%2014%209.446%2013.554%209%2013%209%20L%2011%209%20L%2011%207%20C%2011%206.4459904%2010.554%206%2010%206%20z%27%20%2F%3E%0A%3C%2Fsvg%3E%0A\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate {\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0D%0A%20%20%3Cpath%20style%3D%27fill%3A%23333%3B%27%20d%3D%27M10%204C9%204%209%205%209%205L9%205.1A5%205%200%200%200%205.1%209L5%209C5%209%204%209%204%2010%204%2011%205%2011%205%2011L5.1%2011A5%205%200%200%200%209%2014.9L9%2015C9%2015%209%2016%2010%2016%2011%2016%2011%2015%2011%2015L11%2014.9A5%205%200%200%200%2014.9%2011L15%2011C15%2011%2016%2011%2016%2010%2016%209%2015%209%2015%209L14.9%209A5%205%200%200%200%2011%205.1L11%205C11%205%2011%204%2010%204zM10%206.5A3.5%203.5%200%200%201%2013.5%2010%203.5%203.5%200%200%201%2010%2013.5%203.5%203.5%200%200%201%206.5%2010%203.5%203.5%200%200%201%2010%206.5zM10%208.3A1.8%201.8%200%200%200%208.3%2010%201.8%201.8%200%200%200%2010%2011.8%201.8%201.8%200%200%200%2011.8%2010%201.8%201.8%200%200%200%2010%208.3z%27%20%2F%3E%0D%0A%3C%2Fsvg%3E\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate:disabled {\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0D%0A%20%20%3Cpath%20style%3D%27fill%3A%23aaa%3B%27%20d%3D%27M10%204C9%204%209%205%209%205L9%205.1A5%205%200%200%200%205.1%209L5%209C5%209%204%209%204%2010%204%2011%205%2011%205%2011L5.1%2011A5%205%200%200%200%209%2014.9L9%2015C9%2015%209%2016%2010%2016%2011%2016%2011%2015%2011%2015L11%2014.9A5%205%200%200%200%2014.9%2011L15%2011C15%2011%2016%2011%2016%2010%2016%209%2015%209%2015%209L14.9%209A5%205%200%200%200%2011%205.1L11%205C11%205%2011%204%2010%204zM10%206.5A3.5%203.5%200%200%201%2013.5%2010%203.5%203.5%200%200%201%2010%2013.5%203.5%203.5%200%200%201%206.5%2010%203.5%203.5%200%200%201%2010%206.5zM10%208.3A1.8%201.8%200%200%200%208.3%2010%201.8%201.8%200%200%200%2010%2011.8%201.8%201.8%200%200%200%2011.8%2010%201.8%201.8%200%200%200%2010%208.3z%27%20%2F%3E%0D%0A%3C%2Fsvg%3E\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate.mapboxgl-ctrl-geolocate-active {\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0D%0A%20%20%3Cpath%20style%3D%27fill%3A%2333b5e5%3B%27%20d%3D%27M10%204C9%204%209%205%209%205L9%205.1A5%205%200%200%200%205.1%209L5%209C5%209%204%209%204%2010%204%2011%205%2011%205%2011L5.1%2011A5%205%200%200%200%209%2014.9L9%2015C9%2015%209%2016%2010%2016%2011%2016%2011%2015%2011%2015L11%2014.9A5%205%200%200%200%2014.9%2011L15%2011C15%2011%2016%2011%2016%2010%2016%209%2015%209%2015%209L14.9%209A5%205%200%200%200%2011%205.1L11%205C11%205%2011%204%2010%204zM10%206.5A3.5%203.5%200%200%201%2013.5%2010%203.5%203.5%200%200%201%2010%2013.5%203.5%203.5%200%200%201%206.5%2010%203.5%203.5%200%200%201%2010%206.5zM10%208.3A1.8%201.8%200%200%200%208.3%2010%201.8%201.8%200%200%200%2010%2011.8%201.8%201.8%200%200%200%2011.8%2010%201.8%201.8%200%200%200%2010%208.3z%27%20%2F%3E%0D%0A%3C%2Fsvg%3E\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate.mapboxgl-ctrl-geolocate-active-error {\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0D%0A%20%20%3Cpath%20style%3D%27fill%3A%23e58978%3B%27%20d%3D%27M10%204C9%204%209%205%209%205L9%205.1A5%205%200%200%200%205.1%209L5%209C5%209%204%209%204%2010%204%2011%205%2011%205%2011L5.1%2011A5%205%200%200%200%209%2014.9L9%2015C9%2015%209%2016%2010%2016%2011%2016%2011%2015%2011%2015L11%2014.9A5%205%200%200%200%2014.9%2011L15%2011C15%2011%2016%2011%2016%2010%2016%209%2015%209%2015%209L14.9%209A5%205%200%200%200%2011%205.1L11%205C11%205%2011%204%2010%204zM10%206.5A3.5%203.5%200%200%201%2013.5%2010%203.5%203.5%200%200%201%2010%2013.5%203.5%203.5%200%200%201%206.5%2010%203.5%203.5%200%200%201%2010%206.5zM10%208.3A1.8%201.8%200%200%200%208.3%2010%201.8%201.8%200%200%200%2010%2011.8%201.8%201.8%200%200%200%2011.8%2010%201.8%201.8%200%200%200%2010%208.3z%27%20%2F%3E%0D%0A%3C%2Fsvg%3E\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate.mapboxgl-ctrl-geolocate-background {\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0A%20%20%3Cpath%20style%3D%27fill%3A%2333b5e5%3B%27%20d%3D%27M%2010%2C4%20C%209%2C4%209%2C5%209%2C5%20L%209%2C5.1%20C%207.0357113%2C5.5006048%205.5006048%2C7.0357113%205.1%2C9%20L%205%2C9%20c%200%2C0%20-1%2C0%20-1%2C1%200%2C1%201%2C1%201%2C1%20l%200.1%2C0%20c%200.4006048%2C1.964289%201.9357113%2C3.499395%203.9%2C3.9%20L%209%2C15%20c%200%2C0%200%2C1%201%2C1%201%2C0%201%2C-1%201%2C-1%20l%200%2C-0.1%20c%201.964289%2C-0.400605%203.499395%2C-1.935711%203.9%2C-3.9%20l%200.1%2C0%20c%200%2C0%201%2C0%201%2C-1%20C%2016%2C9%2015%2C9%2015%2C9%20L%2014.9%2C9%20C%2014.499395%2C7.0357113%2012.964289%2C5.5006048%2011%2C5.1%20L%2011%2C5%20c%200%2C0%200%2C-1%20-1%2C-1%20z%20m%200%2C2.5%20c%201.932997%2C0%203.5%2C1.5670034%203.5%2C3.5%200%2C1.932997%20-1.567003%2C3.5%20-3.5%2C3.5%20C%208.0670034%2C13.5%206.5%2C11.932997%206.5%2C10%206.5%2C8.0670034%208.0670034%2C6.5%2010%2C6.5%20Z%27%20%2F%3E%0A%3C%2Fsvg%3E\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate.mapboxgl-ctrl-geolocate-background-error {\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0A%20%20%3Cpath%20style%3D%27fill%3A%23e54e33%3B%27%20d%3D%27M%2010%2C4%20C%209%2C4%209%2C5%209%2C5%20L%209%2C5.1%20C%207.0357113%2C5.5006048%205.5006048%2C7.0357113%205.1%2C9%20L%205%2C9%20c%200%2C0%20-1%2C0%20-1%2C1%200%2C1%201%2C1%201%2C1%20l%200.1%2C0%20c%200.4006048%2C1.964289%201.9357113%2C3.499395%203.9%2C3.9%20L%209%2C15%20c%200%2C0%200%2C1%201%2C1%201%2C0%201%2C-1%201%2C-1%20l%200%2C-0.1%20c%201.964289%2C-0.400605%203.499395%2C-1.935711%203.9%2C-3.9%20l%200.1%2C0%20c%200%2C0%201%2C0%201%2C-1%20C%2016%2C9%2015%2C9%2015%2C9%20L%2014.9%2C9%20C%2014.499395%2C7.0357113%2012.964289%2C5.5006048%2011%2C5.1%20L%2011%2C5%20c%200%2C0%200%2C-1%20-1%2C-1%20z%20m%200%2C2.5%20c%201.932997%2C0%203.5%2C1.5670034%203.5%2C3.5%200%2C1.932997%20-1.567003%2C3.5%20-3.5%2C3.5%20C%208.0670034%2C13.5%206.5%2C11.932997%206.5%2C10%206.5%2C8.0670034%208.0670034%2C6.5%2010%2C6.5%20Z%27%20%2F%3E%0A%3C%2Fsvg%3E\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-geolocate.mapboxgl-ctrl-geolocate-waiting {\n    -webkit-animation: mapboxgl-spin 2s infinite linear;\n    -moz-animation: mapboxgl-spin 2s infinite linear;\n    -o-animation: mapboxgl-spin 2s infinite linear;\n    -ms-animation: mapboxgl-spin 2s infinite linear;\n    animation: mapboxgl-spin 2s infinite linear;\n}\n\n@-webkit-keyframes mapboxgl-spin {\n    0% { -webkit-transform: rotate(0deg); }\n    100% { -webkit-transform: rotate(360deg); }\n}\n@-moz-keyframes mapboxgl-spin {\n    0% { -moz-transform: rotate(0deg); }\n    100% { -moz-transform: rotate(360deg); }\n}\n@-o-keyframes mapboxgl-spin {\n    0% { -o-transform: rotate(0deg); }\n    100% { -o-transform: rotate(360deg); }\n}\n@-ms-keyframes mapboxgl-spin {\n    0% { -ms-transform: rotate(0deg); }\n    100% { -ms-transform: rotate(360deg); }\n}\n@-keyframes mapboxgl-spin {\n    0% { transform: rotate(0deg); }\n    100% { transform: rotate(360deg); }\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-fullscreen  {\n    background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4wLjEsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4KCjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgdmVyc2lvbj0iMS4xIgogICBpZD0iTGF5ZXJfMSIKICAgeD0iMHB4IgogICB5PSIwcHgiCiAgIHZpZXdCb3g9IjAgMCAyMCAyMCIKICAgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMjAgMjA7IgogICB4bWw6c3BhY2U9InByZXNlcnZlIgogICBpbmtzY2FwZTp2ZXJzaW9uPSIwLjkxIHIxMzcyNSIKICAgc29kaXBvZGk6ZG9jbmFtZT0iZnVsbHNjcmVlbi5zdmciPjxtZXRhZGF0YQogICAgIGlkPSJtZXRhZGF0YTQxODUiPjxyZGY6UkRGPjxjYzpXb3JrCiAgICAgICAgIHJkZjphYm91dD0iIj48ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD48ZGM6dHlwZQogICAgICAgICAgIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiIC8+PGRjOnRpdGxlPjwvZGM6dGl0bGU+PC9jYzpXb3JrPjwvcmRmOlJERj48L21ldGFkYXRhPjxkZWZzCiAgICAgaWQ9ImRlZnM0MTgzIiAvPjxzb2RpcG9kaTpuYW1lZHZpZXcKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMSIKICAgICBvYmplY3R0b2xlcmFuY2U9IjEwIgogICAgIGdyaWR0b2xlcmFuY2U9IjEwIgogICAgIGd1aWRldG9sZXJhbmNlPSIxMCIKICAgICBpbmtzY2FwZTpwYWdlb3BhY2l0eT0iMCIKICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTQ3MSIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSI2OTUiCiAgICAgaWQ9Im5hbWVkdmlldzQxODEiCiAgICAgc2hvd2dyaWQ9ImZhbHNlIgogICAgIGlua3NjYXBlOnpvb209IjExLjMxMzcwOCIKICAgICBpbmtzY2FwZTpjeD0iMTQuNjk4MjgiCiAgICAgaW5rc2NhcGU6Y3k9IjEwLjUyNjY4OSIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iNjk3IgogICAgIGlua3NjYXBlOndpbmRvdy15PSIyOTgiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMCIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJMYXllcl8xIgogICAgIGlua3NjYXBlOnNuYXAtYmJveD0idHJ1ZSIKICAgICBpbmtzY2FwZTpiYm94LXBhdGhzPSJ0cnVlIgogICAgIGlua3NjYXBlOm9iamVjdC1wYXRocz0idHJ1ZSIKICAgICBpbmtzY2FwZTpiYm94LW5vZGVzPSJ0cnVlIgogICAgIGlua3NjYXBlOm9iamVjdC1ub2Rlcz0idHJ1ZSI+PGlua3NjYXBlOmdyaWQKICAgICAgIHR5cGU9Inh5Z3JpZCIKICAgICAgIGlkPSJncmlkNjA3NiIgLz48L3NvZGlwb2RpOm5hbWVkdmlldz48cGF0aAogICAgIGQ9Ik0gNSA0IEMgNC41IDQgNCA0LjUgNCA1IEwgNCA2IEwgNCA5IEwgNC41IDkgTCA1Ljc3NzM0MzggNy4yOTY4NzUgQyA2Ljc3NzEzMTkgOC4wNjAyMTMxIDcuODM1NzY1IDguOTU2NTcyOCA4Ljg5MDYyNSAxMCBDIDcuODI1NzEyMSAxMS4wNjMzIDYuNzc2MTc5MSAxMS45NTE2NzUgNS43ODEyNSAxMi43MDcwMzEgTCA0LjUgMTEgTCA0IDExIEwgNCAxNSBDIDQgMTUuNSA0LjUgMTYgNSAxNiBMIDkgMTYgTCA5IDE1LjUgTCA3LjI3MzQzNzUgMTQuMjA1MDc4IEMgOC4wNDI4OTMxIDEzLjE4Nzg4NiA4LjkzOTU0NDEgMTIuMTMzNDgxIDkuOTYwOTM3NSAxMS4wNjgzNTkgQyAxMS4wNDIzNzEgMTIuMTQ2OTkgMTEuOTQyMDkzIDEzLjIxMTIgMTIuNzA3MDMxIDE0LjIxODc1IEwgMTEgMTUuNSBMIDExIDE2IEwgMTQgMTYgTCAxNSAxNiBDIDE1LjUgMTYgMTYgMTUuNSAxNiAxNSBMIDE2IDE0IEwgMTYgMTEgTCAxNS41IDExIEwgMTQuMjA1MDc4IDEyLjcyNjU2MiBDIDEzLjE3Nzk4NSAxMS45NDk2MTcgMTIuMTEyNzE4IDExLjA0MzU3NyAxMS4wMzcxMDkgMTAuMDA5NzY2IEMgMTIuMTUxODU2IDguOTgxMDYxIDEzLjIyNDM0NSA4LjA3OTg2MjQgMTQuMjI4NTE2IDcuMzA0Njg3NSBMIDE1LjUgOSBMIDE2IDkgTCAxNiA1IEMgMTYgNC41IDE1LjUgNCAxNSA0IEwgMTEgNCBMIDExIDQuNSBMIDEyLjcwMzEyNSA1Ljc3NzM0MzggQyAxMS45MzI2NDcgNi43ODY0ODM0IDExLjAyNjY5MyA3Ljg1NTQ3MTIgOS45NzA3MDMxIDguOTE5OTIxOSBDIDguOTU4NDczOSA3LjgyMDQ5NDMgOC4wNjk4NzY3IDYuNzYyNzE4OCA3LjMwNDY4NzUgNS43NzE0ODQ0IEwgOSA0LjUgTCA5IDQgTCA2IDQgTCA1IDQgeiAiCiAgICAgaWQ9InBhdGg0MTY5IiAvPjwvc3ZnPg==\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-shrink  {\n    background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4wLjEsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4KCjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgdmVyc2lvbj0iMS4xIgogICBpZD0iTGF5ZXJfMSIKICAgeD0iMHB4IgogICB5PSIwcHgiCiAgIHZpZXdCb3g9IjAgMCAyMCAyMCIKICAgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMjAgMjA7IgogICB4bWw6c3BhY2U9InByZXNlcnZlIgogICBpbmtzY2FwZTp2ZXJzaW9uPSIwLjkxIHIxMzcyNSIKICAgc29kaXBvZGk6ZG9jbmFtZT0ic2hyaW5rLnN2ZyI+PG1ldGFkYXRhCiAgICAgaWQ9Im1ldGFkYXRhMTkiPjxyZGY6UkRGPjxjYzpXb3JrCiAgICAgICAgIHJkZjphYm91dD0iIj48ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD48ZGM6dHlwZQogICAgICAgICAgIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiIC8+PGRjOnRpdGxlPjwvZGM6dGl0bGU+PC9jYzpXb3JrPjwvcmRmOlJERj48L21ldGFkYXRhPjxkZWZzCiAgICAgaWQ9ImRlZnMxNyIgLz48c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IgogICAgIGJvcmRlcm9wYWNpdHk9IjEiCiAgICAgb2JqZWN0dG9sZXJhbmNlPSIxMCIKICAgICBncmlkdG9sZXJhbmNlPSIxMCIKICAgICBndWlkZXRvbGVyYW5jZT0iMTAiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAiCiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIKICAgICBpbmtzY2FwZTp3aW5kb3ctd2lkdGg9IjIwMjEiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iOTA4IgogICAgIGlkPSJuYW1lZHZpZXcxNSIKICAgICBzaG93Z3JpZD0iZmFsc2UiCiAgICAgaW5rc2NhcGU6em9vbT0iMSIKICAgICBpbmtzY2FwZTpjeD0iNC45NTAxMDgyIgogICAgIGlua3NjYXBlOmN5PSIxMC44NTQ3NDciCiAgICAgaW5rc2NhcGU6d2luZG93LXg9IjAiCiAgICAgaW5rc2NhcGU6d2luZG93LXk9IjAiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMCIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJMYXllcl8xIgogICAgIGlua3NjYXBlOnNuYXAtYmJveD0idHJ1ZSIKICAgICBpbmtzY2FwZTpiYm94LXBhdGhzPSJ0cnVlIgogICAgIGlua3NjYXBlOnNuYXAtYmJveC1lZGdlLW1pZHBvaW50cz0idHJ1ZSIKICAgICBpbmtzY2FwZTpiYm94LW5vZGVzPSJ0cnVlIgogICAgIGlua3NjYXBlOnNuYXAtYmJveC1taWRwb2ludHM9InRydWUiCiAgICAgaW5rc2NhcGU6b2JqZWN0LXBhdGhzPSJ0cnVlIgogICAgIGlua3NjYXBlOm9iamVjdC1ub2Rlcz0idHJ1ZSI+PGlua3NjYXBlOmdyaWQKICAgICAgIHR5cGU9Inh5Z3JpZCIKICAgICAgIGlkPSJncmlkNDE0NyIgLz48L3NvZGlwb2RpOm5hbWVkdmlldz48cGF0aAogICAgIHN0eWxlPSJmaWxsOiMwMDAwMDAiCiAgICAgZD0iTSA0LjI0MjE4NzUgMy40OTIxODc1IEEgMC43NTAwNzUgMC43NTAwNzUgMCAwIDAgMy43MTg3NSA0Ljc4MTI1IEwgNS45NjQ4NDM4IDcuMDI3MzQzOCBMIDQgOC41IEwgNCA5IEwgOCA5IEMgOC41MDAwMDEgOC45OTk5OTg4IDkgOC40OTk5OTkyIDkgOCBMIDkgNCBMIDguNSA0IEwgNy4wMTc1NzgxIDUuOTU1MDc4MSBMIDQuNzgxMjUgMy43MTg3NSBBIDAuNzUwMDc1IDAuNzUwMDc1IDAgMCAwIDQuMjQyMTg3NSAzLjQ5MjE4NzUgeiBNIDE1LjczNDM3NSAzLjQ5MjE4NzUgQSAwLjc1MDA3NSAwLjc1MDA3NSAwIDAgMCAxNS4yMTg3NSAzLjcxODc1IEwgMTIuOTg0Mzc1IDUuOTUzMTI1IEwgMTEuNSA0IEwgMTEgNCBMIDExIDggQyAxMSA4LjQ5OTk5OTIgMTEuNDk5OTk5IDguOTk5OTk4OCAxMiA5IEwgMTYgOSBMIDE2IDguNSBMIDE0LjAzNTE1NiA3LjAyNzM0MzggTCAxNi4yODEyNSA0Ljc4MTI1IEEgMC43NTAwNzUgMC43NTAwNzUgMCAwIDAgMTUuNzM0Mzc1IDMuNDkyMTg3NSB6IE0gNCAxMSBMIDQgMTEuNSBMIDUuOTY0ODQzOCAxMi45NzI2NTYgTCAzLjcxODc1IDE1LjIxODc1IEEgMC43NTEzMDA5NiAwLjc1MTMwMDk2IDAgMSAwIDQuNzgxMjUgMTYuMjgxMjUgTCA3LjAyNzM0MzggMTQuMDM1MTU2IEwgOC41IDE2IEwgOSAxNiBMIDkgMTIgQyA5IDExLjUwMDAwMSA4LjUwMDAwMSAxMS4wMDAwMDEgOCAxMSBMIDQgMTEgeiBNIDEyIDExIEMgMTEuNDk5OTk5IDExLjAwMDAwMSAxMSAxMS41MDAwMDEgMTEgMTIgTCAxMSAxNiBMIDExLjUgMTYgTCAxMi45NzI2NTYgMTQuMDM1MTU2IEwgMTUuMjE4NzUgMTYuMjgxMjUgQSAwLjc1MTMwMDk2IDAuNzUxMzAwOTYgMCAxIDAgMTYuMjgxMjUgMTUuMjE4NzUgTCAxNC4wMzUxNTYgMTIuOTcyNjU2IEwgMTYgMTEuNSBMIDE2IDExIEwgMTIgMTEgeiAiCiAgICAgaWQ9InBhdGg3IiAvPjwvc3ZnPg==\");\n}\n.mapboxgl-ctrl-icon.mapboxgl-ctrl-compass > .mapboxgl-ctrl-compass-arrow {\n    width: 20px;\n    height: 20px;\n    margin: 5px;\n    background-image: url(\"data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%0A%09%3Cpolygon%20fill%3D%27%23333333%27%20points%3D%276%2C9%2010%2C1%2014%2C9%27%2F%3E%0A%09%3Cpolygon%20fill%3D%27%23CCCCCC%27%20points%3D%276%2C11%2010%2C19%2014%2C11%20%27%2F%3E%0A%3C%2Fsvg%3E\");\n    background-repeat: no-repeat;\n    display: inline-block;\n}\n\na.mapboxgl-ctrl-logo {\n    width: 85px;\n    height: 21px;\n    margin: 0 0 -3px -3px;\n    display: block;\n    background-repeat: no-repeat;\n    cursor: pointer;\n    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiAgIHZpZXdCb3g9IjAgMCA4NC40OSAyMSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgODQuNDkgMjE7IiB4bWw6c3BhY2U9InByZXNlcnZlIj48Zz4gIDxwYXRoIGNsYXNzPSJzdDAiIHN0eWxlPSJvcGFjaXR5OjAuOTsgZmlsbDogI0ZGRkZGRjsgZW5hYmxlLWJhY2tncm91bmQ6IG5ldzsiIGQ9Ik04My4yNSwxNC4yNmMwLDAuMTItMC4wOSwwLjIxLTAuMjEsMC4yMWgtMS42MWMtMC4xMywwLTAuMjQtMC4wNi0wLjMtMC4xN2wtMS40NC0yLjM5bC0xLjQ0LDIuMzkgICAgYy0wLjA2LDAuMTEtMC4xOCwwLjE3LTAuMywwLjE3aC0xLjYxYy0wLjA0LDAtMC4wOC0wLjAxLTAuMTItMC4wM2MtMC4wOS0wLjA2LTAuMTMtMC4xOS0wLjA2LTAuMjhsMCwwbDIuNDMtMy42OEw3Ni4yLDYuODQgICAgYy0wLjAyLTAuMDMtMC4wMy0wLjA3LTAuMDMtMC4xMmMwLTAuMTIsMC4wOS0wLjIxLDAuMjEtMC4yMWgxLjYxYzAuMTMsMCwwLjI0LDAuMDYsMC4zLDAuMTdsMS40MSwyLjM2bDEuNC0yLjM1ICAgIGMwLjA2LTAuMTEsMC4xOC0wLjE3LDAuMy0wLjE3SDgzYzAuMDQsMCwwLjA4LDAuMDEsMC4xMiwwLjAzYzAuMDksMC4wNiwwLjEzLDAuMTksMC4wNiwwLjI4bDAsMGwtMi4zNywzLjYzbDIuNDMsMy42NyAgICBDODMuMjQsMTQuMTgsODMuMjUsMTQuMjIsODMuMjUsMTQuMjZ6Ii8+ICA8cGF0aCBjbGFzcz0ic3QwIiBzdHlsZT0ib3BhY2l0eTowLjk7IGZpbGw6ICNGRkZGRkY7IGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXc7IiBkPSJNNjYuMjQsOS41OWMtMC4zOS0xLjg4LTEuOTYtMy4yOC0zLjg0LTMuMjhjLTEuMDMsMC0yLjAzLDAuNDItMi43MywxLjE4VjMuNTFjMC0wLjEzLTAuMS0wLjIzLTAuMjMtMC4yM2gtMS40ICAgIGMtMC4xMywwLTAuMjMsMC4xMS0wLjIzLDAuMjN2MTAuNzJjMCwwLjEzLDAuMSwwLjIzLDAuMjMsMC4yM2gxLjRjMC4xMywwLDAuMjMtMC4xMSwwLjIzLTAuMjNWMTMuNWMwLjcxLDAuNzUsMS43LDEuMTgsMi43MywxLjE4ICAgIGMxLjg4LDAsMy40NS0xLjQxLDMuODQtMy4yOUM2Ni4zNywxMC43OSw2Ni4zNywxMC4xOCw2Ni4yNCw5LjU5TDY2LjI0LDkuNTl6IE02Mi4wOCwxM2MtMS4zMiwwLTIuMzktMS4xMS0yLjQxLTIuNDh2LTAuMDYgICAgYzAuMDItMS4zOCwxLjA5LTIuNDgsMi40MS0yLjQ4czIuNDIsMS4xMiwyLjQyLDIuNTFTNjMuNDEsMTMsNjIuMDgsMTN6Ii8+ICA8cGF0aCBjbGFzcz0ic3QwIiBzdHlsZT0ib3BhY2l0eTowLjk7IGZpbGw6ICNGRkZGRkY7IGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXc7IiBkPSJNNzEuNjcsNi4zMmMtMS45OC0wLjAxLTMuNzIsMS4zNS00LjE2LDMuMjljLTAuMTMsMC41OS0wLjEzLDEuMTksMCwxLjc3YzAuNDQsMS45NCwyLjE3LDMuMzIsNC4xNywzLjMgICAgYzIuMzUsMCw0LjI2LTEuODcsNC4yNi00LjE5Uzc0LjA0LDYuMzIsNzEuNjcsNi4zMnogTTcxLjY1LDEzLjAxYy0xLjMzLDAtMi40Mi0xLjEyLTIuNDItMi41MXMxLjA4LTIuNTIsMi40Mi0yLjUyICAgIGMxLjMzLDAsMi40MiwxLjEyLDIuNDIsMi41MVM3Mi45OSwxMyw3MS42NSwxMy4wMUw3MS42NSwxMy4wMXoiLz4gIDxwYXRoIGNsYXNzPSJzdDEiIHN0eWxlPSJvcGFjaXR5OjAuMzU7IGVuYWJsZS1iYWNrZ3JvdW5kOm5ldzsiIGQ9Ik02Mi4wOCw3Ljk4Yy0xLjMyLDAtMi4zOSwxLjExLTIuNDEsMi40OHYwLjA2QzU5LjY4LDExLjksNjAuNzUsMTMsNjIuMDgsMTNzMi40Mi0xLjEyLDIuNDItMi41MSAgICBTNjMuNDEsNy45OCw2Mi4wOCw3Ljk4eiBNNjIuMDgsMTEuNzZjLTAuNjMsMC0xLjE0LTAuNTYtMS4xNy0xLjI1di0wLjA0YzAuMDEtMC42OSwwLjU0LTEuMjUsMS4xNy0xLjI1ICAgIGMwLjYzLDAsMS4xNywwLjU3LDEuMTcsMS4yN0M2My4yNCwxMS4yLDYyLjczLDExLjc2LDYyLjA4LDExLjc2eiIvPiAgPHBhdGggY2xhc3M9InN0MSIgc3R5bGU9Im9wYWNpdHk6MC4zNTsgZW5hYmxlLWJhY2tncm91bmQ6bmV3OyIgZD0iTTcxLjY1LDcuOThjLTEuMzMsMC0yLjQyLDEuMTItMi40MiwyLjUxUzcwLjMyLDEzLDcxLjY1LDEzczIuNDItMS4xMiwyLjQyLTIuNTFTNzIuOTksNy45OCw3MS42NSw3Ljk4eiAgICAgTTcxLjY1LDExLjc2Yy0wLjY0LDAtMS4xNy0wLjU3LTEuMTctMS4yN2MwLTAuNywwLjUzLTEuMjYsMS4xNy0xLjI2czEuMTcsMC41NywxLjE3LDEuMjdDNzIuODIsMTEuMjEsNzIuMjksMTEuNzYsNzEuNjUsMTEuNzZ6IiAgICAvPiAgPHBhdGggY2xhc3M9InN0MCIgc3R5bGU9Im9wYWNpdHk6MC45OyBmaWxsOiAjRkZGRkZGOyBlbmFibGUtYmFja2dyb3VuZDogbmV3OyIgZD0iTTQ1Ljc0LDYuNTNoLTEuNGMtMC4xMywwLTAuMjMsMC4xMS0wLjIzLDAuMjN2MC43M2MtMC43MS0wLjc1LTEuNy0xLjE4LTIuNzMtMS4xOCAgICBjLTIuMTcsMC0zLjk0LDEuODctMy45NCw0LjE5czEuNzcsNC4xOSwzLjk0LDQuMTljMS4wNCwwLDIuMDMtMC40MywyLjczLTEuMTl2MC43M2MwLDAuMTMsMC4xLDAuMjMsMC4yMywwLjIzaDEuNCAgICBjMC4xMywwLDAuMjMtMC4xMSwwLjIzLTAuMjNWNi43NGMwLTAuMTItMC4wOS0wLjIyLTAuMjItMC4yMkM0NS43NSw2LjUzLDQ1Ljc1LDYuNTMsNDUuNzQsNi41M3ogTTQ0LjEyLDEwLjUzICAgIEM0NC4xMSwxMS45LDQzLjAzLDEzLDQxLjcxLDEzcy0yLjQyLTEuMTItMi40Mi0yLjUxczEuMDgtMi41MiwyLjQtMi41MmMxLjMzLDAsMi4zOSwxLjExLDIuNDEsMi40OEw0NC4xMiwxMC41M3oiLz4gIDxwYXRoIGNsYXNzPSJzdDEiIHN0eWxlPSJvcGFjaXR5OjAuMzU7IGVuYWJsZS1iYWNrZ3JvdW5kOm5ldzsiIGQ9Ik00MS43MSw3Ljk4Yy0xLjMzLDAtMi40MiwxLjEyLTIuNDIsMi41MVM0MC4zNywxMyw0MS43MSwxM3MyLjM5LTEuMTEsMi40MS0yLjQ4di0wLjA2ICAgIEM0NC4xLDkuMDksNDMuMDMsNy45OCw0MS43MSw3Ljk4eiBNNDAuNTUsMTAuNDljMC0wLjcsMC41Mi0xLjI3LDEuMTctMS4yN2MwLjY0LDAsMS4xNCwwLjU2LDEuMTcsMS4yNXYwLjA0ICAgIGMtMC4wMSwwLjY4LTAuNTMsMS4yNC0xLjE3LDEuMjRDNDEuMDgsMTEuNzUsNDAuNTUsMTEuMTksNDAuNTUsMTAuNDl6Ii8+ICA8cGF0aCBjbGFzcz0ic3QwIiBzdHlsZT0ib3BhY2l0eTowLjk7IGZpbGw6ICNGRkZGRkY7IGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXc7IiBkPSJNNTIuNDEsNi4zMmMtMS4wMywwLTIuMDMsMC40Mi0yLjczLDEuMThWNi43NWMwLTAuMTMtMC4xLTAuMjMtMC4yMy0wLjIzaC0xLjRjLTAuMTMsMC0wLjIzLDAuMTEtMC4yMywwLjIzICAgIHYxMC43MmMwLDAuMTMsMC4xLDAuMjMsMC4yMywwLjIzaDEuNGMwLjEzLDAsMC4yMy0wLjEsMC4yMy0wLjIzVjEzLjVjMC43MSwwLjc1LDEuNywxLjE4LDIuNzQsMS4xOGMyLjE3LDAsMy45NC0xLjg3LDMuOTQtNC4xOSAgICBTNTQuNTgsNi4zMiw1Mi40MSw2LjMyeiBNNTIuMDgsMTMuMDFjLTEuMzIsMC0yLjM5LTEuMTEtMi40Mi0yLjQ4di0wLjA3YzAuMDItMS4zOCwxLjA5LTIuNDksMi40LTIuNDljMS4zMiwwLDIuNDEsMS4xMiwyLjQxLDIuNTEgICAgUzUzLjQsMTMsNTIuMDgsMTMuMDFMNTIuMDgsMTMuMDF6Ii8+ICA8cGF0aCBjbGFzcz0ic3QxIiBzdHlsZT0ib3BhY2l0eTowLjM1OyBlbmFibGUtYmFja2dyb3VuZDpuZXc7IiBkPSJNNTIuMDgsNy45OGMtMS4zMiwwLTIuMzksMS4xMS0yLjQyLDIuNDh2MC4wNmMwLjAzLDEuMzgsMS4xLDIuNDgsMi40MiwyLjQ4czIuNDEtMS4xMiwyLjQxLTIuNTEgICAgUzUzLjQsNy45OCw1Mi4wOCw3Ljk4eiBNNTIuMDgsMTEuNzZjLTAuNjMsMC0xLjE0LTAuNTYtMS4xNy0xLjI1di0wLjA0YzAuMDEtMC42OSwwLjU0LTEuMjUsMS4xNy0xLjI1YzAuNjMsMCwxLjE3LDAuNTgsMS4xNywxLjI3ICAgIFM1Mi43MiwxMS43Niw1Mi4wOCwxMS43NnoiLz4gIDxwYXRoIGNsYXNzPSJzdDAiIHN0eWxlPSJvcGFjaXR5OjAuOTsgZmlsbDogI0ZGRkZGRjsgZW5hYmxlLWJhY2tncm91bmQ6IG5ldzsiIGQ9Ik0zNi4wOCwxNC4yNGMwLDAuMTMtMC4xLDAuMjMtMC4yMywwLjIzaC0xLjQxYy0wLjEzLDAtMC4yMy0wLjExLTAuMjMtMC4yM1Y5LjY4YzAtMC45OC0wLjc0LTEuNzEtMS42Mi0xLjcxICAgIGMtMC44LDAtMS40NiwwLjctMS41OSwxLjYybDAuMDEsNC42NmMwLDAuMTMtMC4xMSwwLjIzLTAuMjMsMC4yM2gtMS40MWMtMC4xMywwLTAuMjMtMC4xMS0wLjIzLTAuMjNWOS42OCAgICBjMC0wLjk4LTAuNzQtMS43MS0xLjYyLTEuNzFjLTAuODUsMC0xLjU0LDAuNzktMS42LDEuOHY0LjQ4YzAsMC4xMy0wLjEsMC4yMy0wLjIzLDAuMjNoLTEuNGMtMC4xMywwLTAuMjMtMC4xMS0wLjIzLTAuMjNWNi43NCAgICBjMC4wMS0wLjEzLDAuMS0wLjIyLDAuMjMtMC4yMmgxLjRjMC4xMywwLDAuMjIsMC4xMSwwLjIzLDAuMjJWNy40YzAuNS0wLjY4LDEuMy0xLjA5LDIuMTYtMS4xaDAuMDNjMS4wOSwwLDIuMDksMC42LDIuNiwxLjU1ICAgIGMwLjQ1LTAuOTUsMS40LTEuNTUsMi40NC0xLjU2YzEuNjIsMCwyLjkzLDEuMjUsMi45LDIuNzhMMzYuMDgsMTQuMjR6Ii8+ICA8cGF0aCBjbGFzcz0ic3QxIiBzdHlsZT0ib3BhY2l0eTowLjM1OyBlbmFibGUtYmFja2dyb3VuZDpuZXc7IiBkPSJNODQuMzQsMTMuNTlsLTAuMDctMC4xM2wtMS45Ni0yLjk5bDEuOTQtMi45NWMwLjQ0LTAuNjcsMC4yNi0xLjU2LTAuNDEtMi4wMmMtMC4wMiwwLTAuMDMsMC0wLjA0LTAuMDEgICAgYy0wLjIzLTAuMTUtMC41LTAuMjItMC43OC0wLjIyaC0xLjYxYy0wLjU2LDAtMS4wOCwwLjI5LTEuMzcsMC43OEw3OS43Miw2LjZsLTAuMzQtMC41NkM3OS4wOSw1LjU2LDc4LjU3LDUuMjcsNzgsNS4yN2gtMS42ICAgIGMtMC42LDAtMS4xMywwLjM3LTEuMzUsMC45MmMtMi4xOS0xLjY2LTUuMjgtMS40Ny03LjI2LDAuNDVjLTAuMzUsMC4zNC0wLjY1LDAuNzItMC44OSwxLjE0Yy0wLjktMS42Mi0yLjU4LTIuNzItNC41LTIuNzIgICAgYy0wLjUsMC0xLjAxLDAuMDctMS40OCwwLjIzVjMuNTFjMC0wLjgyLTAuNjYtMS40OC0xLjQ3LTEuNDhoLTEuNGMtMC44MSwwLTEuNDcsMC42Ni0xLjQ3LDEuNDd2My43NSAgICBjLTAuOTUtMS4zNi0yLjUtMi4xOC00LjE3LTIuMTljLTAuNzQsMC0xLjQ2LDAuMTYtMi4xMiwwLjQ3Yy0wLjI0LTAuMTctMC41NC0wLjI2LTAuODQtMC4yNmgtMS40Yy0wLjQ1LDAtMC44NywwLjIxLTEuMTUsMC41NiAgICBjLTAuMDItMC4wMy0wLjA0LTAuMDUtMC4wNy0wLjA4Yy0wLjI4LTAuMy0wLjY4LTAuNDctMS4wOS0wLjQ3aC0xLjM5Yy0wLjMsMC0wLjYsMC4wOS0wLjg0LDAuMjZjLTAuNjctMC4zLTEuMzktMC40Ni0yLjEyLTAuNDYgICAgYy0xLjgzLDAtMy40MywxLTQuMzcsMi41Yy0wLjItMC40Ni0wLjQ4LTAuODktMC44My0xLjI1Yy0wLjgtMC44MS0xLjg5LTEuMjUtMy4wMi0xLjI1aC0wLjAxYy0wLjg5LDAuMDEtMS43NSwwLjMzLTIuNDYsMC44OCAgICBjLTAuNzQtMC41Ny0xLjY0LTAuODgtMi41Ny0wLjg4SDI4LjFjLTAuMjksMC0wLjU4LDAuMDMtMC44NiwwLjExYy0wLjI4LDAuMDYtMC41NiwwLjE2LTAuODIsMC4yOGMtMC4yMS0wLjEyLTAuNDUtMC4xOC0wLjctMC4xOCAgICBoLTEuNGMtMC44MiwwLTEuNDcsMC42Ni0xLjQ3LDEuNDd2Ny41YzAsMC44MiwwLjY2LDEuNDcsMS40NywxLjQ3aDEuNGMwLjgyLDAsMS40OC0wLjY2LDEuNDgtMS40OGwwLDBWOS43OSAgICBjMC4wMy0wLjM2LDAuMjMtMC41OSwwLjM2LTAuNTljMC4xOCwwLDAuMzgsMC4xOCwwLjM4LDAuNDd2NC41N2MwLDAuODIsMC42NiwxLjQ3LDEuNDcsMS40N2gxLjQxYzAuODIsMCwxLjQ3LTAuNjYsMS40Ny0xLjQ3ICAgIGwtMC4wMS00LjU3YzAuMDYtMC4zMiwwLjI1LTAuNDcsMC4zNS0wLjQ3YzAuMTgsMCwwLjM4LDAuMTgsMC4zOCwwLjQ3djQuNTdjMCwwLjgyLDAuNjYsMS40NywxLjQ3LDEuNDdoMS40MSAgICBjMC44MiwwLDEuNDctMC42NiwxLjQ3LTEuNDd2LTAuMzhjMC45NiwxLjI5LDIuNDYsMi4wNiw0LjA2LDIuMDZjMC43NCwwLDEuNDYtMC4xNiwyLjEyLTAuNDdjMC4yNCwwLjE3LDAuNTQsMC4yNiwwLjg0LDAuMjZoMS4zOSAgICBjMC4zLDAsMC42LTAuMDksMC44NC0wLjI2djIuMDFjMCwwLjgyLDAuNjYsMS40NywxLjQ3LDEuNDdoMS40YzAuODIsMCwxLjQ3LTAuNjYsMS40Ny0xLjQ3di0xLjc3YzAuNDgsMC4xNSwwLjk5LDAuMjMsMS40OSwwLjIyICAgIGMxLjcsMCwzLjIyLTAuODcsNC4xNy0yLjJ2MC41MmMwLDAuODIsMC42NiwxLjQ3LDEuNDcsMS40N2gxLjRjMC4zLDAsMC42LTAuMDksMC44NC0wLjI2YzAuNjYsMC4zMSwxLjM5LDAuNDcsMi4xMiwwLjQ3ICAgIGMxLjkyLDAsMy42LTEuMSw0LjQ5LTIuNzNjMS41NCwyLjY1LDQuOTUsMy41Myw3LjU4LDEuOThjMC4xOC0wLjExLDAuMzYtMC4yMiwwLjUzLTAuMzZjMC4yMiwwLjU1LDAuNzYsMC45MSwxLjM1LDAuOUg3OCAgICBjMC41NiwwLDEuMDgtMC4yOSwxLjM3LTAuNzhsMC4zNy0wLjYxbDAuMzcsMC42MWMwLjI5LDAuNDgsMC44MSwwLjc4LDEuMzgsMC43OGgxLjZjMC44MSwwLDEuNDYtMC42NiwxLjQ1LTEuNDYgICAgQzg0LjQ5LDE0LjAyLDg0LjQ0LDEzLjgsODQuMzQsMTMuNTlMODQuMzQsMTMuNTl6IE0zNS44NiwxNC40N2gtMS40MWMtMC4xMywwLTAuMjMtMC4xMS0wLjIzLTAuMjNWOS42OCAgICBjMC0wLjk4LTAuNzQtMS43MS0xLjYyLTEuNzFjLTAuOCwwLTEuNDYsMC43LTEuNTksMS42MmwwLjAxLDQuNjZjMCwwLjEzLTAuMSwwLjIzLTAuMjMsMC4yM2gtMS40MWMtMC4xMywwLTAuMjMtMC4xMS0wLjIzLTAuMjMgICAgVjkuNjhjMC0wLjk4LTAuNzQtMS43MS0xLjYyLTEuNzFjLTAuODUsMC0xLjU0LDAuNzktMS42LDEuOHY0LjQ4YzAsMC4xMy0wLjEsMC4yMy0wLjIzLDAuMjNoLTEuNGMtMC4xMywwLTAuMjMtMC4xMS0wLjIzLTAuMjMgICAgVjYuNzRjMC4wMS0wLjEzLDAuMTEtMC4yMiwwLjIzLTAuMjJoMS40YzAuMTMsMCwwLjIyLDAuMTEsMC4yMywwLjIyVjcuNGMwLjUtMC42OCwxLjMtMS4wOSwyLjE2LTEuMWgwLjAzICAgIGMxLjA5LDAsMi4wOSwwLjYsMi42LDEuNTVjMC40NS0wLjk1LDEuNC0xLjU1LDIuNDQtMS41NmMxLjYyLDAsMi45MywxLjI1LDIuOSwyLjc4bDAuMDEsNS4xNkMzNi4wOSwxNC4zNiwzNS45OCwxNC40NiwzNS44NiwxNC40NyAgICBMMzUuODYsMTQuNDd6IE00NS45NywxNC4yNGMwLDAuMTMtMC4xLDAuMjMtMC4yMywwLjIzaC0xLjRjLTAuMTMsMC0wLjIzLTAuMTEtMC4yMy0wLjIzVjEzLjVjLTAuNywwLjc2LTEuNjksMS4xOC0yLjcyLDEuMTggICAgYy0yLjE3LDAtMy45NC0xLjg3LTMuOTQtNC4xOXMxLjc3LTQuMTksMy45NC00LjE5YzEuMDMsMCwyLjAyLDAuNDMsMi43MywxLjE4VjYuNzRjMC0wLjEzLDAuMS0wLjIzLDAuMjMtMC4yM2gxLjQgICAgYzAuMTItMC4wMSwwLjIyLDAuMDgsMC4yMywwLjIxYzAsMC4wMSwwLDAuMDEsMCwwLjAydjcuNTFoLTAuMDFWMTQuMjR6IE01Mi40MSwxNC42N2MtMS4wMywwLTIuMDItMC40My0yLjczLTEuMTh2My45NyAgICBjMCwwLjEzLTAuMSwwLjIzLTAuMjMsMC4yM2gtMS40Yy0wLjEzLDAtMC4yMy0wLjEtMC4yMy0wLjIzVjYuNzVjMC0wLjEzLDAuMS0wLjIyLDAuMjMtMC4yMmgxLjRjMC4xMywwLDAuMjMsMC4xMSwwLjIzLDAuMjN2MC43MyAgICBjMC43MS0wLjc2LDEuNy0xLjE4LDIuNzMtMS4xOGMyLjE3LDAsMy45NCwxLjg2LDMuOTQsNC4xOFM1NC41OCwxNC42Nyw1Mi40MSwxNC42N3ogTTY2LjI0LDExLjM5Yy0wLjM5LDEuODctMS45NiwzLjI5LTMuODQsMy4yOSAgICBjLTEuMDMsMC0yLjAyLTAuNDMtMi43My0xLjE4djAuNzNjMCwwLjEzLTAuMSwwLjIzLTAuMjMsMC4yM2gtMS40Yy0wLjEzLDAtMC4yMy0wLjExLTAuMjMtMC4yM1YzLjUxYzAtMC4xMywwLjEtMC4yMywwLjIzLTAuMjMgICAgaDEuNGMwLjEzLDAsMC4yMywwLjExLDAuMjMsMC4yM3YzLjk3YzAuNzEtMC43NSwxLjctMS4xOCwyLjczLTEuMTdjMS44OCwwLDMuNDUsMS40LDMuODQsMy4yOEM2Ni4zNywxMC4xOSw2Ni4zNywxMC44LDY2LjI0LDExLjM5ICAgIEw2Ni4yNCwxMS4zOUw2Ni4yNCwxMS4zOXogTTcxLjY3LDE0LjY4Yy0yLDAuMDEtMy43My0xLjM1LTQuMTctMy4zYy0wLjEzLTAuNTktMC4xMy0xLjE5LDAtMS43N2MwLjQ0LTEuOTQsMi4xNy0zLjMxLDQuMTctMy4zICAgIGMyLjM2LDAsNC4yNiwxLjg3LDQuMjYsNC4xOVM3NC4wMywxNC42OCw3MS42NywxNC42OEw3MS42NywxNC42OHogTTgzLjA0LDE0LjQ3aC0xLjYxYy0wLjEzLDAtMC4yNC0wLjA2LTAuMy0wLjE3bC0xLjQ0LTIuMzkgICAgbC0xLjQ0LDIuMzljLTAuMDYsMC4xMS0wLjE4LDAuMTctMC4zLDAuMTdoLTEuNjFjLTAuMDQsMC0wLjA4LTAuMDEtMC4xMi0wLjAzYy0wLjA5LTAuMDYtMC4xMy0wLjE5LTAuMDYtMC4yOGwwLDBsMi40My0zLjY4ICAgIEw3Ni4yLDYuODRjLTAuMDItMC4wMy0wLjAzLTAuMDctMC4wMy0wLjEyYzAtMC4xMiwwLjA5LTAuMjEsMC4yMS0wLjIxaDEuNjFjMC4xMywwLDAuMjQsMC4wNiwwLjMsMC4xN2wxLjQxLDIuMzZsMS40MS0yLjM2ICAgIGMwLjA2LTAuMTEsMC4xOC0wLjE3LDAuMy0wLjE3aDEuNjFjMC4wNCwwLDAuMDgsMC4wMSwwLjEyLDAuMDNjMC4wOSwwLjA2LDAuMTMsMC4xOSwwLjA2LDAuMjhsMCwwbC0yLjM4LDMuNjRsMi40MywzLjY3ICAgIGMwLjAyLDAuMDMsMC4wMywwLjA3LDAuMDMsMC4xMkM4My4yNSwxNC4zOCw4My4xNiwxNC40Nyw4My4wNCwxNC40N0w4My4wNCwxNC40N0w4My4wNCwxNC40N3oiLz4gIDxwYXRoIGNsYXNzPSJzdDAiIHN0eWxlPSJvcGFjaXR5OjAuOTsgZmlsbDogI0ZGRkZGRjsgZW5hYmxlLWJhY2tncm91bmQ6IG5ldzsiIGQ9Ik0xMC41LDEuMjRjLTUuMTEsMC05LjI1LDQuMTUtOS4yNSw5LjI1czQuMTUsOS4yNSw5LjI1LDkuMjVzOS4yNS00LjE1LDkuMjUtOS4yNSAgICBDMTkuNzUsNS4zOCwxNS42MSwxLjI0LDEwLjUsMS4yNHogTTE0Ljg5LDEyLjc3Yy0xLjkzLDEuOTMtNC43OCwyLjMxLTYuNywyLjMxYy0wLjcsMC0xLjQxLTAuMDUtMi4xLTAuMTZjMCwwLTEuMDItNS42NCwyLjE0LTguODEgICAgYzAuODMtMC44MywxLjk1LTEuMjgsMy4xMy0xLjI4YzEuMjcsMCwyLjQ5LDAuNTEsMy4zOSwxLjQyQzE2LjU5LDguMDksMTYuNjQsMTEsMTQuODksMTIuNzd6Ii8+ICA8cGF0aCBjbGFzcz0ic3QxIiBzdHlsZT0ib3BhY2l0eTowLjM1OyBlbmFibGUtYmFja2dyb3VuZDpuZXc7IiBkPSJNMTAuNS0wLjAxQzQuNy0wLjAxLDAsNC43LDAsMTAuNDlzNC43LDEwLjUsMTAuNSwxMC41UzIxLDE2LjI5LDIxLDEwLjQ5QzIwLjk5LDQuNywxNi4zLTAuMDEsMTAuNS0wLjAxeiAgICAgTTEwLjUsMTkuNzRjLTUuMTEsMC05LjI1LTQuMTUtOS4yNS05LjI1czQuMTQtOS4yNiw5LjI1LTkuMjZzOS4yNSw0LjE1LDkuMjUsOS4yNUMxOS43NSwxNS42MSwxNS42MSwxOS43NCwxMC41LDE5Ljc0eiIvPiAgPHBhdGggY2xhc3M9InN0MSIgc3R5bGU9Im9wYWNpdHk6MC4zNTsgZW5hYmxlLWJhY2tncm91bmQ6bmV3OyIgZD0iTTE0Ljc0LDYuMjVDMTIuOSw0LjQxLDkuOTgsNC4zNSw4LjIzLDYuMWMtMy4xNiwzLjE3LTIuMTQsOC44MS0yLjE0LDguODFzNS42NCwxLjAyLDguODEtMi4xNCAgICBDMTYuNjQsMTEsMTYuNTksOC4wOSwxNC43NCw2LjI1eiBNMTIuNDcsMTAuMzRsLTAuOTEsMS44N2wtMC45LTEuODdMOC44LDkuNDNsMS44Ni0wLjlsMC45LTEuODdsMC45MSwxLjg3bDEuODYsMC45TDEyLjQ3LDEwLjM0eiIgICAgLz4gIDxwb2x5Z29uIGNsYXNzPSJzdDAiIHN0eWxlPSJvcGFjaXR5OjAuOTsgZmlsbDogI0ZGRkZGRjsgZW5hYmxlLWJhY2tncm91bmQ6IG5ldzsiIHBvaW50cz0iMTQuMzMsOS40MyAxMi40NywxMC4zNCAxMS41NiwxMi4yMSAxMC42NiwxMC4zNCA4LjgsOS40MyAxMC42Niw4LjUzIDExLjU2LDYuNjYgMTIuNDcsOC41MyAgICIvPjwvZz48L3N2Zz4=);\n}\n\n.mapboxgl-ctrl.mapboxgl-ctrl-attrib {\n    padding: 0 5px;\n    background-color: rgba(255, 255, 255, .5);\n    margin: 0;\n}\n.mapboxgl-ctrl-attrib.mapboxgl-compact {\n    padding-top: 2px;\n    padding-bottom: 2px;\n    margin: 0 10px 10px 10px;\n    position: relative;\n    padding-right: 24px;\n    background-color: #fff;\n    border-radius: 3px 12px 12px 3px;\n    visibility: hidden;\n}\n.mapboxgl-ctrl-attrib.mapboxgl-compact:hover {\n    visibility: visible;\n}\n.mapboxgl-ctrl-attrib.mapboxgl-compact:after {\n    content: '';\n    cursor: pointer;\n    position: absolute;\n    bottom: 0;\n    right: 0;\n    background-image: url(\"data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%0D%0A%09%3Cpath%20fill%3D%27%23333333%27%20fill-rule%3D%27evenodd%27%20d%3D%27M4%2C10a6%2C6%200%201%2C0%2012%2C0a6%2C6%200%201%2C0%20-12%2C0%20M9%2C7a1%2C1%200%201%2C0%202%2C0a1%2C1%200%201%2C0%20-2%2C0%20M9%2C10a1%2C1%200%201%2C1%202%2C0l0%2C3a1%2C1%200%201%2C1%20-2%2C0%27%20%2F%3E%0D%0A%3C%2Fsvg%3E\");\n    background-color: rgba(255, 255, 255, .5);\n    width: 24px;\n    height: 24px;\n    box-sizing: border-box;\n    visibility: visible;\n    border-radius: 12px;\n}\n.mapboxgl-ctrl-attrib a {\n    color: rgba(0,0,0,0.75);\n    text-decoration: none;\n}\n.mapboxgl-ctrl-attrib a:hover {\n    color: inherit;\n    text-decoration: underline;\n}\n/* stylelint-disable */\n.mapboxgl-ctrl-attrib .mapbox-improve-map {\n    font-weight: bold;\n    margin-left: 2px;\n}\n/*stylelint-enable*/\n.mapboxgl-ctrl-scale {\n    background-color: rgba(255,255,255,0.75);\n    font-size: 10px;\n    border-width: medium 2px 2px;\n    border-style: none solid solid;\n    border-color: #333;\n    padding: 0 5px;\n    color: #333;\n}\n\n.mapboxgl-popup {\n    position: absolute;\n    top: 0;\n    left: 0;\n    display: -webkit-flex;\n    display: flex;\n    will-change: transform;\n    pointer-events: none;\n}\n.mapboxgl-popup-anchor-top,\n.mapboxgl-popup-anchor-top-left,\n.mapboxgl-popup-anchor-top-right {\n    -webkit-flex-direction: column;\n    flex-direction: column;\n}\n.mapboxgl-popup-anchor-bottom,\n.mapboxgl-popup-anchor-bottom-left,\n.mapboxgl-popup-anchor-bottom-right {\n    -webkit-flex-direction: column-reverse;\n    flex-direction: column-reverse;\n}\n.mapboxgl-popup-anchor-left {\n    -webkit-flex-direction: row;\n    flex-direction: row;\n}\n.mapboxgl-popup-anchor-right {\n    -webkit-flex-direction: row-reverse;\n    flex-direction: row-reverse;\n}\n.mapboxgl-popup-tip {\n    width: 0;\n    height: 0;\n    border: 10px solid transparent;\n    z-index: 1;\n}\n.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {\n    -webkit-align-self: center;\n    align-self: center;\n    border-top: none;\n    border-bottom-color: #fff;\n}\n.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip {\n    -webkit-align-self: flex-start;\n    align-self: flex-start;\n    border-top: none;\n    border-left: none;\n    border-bottom-color: #fff;\n}\n.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {\n    -webkit-align-self: flex-end;\n    align-self: flex-end;\n    border-top: none;\n    border-right: none;\n    border-bottom-color: #fff;\n}\n.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {\n    -webkit-align-self: center;\n    align-self: center;\n    border-bottom: none;\n    border-top-color: #fff;\n}\n.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip {\n    -webkit-align-self: flex-start;\n    align-self: flex-start;\n    border-bottom: none;\n    border-left: none;\n    border-top-color: #fff;\n}\n.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {\n    -webkit-align-self: flex-end;\n    align-self: flex-end;\n    border-bottom: none;\n    border-right: none;\n    border-top-color: #fff;\n}\n.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {\n    -webkit-align-self: center;\n    align-self: center;\n    border-left: none;\n    border-right-color: #fff;\n}\n.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {\n    -webkit-align-self: center;\n    align-self: center;\n    border-right: none;\n    border-left-color: #fff;\n}\n.mapboxgl-popup-close-button {\n    position: absolute;\n    right: 0;\n    top: 0;\n    border: none;\n    border-radius: 0 3px 0 0;\n    cursor: pointer;\n    background-color: rgba(0,0,0,0);\n}\n.mapboxgl-popup-close-button:hover {\n    background-color: rgba(0,0,0,0.05);\n}\n.mapboxgl-popup-content {\n    position: relative;\n    background: #fff;\n    border-radius: 3px;\n    box-shadow: 0 1px 2px rgba(0,0,0,0.10);\n    padding: 10px 10px 15px;\n    pointer-events: auto;\n}\n.mapboxgl-popup-anchor-top-left .mapboxgl-popup-content {\n    border-top-left-radius: 0;\n}\n.mapboxgl-popup-anchor-top-right .mapboxgl-popup-content {\n    border-top-right-radius: 0;\n}\n.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-content {\n    border-bottom-left-radius: 0;\n}\n.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-content {\n    border-bottom-right-radius: 0;\n}\n\n.mapboxgl-marker {\n    position: absolute;\n    top: 0;\n    left: 0;\n    will-change: transform;\n}\n\n.mapboxgl-user-location-dot {\n    background-color: #1DA1F2;\n    width: 16px;\n    height: 16px;\n    border-radius: 50%;\n    box-shadow: 0 0 2px rgba(0,0,0,0.25);\n    border: 2px solid #fff;\n}\n.mapboxgl-user-location-dot:after {\n    content: '';\n    display: block;\n    box-shadow: #1DA1F2 0 0 0 2px;\n    width: 16px;\n    height: 16px;\n    border-radius: 50%;\n    position: relative;\n    z-index: -1;\n\n    -webkit-animation: mapboxgl-user-location-dot-pulse 2s;\n    -moz-animation: mapboxgl-user-location-dot-pulse 2s;\n    -ms-animation: mapboxgl-user-location-dot-pulse 2s;\n    animation: mapboxgl-user-location-dot-pulse 2s;\n\n    -webkit-animation-iteration-count: infinite;\n    -moz-animation-iteration-count: infinite;\n    -ms-animation-iteration-count: infinite;\n    animation-iteration-count: infinite;\n}\n@-webkit-keyframes mapboxgl-user-location-dot-pulse {\n    0%   {   -webkit-box-shadow: 0 0 0 0 rgba(29, 161, 242, 0.8); }\n    70%  {   -webkit-box-shadow: 0 0 0 15px rgba(29, 161, 242, 0); }\n    242% {   -webkit-box-shadow: 0 0 0 0 rgba(29, 161, 242, 0); }\n}\n@-ms-keyframes mapboxgl-user-location-dot-pulse {\n    0%   {   -ms-box-shadow: 0 0 0 0 rgba(29, 161, 242, 0.8); }\n    70%  {   -ms-box-shadow: 0 0 0 15px rgba(29, 161, 242, 0); }\n    242% {   -ms-box-shadow: 0 0 0 0 rgba(29, 161, 242, 0); }\n}\n@keyframes mapboxgl-user-location-dot-pulse {\n    0% {\n        -moz-box-shadow: 0 0 0 0 rgba(29, 161, 242, 0.8);\n             box-shadow: 0 0 0 0 rgba(29, 161, 242, 0.4);\n    }\n    70% {\n        -moz-box-shadow: 0 0 0 15px rgba(29, 161, 242, 0);\n             box-shadow: 0 0 0 15px rgba(29, 161, 242, 0);\n    }\n    100% {\n        -moz-box-shadow: 0 0 0 0 rgba(29, 161, 242, 0);\n             box-shadow: 0 0 0 0 rgba(29, 161, 242, 0);\n    }\n}\n.mapboxgl-user-location-dot-stale {\n    background-color: #aaa;\n}\n.mapboxgl-user-location-dot-stale:after {\n    display: none\n}\n\n.mapboxgl-crosshair,\n.mapboxgl-crosshair .mapboxgl-interactive,\n.mapboxgl-crosshair .mapboxgl-interactive:active {\n    cursor: crosshair;\n}\n.mapboxgl-boxzoom {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 0;\n    height: 0;\n    background: #fff;\n    border: 2px dotted #202020;\n    opacity: 0.5;\n}\n\n@media print {\n/* stylelint-disable */\n    .mapbox-improve-map {\n        display:none;\n    }\n/* stylelint-enable */\n}") || true) && "_8d1e4ec9";(require('sheetify/insert')(".mapboxgl-map {\n  font-size: 12px;\n  line-height: 20px; \n  font: inherit !important;\n}\n\n/** tidbits from Bootstrap for the popups **/\n.btn {\n  z-index: 1;\n  padding: 15px;\n  border: 1px solid black;\n  background: transparent;\n  font-weight: bold;\n  font-size: 14px;\n}\n.btn:hover {\n  cursor: pointer;\n  background-color: rgba(225,225,225,0.8);\n\n}\n.btn:active, .btn:focus {\n  outline: 0;\n  box-shadow: 0;\n}\n[role=button], a, area, button, input, label, select, summary, textarea {\n    -ms-touch-action: manipulation;\n    touch-action: manipulation;\n}\n.embed-responsive {\n  position: relative;\n  display: block;\n  width: 100%;\n  padding: 0;\n  overflow: hidden;\n}\n.embed-responsive::before {\n  display: block;\n  content: \"\";\n}\n.embed-responsive .embed-responsive-item,\n.embed-responsive embed,\n.embed-responsive iframe,\n.embed-responsive object,\n.embed-responsive video {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  border: 0;\n}\nimg {\n  object-fit: cover;\n}\n*, ::after, ::before {\n  box-sizing: inherit;\n}\nimg {\n  vertical-align: middle;\n  border-style: none;\n}\n\n.mapboxgl-ctrl-toggle {\n\tbackground-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgNTEyIDUxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHBhdGggaWQ9ImhlbHAtaWNvbiIgZD0iTTI1OS40NjIsNDYyYy0yNC44NjQsMC00NS4wMy0yMC4xNjYtNDUuMDMtNDUuMDM5YzAtMjQuODYsMjAuMTY2LTQ1LjAyLDQ1LjAzLTQ1LjAyYzI0Ljg3LDAsNDUuMDI5LDIwLjE1OSw0NS4wMjksNDUuMDJDMzA0LjQ5MSw0NDEuODM0LDI4NC4zMzIsNDYyLDI1OS40NjIsNDYyeiBNMjk0Ljg2NSwzMjguOXY4LjFjMCwwLTY3LjUxMywwLTc0LjIyOSwwdi04LjFjMC0yMi45MjIsMy4zNDQtNTIuMzI2LDI5Ljk1Ni03Ny44OWMyNi42MTMtMjUuNTY3LDU5Ljg3LTQ2LjY4Nyw1OS44Ny03OC42MjVjMC0zNS4zMDktMjQuNTAzLTUzLjk4NS01NS4zOTktNTMuOTg1Yy01MS40ODMsMC01NC44NDYsNTMuMzkzLTU2LjExNSw2NS4xNDlIMTI2Ljc1QzEyOC42NzMsMTI3Ljg3NCwxNTIuMjA2LDUwLDI1NS40OTQsNTBjODkuNTEzLDAsMTI5Ljc1Niw1OS45NDksMTI5Ljc1NiwxMTYuMTY2QzM4NS4yNSwyNTUuNjQ2LDI5NC44NjUsMjcxLjE4OSwyOTQuODY1LDMyOC45eiIvPjwvc3ZnPg==);\n  background-size: 20px;\n  background-repeat: no-repeat;\n  background-position: center;\n}") || true) && "_62ff2c16";
 
 var qs = querystring.parse(window.location.search.replace('?', ''));
 var lang = qs.lang || 'es';
@@ -22074,7 +22472,26 @@ var map = window.map = new mapboxgl.Map({
   maxBounds: [-87, -9, -70, 6],
   style: 'mapbox://styles/aliya/cj5i9q1lb4wnx2rnxmldrtjvt?fresh=true',
   hash: true
+}).on('load', onLoad);
+
+xhr('data.json', { header: {
+    'Content-Type': 'application/json'
+  } }, function (err, resp, body) {
+  if (err) console.error(err);
+  data = JSON.parse(body);
+  Object.keys(data).forEach(function (key) {
+    data[key].features.forEach(function (feature) {
+      dataIndex[feature.properties.Preset] = feature;
+    });
+  });
+  onLoad();
 });
+
+function updateLang(_) {
+  lang = _;
+  backButton.updateLang(lang);
+  legend.updateLang(lang);
+}
 
 map.addControl(new mapboxgl.ScaleControl({
   maxWidth: 150,
@@ -22097,34 +22514,42 @@ var backButton = elements.backButton(map, { stop: 9, language: lang }, function 
   map.easeTo({ center: defaultCenter, zoom: 8, duration: 2500 });
 });
 
-// When a click event occurs near a place, open a popup at the location of
-// the feature, with description HTML from its properties.
-map.on('click', function (e) {
-  var _areas = map.queryRenderedFeatures(e.point, { layers: ['Territory fill'] });
-  var _features = map.queryRenderedFeatures(e.point, { filter: ['!=', '$id', 1] });
-  var area = _areas && _areas[0];
-  var feature = _features && _features[0];
-  if (area && map.getZoom() <= 9) {
-    map.easeTo({ center: defaultCenter, zoom: 11, duration: 2500 });
+function onLoad() {
+  // When a click event occurs near a place, open a popup at the location of
+  // the feature, with description HTML from its properties.
+  map.on('click', function (e) {
+    var _areas = map.queryRenderedFeatures(e.point, { layers: ['Territory fill'] });
+    var _features = map.queryRenderedFeatures(e.point, { filter: ['!=', '$id', 1] });
+    var area = _areas && _areas[0];
+    var feature = _features && _features[0];
+    if (area && map.getZoom() <= 9) {
+      map.easeTo({ center: defaultCenter, zoom: 11, duration: 2500 });
+      communityPopup.remove();
+      return;
+    }
+    if (feature) {
+      var coords = feature.geometry.type === 'Point' ? feature.geometry.coordinates : map.unproject(e.point);
+      var opts = { feature, lang };
+      var preset = feature.properties.preset;
+      if (preset) {
+        var airtable = dataIndex[preset.toLowerCase()];
+        opts.data = airtable ? airtable.properties : {};
+      }
+      communityPopup.update(communityDOM(opts));
+      communityPopup.setLngLat(coords);
+      return;
+    }
     communityPopup.remove();
-    return;
-  }
-  if (feature) {
-    var coords = feature.geometry.type === 'Point' ? feature.geometry.coordinates : map.unproject(e.point);
-    communityPopup.update(communityDOM(feature, { lang: lang }));
-    communityPopup.setLngLat(coords);
-    return;
-  }
-  communityPopup.remove();
-});
+  });
 
-// Use the same approach as above to indicate that the symbols are clickable
-// by changing the cursor style to 'pointer'.
-map.on('mousemove', function (e) {
-  var features = map.queryRenderedFeatures(e.point);
-  map.getCanvas().style.cursor = features.length ? 'pointer' : '';
-});
-},{"./community_popup":36,"./legend":38,"alianza-elements":1,"mapbox-gl":26,"mapbox-gl-toggle-control":40,"querystring":31,"sheetify/insert":32}],38:[function(require,module,exports){
+  // Use the same approach as above to indicate that the symbols are clickable
+  // by changing the cursor style to 'pointer'.
+  map.on('mousemove', function (e) {
+    var features = map.queryRenderedFeatures(e.point);
+    map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+  });
+}
+},{"./community_popup":31,"./legend":33,"alianza-elements":1,"mapbox-gl":16,"mapbox-gl-toggle-control":15,"querystring":23,"sheetify/insert":24,"xhr":26}],33:[function(require,module,exports){
 var yo = require('yo-yo');
 var css = 0;
 
@@ -22198,69 +22623,4 @@ Legend.prototype._getElement = function () {
   }
   return el;
 };
-},{"/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js":35,"sheetify/insert":32,"yo-yo":33}],39:[function(require,module,exports){
-module.exports = function translate(key) {
-  if (typeof key !== 'string') return key;
-  var str = key.replace(/:/, '_').replace(/flora|fauna/, '¿Que?').replace(/^name$/, 'Nombre (wao)').replace(/^name_es$/, 'Nombre (esp)').replace(/^especie_palmera|arbol_especie|planta_especie|mono_especie$/, 'Especie').replace(/^stream$/, 'Quebrada').replace(/^river$/, 'Río').replace(/^waterway$/, 'Agua').replace(/^comunidad_nombre$/, 'Comunidad').replace(/_/, ' ');
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
-},{}],40:[function(require,module,exports){
-function createEl(tagName, className, container) {
-  var el = window.document.createElement(tagName);
-  if (className) el.className = className;
-  if (container) container.appendChild(el);
-  return el;
-}
-
-function Toggle(el, contents) {
-  if (!(this instanceof Toggle)) return new Toggle(el, contents);
-  this._map = null; // mapbox-gl Map
-  this._mapContainer = null; // HTMLElement
-  this._className = 'mapboxgl-ctrl'; // string
-  this._contents = contents || '';
-  this._container = null; // HTMLelement
-  this._toggleButton = null; // HTMLElement
-  this.toggle = this.toggle.bind(this);
-  this.show = this.show.bind(this);
-  this.hide = this.hide.bind(this);
-  this.isOpen = this.isOpen.bind(this);
-  this._el = typeof el === 'function' ? el(this.toggle) : el;
-}
-
-Toggle.prototype.onAdd = function (map) {
-  this._map = map;
-  this._mapContainer = this._map.getContainer();
-  this._container = createEl('div', this._className + ' mapboxgl-ctrl-group');
-  var button = this._toggleButton = createEl('button', this._className + '-icon ' + this._className + '-toggle', this._container);
-  button.innerHTML = this._contents;
-  button.type = 'button';
-  this._toggleButton.addEventListener('click', this.toggle);
-  return this._container;
-};
-
-Toggle.prototype.onRemove = function () {
-  var node = this._container;
-  if (node.parentNode) {
-    node.parentNode.removeChild(node);
-  }
-  this._map = null;
-};
-
-Toggle.prototype.toggle = function () {
-  if (this.isOpen()) this.hide();else this.show();
-};
-
-Toggle.prototype.hide = function () {
-  this._el.style.display = 'none';
-};
-
-Toggle.prototype.show = function () {
-  this._el.style.display = '';
-};
-
-Toggle.prototype.isOpen = function () {
-  return this._el.style.display !== 'none';
-};
-
-module.exports = Toggle;
-},{}]},{},[37]);
+},{"/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js":30,"sheetify/insert":24,"yo-yo":28}]},{},[32]);
