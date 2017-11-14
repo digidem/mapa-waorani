@@ -46,7 +46,7 @@ BackButton.prototype._getElement = function () {
     'en': 'SEE FULL MAP'
   }
   var backButton = button({
-    title: translations[self.lang],
+    title: translations[self.language],
     onclick: self.onclick
   })
   backButton.style.filter = 'alpha(opacity=0.8)'
