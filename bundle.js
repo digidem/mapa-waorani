@@ -22429,6 +22429,7 @@ module.exports = function (opts) {
   if (!opts.lang) opts.lang = 'es';
   var symbol = opts.data && opts.data.Symbol && opts.data.Symbol[0];
   var name = opts.data && opts.data[lookup[opts.lang]] || opts.feature.properties.Nombre;
+  console.log(name);
   var style = (require('sheetify/insert')("._f44320bf {\n      margin: 10px;\n    }\n._f44320bf img {\n      width: 100%;\n}") || true) && "_f44320bf";
   return function () {
 
@@ -22462,6 +22463,8 @@ var dataIndex = {};(require('sheetify/insert')(".mapboxgl-map {\n    font: 12px/
 
 var qs = querystring.parse(window.location.search.replace('?', ''));
 var lang = qs.lang || 'es';
+var body = document.querySelector('body');
+if (lang === 'en') body.style = "font-family: 'Montserrat' !important;";else if (lang === 'es') body.style = "font-family: 'Helvetica' !important;";
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWxpeWEiLCJhIjoiY2lzZDVhbjM2MDAwcTJ1cGY4YTN6YmY4cSJ9.NxK9jMmYZsA32ol_IZGs5g';
 var defaultCenter = [-77.2593, -1.2322];
 
@@ -22598,7 +22601,7 @@ Legend.prototype.updateLang = function (lang) {
 Legend.prototype._getElement = function () {
   var self = this;
   var lang = this.lang;
-  var legendStyles = (require('sheetify/insert')("._3d9a638d {\n      position: absolute;\n      display: flex;\n      align-items: center;\n      justify-content: space-around;\n      width: 100%;\n      height: 100%;\n      z-index: 1;\n      overflow: auto;\n    }\n._3d9a638d .legend {\n      position: relative;\n      padding: 30px;\n      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);\n      line-height: 18px;\n      margin: 40px;\n      border-radius: 10px;\n      width: 50%;\n      min-width: 700px;\n      background: rgb(255, 255, 255);\n}\n._3d9a638d button {\n      width: 100px;\n      height: 50px;\n      border: 2px solid black;\n      font-size: 16px;\n      font-family: 'EB Garamond';\n      font-weight: bold;\n      background: white;\n}\n._3d9a638d button:hover {\n      background-color: #ddd;\n      cursor: pointer;\n}") || true) && "_3d9a638d";
+  var legendStyles = (require('sheetify/insert')("._ca570a96 {\n      position: absolute;\n      display: flex;\n      align-items: center;\n      justify-content: space-around;\n      width: 100%;\n      height: 100%;\n      z-index: 1;\n      overflow: auto;\n    }\n._ca570a96 .legend {\n      position: relative;\n      padding: 30px;\n      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);\n      line-height: 18px;\n      margin: 40px;\n      border-radius: 10px;\n      width: 50%;\n      min-width: 700px;\n      background: rgb(255, 255, 255);\n}\n._ca570a96 button {\n      width: 100px;\n      height: 50px;\n      border: 2px solid black;\n      font-size: 16px;\n      font-weight: bold;\n      background: white;\n}\n._ca570a96 button:hover {\n      background-color: #ddd;\n      cursor: pointer;\n}") || true) && "_ca570a96";
   var el = function () {
 
     var ac = require('/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
