@@ -22429,11 +22429,10 @@ module.exports = function (opts) {
   if (!opts.lang) opts.lang = 'es';
   var symbol = opts.data && opts.data.Symbol && opts.data.Symbol[0];
   var name = opts.data && opts.data[lookup[opts.lang]] || opts.feature.properties.Nombre;
-  console.log(name);
   var style = (require('sheetify/insert')("._f44320bf {\n      margin: 10px;\n    }\n._f44320bf img {\n      width: 100%;\n}") || true) && "_f44320bf";
   return function () {
 
-    var ac = require('/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
+    var ac = require('/Users/aliya/Documents/Github/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
     var bel1 = document.createElement("div");
     bel1.setAttribute("class", arguments[1]);
     var bel0 = document.createElement("h3");
@@ -22442,13 +22441,13 @@ module.exports = function (opts) {
     return bel1;
   }(name, style, symbol ? function () {
 
-    var ac = require('/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
+    var ac = require('/Users/aliya/Documents/Github/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
     var bel0 = document.createElement("img");
     bel0.setAttribute("src", arguments[0]);
     return bel0;
   }(symbol.url) : '');
 };
-},{"/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js":30,"sheetify/insert":24,"yo-yo":28}],32:[function(require,module,exports){
+},{"/Users/aliya/Documents/Github/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js":30,"sheetify/insert":24,"yo-yo":28}],32:[function(require,module,exports){
 var xhr = require('xhr');
 var css = 0;
 var elements = require('alianza-elements');
@@ -22566,7 +22565,7 @@ var translations = {
   'text': {
     'es': function () {
 
-      var ac = require('/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
+      var ac = require('/Users/aliya/Documents/Github/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
       var bel2 = document.createElement("div");
       var bel0 = document.createElement("br");
       var bel1 = document.createElement("br");
@@ -22575,7 +22574,7 @@ var translations = {
     }(),
     'en': function () {
 
-      var ac = require('/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
+      var ac = require('/Users/aliya/Documents/Github/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
       var bel2 = document.createElement("div");
       var bel0 = document.createElement("br");
       var bel1 = document.createElement("br");
@@ -22604,7 +22603,7 @@ Legend.prototype._getElement = function () {
   var legendStyles = (require('sheetify/insert')("._ca570a96 {\n      position: absolute;\n      display: flex;\n      align-items: center;\n      justify-content: space-around;\n      width: 100%;\n      height: 100%;\n      z-index: 1;\n      overflow: auto;\n    }\n._ca570a96 .legend {\n      position: relative;\n      padding: 30px;\n      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);\n      line-height: 18px;\n      margin: 40px;\n      border-radius: 10px;\n      width: 50%;\n      min-width: 700px;\n      background: rgb(255, 255, 255);\n}\n._ca570a96 button {\n      width: 100px;\n      height: 50px;\n      border: 2px solid black;\n      font-size: 16px;\n      font-weight: bold;\n      background: white;\n}\n._ca570a96 button:hover {\n      background-color: #ddd;\n      cursor: pointer;\n}") || true) && "_ca570a96";
   var el = function () {
 
-    var ac = require('/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
+    var ac = require('/Users/aliya/Documents/Github/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js');
     var bel4 = document.createElement("div");
     bel4.setAttribute("style", "display: none;");
     var bel3 = document.createElement("div");
@@ -22626,4 +22625,4 @@ Legend.prototype._getElement = function () {
   }
   return el;
 };
-},{"/Users/karissa/node_modules/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js":30,"sheetify/insert":24,"yo-yo":28}]},{},[32]);
+},{"/Users/aliya/Documents/Github/mapa-waorani/node_modules/yo-yoify/lib/appendChild.js":30,"sheetify/insert":24,"yo-yo":28}]},{},[32]);
