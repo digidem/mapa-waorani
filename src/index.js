@@ -4,6 +4,7 @@ const elements = require('alianza-elements')
 const mapboxgl = require('mapbox-gl')
 const ToggleControl = require('mapbox-gl-toggle-control')
 const querystring = require('querystring')
+const DigidemAttrib = require('@digidem/attribution-control')
 
 if (process.env.NODE_ENV === 'production') {
   require('./service-worker')
@@ -69,6 +70,8 @@ var legendCtrl = new ToggleControl(legend.el)
 legendCtrl.show()
 map.addControl(legendCtrl, 'top-left')
 legendCtrl._toggleButton.setAttribute('aria-label', 'Toggle Legend')
+
+map.addControl(new DigidemAttrib(), 'bottom-right')
 
 var communityPopup = elements.popup(map)
 
