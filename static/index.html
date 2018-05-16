@@ -4,19 +4,39 @@
   <meta charset='utf-8' />
   <title></title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet">
   <link href='iconos_wao.css' rel='stylesheet' />
-  <style>
-  body { margin:0; padding:0; }
-  #map { position:absolute; top:0; bottom:0; width:100%; }
-  .mapboxgl-popup {
-    max-width: 400px;
-    font: 12px/20px 'Montserrat', Arial, Helvetica, sans-serif;
-  }
+  <style type="text/css">
+    @font-face {
+      font-family: FuturaPassata;
+      src: url('/FuturaPassata-DISPLAY.eot'); /* IE9 Compat Modes */
+      src: url('/FuturaPassata-DISPLAY.woff2') format('woff2'),
+           url('/FuturaPassata-DISPLAY.woff') format('woff');
+    }
+    @media only screen and (max-width: 600px) {
+      #map {
+        display: none;
+      }
+    }
+
+    body {
+      margin:0;
+      font-family: 'Nunito Sans', Helvetica, sans-serif;
+      padding:0;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: FuturaPassata, Helvetica, sans-serif;
+    }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+    .mapboxgl-popup {
+      max-width: 400px;
+      font: 12px/20px 'Nunito-Sans', Helvetica, sans-serif;
+    }
   </style>
 </head>
 <body>
 <div id='map'></div>
+<script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
 <script src='bundle.js'></script>
 </body>
 </html>
