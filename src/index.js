@@ -61,7 +61,7 @@ map.addControl(new mapboxgl.ScaleControl({
 }))
 
 var nav = new mapboxgl.NavigationControl()
-map.addControl(new mapboxgl.AttributionControl({compact: true}))
+map.addControl(new mapboxgl.AttributionControl({compact: true}), 'top-right')
 map.addControl(nav, 'top-left')
 map.addControl(new mapboxgl.FullscreenControl(), 'top-left')
 
