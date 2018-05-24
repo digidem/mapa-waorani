@@ -3295,6 +3295,2412 @@
           "Nombre Wao": "yawe"
         },
         "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recWxK2JlxevKSN7X",
+        "properties": {
+          "Preset": "liana/liana_oonte",
+          "Tipo de cosa": "Lianas",
+          "Nombre Español": "curare",
+          "Symbol": [
+            {
+              "id": "attcKbvhztGyZfqN0",
+              "url": "https://dl.airtable.com/LH8L2ZwnQEaPKYIYc4Jc_liana-curare-100px.svg",
+              "filename": "liana-curare-100px.svg",
+              "size": 1093,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/3RZIoJYTeeDZRwcIi9pQ_small_liana-curare-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/0MTzmQt5SjeecCfA0S9E_large_liana-curare-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Curare",
+          "Descripción Español": "Veneno silvestre. Por ejemplo, los wao cojen, elaboran y cazan poniendo en la punta de la flecha, soplando matan a los animales para el consumo.",
+          "Nombre Wao": "öönta copy"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recXCoMNv3wBrp7K2",
+        "properties": {
+          "Preset": "fauna/trompetero",
+          "Tipo de cosa": "Aves",
+          "Nombre Español": "trompetero",
+          "Symbol": [
+            {
+              "id": "attudDkTYTAmGNgGw",
+              "url": "https://dl.airtable.com/Zt9CMgo4TDftE1DX7uwW_animal-ave-trompetero-100px.svg",
+              "filename": "animal-ave-trompetero-100px.svg",
+              "size": 1321,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/qt3wV1qSQSWwjtWyBlB6_small_animal-ave-trompetero-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/qxowwQXARYerLiTzX2du_large_animal-ave-trompetero-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Trumpeter birds",
+          "Descripción Español": "Carne tiene muy rico. A las crias tienen como mascotas en casas, puede acompañar.",
+          "Nombre Wao": "nawäñë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recXS6Wx3Fi13BgPO",
+        "properties": {
+          "Preset": "historia/olla_antigua",
+          "Tipo de cosa": "elementos waorani",
+          "Nombre Español": "ollas antiguas",
+          "Symbol": [
+            {
+              "id": "attK83xvQXMo0TrnT",
+              "url": "https://dl.airtable.com/b3wCDaRTNmofWIgcfQbw_historia-olla-100px.svg",
+              "filename": "historia-olla-100px.svg",
+              "size": 1806,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/7rTfpzlQQlGk2F0lAoZs_small_historia-olla-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/xo3Q0xYtQFeycTXbpg8z_large_historia-olla-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Old ceramics",
+          "Descripción Español": "Basija de los antepasados.",
+          "Nombre Wao": "dorani daitakare"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recXVR6Bko4AIGmnK",
+        "properties": {
+          "Preset": "arbol/artesanal",
+          "Tipo de cosa": "Árboles",
+          "Nombre Español": "árbol artesanal",
+          "Symbol": [
+            {
+              "id": "attFbSJOHXtoM1Bza",
+              "url": "https://dl.airtable.com/E2dw2PBsSC2IcFPHUrFF_arbol-artesanal-100px.svg",
+              "filename": "arbol-artesanal-100px.svg",
+              "size": 5170,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/cV8F7R7MQyKQEkMhsy1G_small_arbol-artesanal-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/kffrQOtSTXWIx0qdw88m_large_arbol-artesanal-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "tree for artesania",
+          "Descripción Español": "Árbol para elaborar artesanías para cualquier uso.",
+          "Nombre Wao": "awë dorani kii barongï"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recY9vdoTnSJUlalT",
+        "properties": {
+          "Preset": "fauna/guanta",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "guanta",
+          "Symbol": [
+            {
+              "id": "attBtOaMVgpZztzQx",
+              "url": "https://dl.airtable.com/IBddFtF7TXu03Mv3GR6Q_animal-guanta-100px.svg",
+              "filename": "animal-guanta-100px.svg",
+              "size": 3076,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/hkyKmgJKQ1e42tCvKTZk_small_animal-guanta-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/TZb1kWGkQz6FR5zEFnZP_large_animal-guanta-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "paca",
+          "Descripción Español": "Leyenda Waorani cuentan, guanta era como camote para jaguar. Ademas, es rico y sabroso su carne.",
+          "Nombre Wao": "panone"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recYA3lIzWZFHHA6F",
+        "properties": {
+          "Preset": "fauna/mono_capuchino",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "mono capuchino",
+          "Symbol": [
+            {
+              "id": "attDjE44TwEbOcB9t",
+              "url": "https://dl.airtable.com/3Axe65HeRAibACldeeLY_animal-mono-capuchino-100px.svg",
+              "filename": "animal-mono-capuchino-100px.svg",
+              "size": 2943,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/0KQuJgY0Q0KyYQ2dujNs_small_animal-mono-capuchino-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/44JCcpqSOKV3XHSu3t6O_large_animal-mono-capuchino-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "capuchin monkey",
+          "Descripción Español": "Las personas comen carne de machin y las crias son mascotas para waos, ademas es traviezo.",
+          "Nombre Wao": "bogï"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recYE0CQxDAgl8Izt",
+        "properties": {
+          "Preset": "palmera/nampa",
+          "Tipo de cosa": "Palmeras",
+          "Nombre Español": "palma artesanal",
+          "Symbol": [
+            {
+              "id": "attzFhCEaRwr9tzuC",
+              "url": "https://dl.airtable.com/TIRkffvnQyioKj1YyGyh_palmera-nampa-100px.svg",
+              "filename": "palmera-nampa-100px.svg",
+              "size": 4802,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/Qtv3sATjTLCHmLqoCDzy_small_palmera-nampa-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/j2JCz26QSy0dtjpOZtYs_large_palmera-nampa-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Palm for crafts",
+          "Descripción Español": "Sirve las ramas para elaborar techos para la vivienda.",
+          "Nombre Wao": "nampawë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recYPoKT91l0tE72y",
+        "properties": {
+          "Preset": "comunidad/chacra",
+          "Tipo de cosa": "Áreas/zonas",
+          "Nombre Español": "zona de chacras",
+          "Symbol": [
+            {
+              "id": "attkHiOaMkLHz7qvH",
+              "url": "https://dl.airtable.com/C6wCzVrT8SGp6yjkkJoP_wao-chacra-100px.svg",
+              "filename": "wao-chacra-100px.svg",
+              "size": 6362,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/VSc1YTBgQOKKDhge7q4k_small_wao-chacra-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/cm5fWyJlT329eXOdNXgs_large_wao-chacra-100px.svg",
+                  "width": 125,
+                  "height": 125
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Farming area",
+          "Descripción Español": "Varios sitio donde siembra platanos, yucas, maiz, mani, camote, naranjilla, plantas frutales, etc.",
+          "Nombre Wao": "kewënkore"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recYS7SU3NZ9tBkxa",
+        "properties": {
+          "Preset": "fauna/guacamayo",
+          "Tipo de cosa": "Aves",
+          "Nombre Español": "guacamayo",
+          "Symbol": [
+            {
+              "id": "attWSoaJpbtBqN1gw",
+              "url": "https://dl.airtable.com/esy1QztdSC1SX4FkiKLQ_animal-ave-guacamayo-100px.svg",
+              "filename": "animal-ave-guacamayo-100px.svg",
+              "size": 2386,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/Fz918bymRPuildRNY6kg_small_animal-ave-guacamayo-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/eEX85aOOR5aEl2ZGzNxQ_large_animal-ave-guacamayo-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Macaw",
+          "Descripción Español": "Sirve para comer y tener como mascotas, sus plumas son importantes para elaborar coronas y adornar en las lanzas.( Se visten en mayor parte en los eventos y en las fiestas).",
+          "Nombre Wao": "ëwë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recYqOxstkWr6flIe",
+        "properties": {
+          "Preset": "comunidad/canoa",
+          "Tipo de cosa": "elementos waorani",
+          "Nombre Español": "puerto",
+          "Symbol": [
+            {
+              "id": "attJ6RmCXA7s5iRM7",
+              "url": "https://dl.airtable.com/pbiWArThSQyWQJunDH2o_wao-canoa-100px.svg",
+              "filename": "wao-canoa-100px.svg",
+              "size": 615,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/w7OCNaF9SG6kenXEHNe6_small_wao-canoa-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/378OEOTySA6ojK3Fubxv_large_wao-canoa-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Port",
+          "Descripción Español": "Paradero de aviones, canoas o de personas."
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recbJoTcRxXx8LRwo",
+        "properties": {
+          "Tipo de cosa": "Áreas/zonas",
+          "Nombre Español": "zona de palmeras",
+          "Symbol": [
+            {
+              "id": "attH1ETU9yxIK0Qrl",
+              "url": "https://dl.airtable.com/fQxKTbEOTGiVYKL4gJd6_area-moretal-128.svg",
+              "filename": "area-moretal-128.svg",
+              "size": 101612,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/TN3fnseoTm6QQZy4BEsC_small_area-moretal-128.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/Vcl8jsITf6gXNPRWa4jb_large_area-moretal-128.svg",
+                  "width": 128,
+                  "height": 128
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Palm area",
+          "Descripción Español": "Donde existen cantidades de moretales, cargan pepas y comen personas y animales (armadillo, tapir, guanta, sahinos, guanganas, guacamayos rojos y amarillos, loro militar, etc.",
+          "Nombre Wao": "nontowënë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recbMQTu8XvTkxnhW",
+        "properties": {
+          "Preset": "fauna/lombriz",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "lombriz",
+          "Symbol": [
+            {
+              "id": "attHIyrzhfdR4ce5z",
+              "url": "https://dl.airtable.com/t6pMGlRxTAaJxtgmg9dS_animal-lombriz-100px.svg",
+              "filename": "animal-lombriz-100px.svg",
+              "size": 3133,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/Mr6kYzFYQMWtMr10ecdD_small_animal-lombriz-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/9pzzUxKUQmSRFzm6sl9R_large_animal-lombriz-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "worms",
+          "Descripción Español": "Sirve para pescar. Antiguamente, una chicha enamoraba del lombriz, y a pesar del tiempo se quedaba embarazada, y así su suegra barriendo le encontró en un hueco,mató regando con aguas calientes ,despues salió afuera a morir colgado con su pene. ",
+          "Nombre Wao": "ayabecore"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recbbxVJECc03nHvO",
+        "properties": {
+          "Preset": "planta/pantowe",
+          "Tipo de cosa": "Plantas",
+          "Nombre Español": "wayruru",
+          "Symbol": [
+            {
+              "id": "attIfwxjU2IfqY3uS",
+              "url": "https://dl.airtable.com/JtRQLwqrQfi1hcJJBQZa_planta-pantowe-100px.svg",
+              "filename": "planta-pantowe-100px.svg",
+              "size": 2843,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/xa89daZqRRqflNag5k44_small_planta-pantowe-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/kJ8okF1hQFKldUUI9qkN_large_planta-pantowe-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Wayruru",
+          "Descripción Español": "Sirve para elaborar collar, manilla y colección de otro usos.",
+          "Nombre Wao": "pantomo"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recbc0zZ5EADZgvsp",
+        "properties": {
+          "Preset": "fauna/perico",
+          "Tipo de cosa": "Aves",
+          "Nombre Español": "perico",
+          "Symbol": [
+            {
+              "id": "attlUQuOBwUHwTNB2",
+              "url": "https://dl.airtable.com/mTtjxXM7Qma8gaxOZfux_animal-ave-perico-100px.svg",
+              "filename": "animal-ave-perico-100px.svg",
+              "size": 1752,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/ZKiNMavSgqDbj2SpFbgQ_small_animal-ave-perico-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/zLuiQBSrRwyafRQff6mj_large_animal-ave-perico-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Parakeet",
+          "Descripción Español": "Es favorito para tener en casa como mascota, es muy hábil y mansito, puede silvar y hablar con las imitaciones de las personas.",
+          "Nombre Wao": "aboke"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recbthYf6VdNSA8vq",
+        "properties": {
+          "Preset": "liana/liana_otome",
+          "Tipo de cosa": "Lianas",
+          "Nombre Español": "liana artesanal/construcción",
+          "Symbol": [
+            {
+              "id": "attfa8y5iVopEo75T",
+              "url": "https://dl.airtable.com/Q5id7hK3QOQJA7I3xv6A_liana-otome-100px.svg",
+              "filename": "liana-otome-100px.svg",
+              "size": 1950,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/XLTw9Y0TvOEBsz0uxDwr_small_liana-otome-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/ApC0aBoKQGmsyYErCWCR_large_liana-otome-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Liana for craft/construction",
+          "Descripción Español": "Con esto se elaboran canasta, y es muy flexible para cualquier actividad.",
+          "Nombre Wao": "otome"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "reccuV0ydyjwjpIgv",
+        "properties": {
+          "Preset": "fauna/paujil_nocturno",
+          "Tipo de cosa": "Aves",
+          "Nombre Español": "paujíl nocturno",
+          "Symbol": [
+            {
+              "id": "attpHq2gVN9izZtqH",
+              "url": "https://dl.airtable.com/EiB8tKD1TZlP9aq1lWTo_animal-ave-paujil-nocturno-100px.svg",
+              "filename": "animal-ave-paujil-nocturno-100px.svg",
+              "size": 4297,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/kYrysHQtRHu6vqS0YHgA_small_animal-ave-paujil-nocturno-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/YG5xMgXPQqqTCFdwYbT3_large_animal-ave-paujil-nocturno-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Nocturnal Currasow",
+          "Descripción Español": "Para wao es favorito su carne para comer, las plumas son para aventar aire en las fogatas. Las crias son como mascotas tener en casa wao.",
+          "Nombre Wao": "gontiwä"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recddQXn0XkhbpD5t",
+        "properties": {
+          "Preset": "fauna/aguila_harpia",
+          "Tipo de cosa": "Aves",
+          "Nombre Español": "aguila harpía",
+          "Symbol": [
+            {
+              "id": "attKAyGvHjJtG22no",
+              "url": "https://dl.airtable.com/XPFT35etTqFJ8qfxWpEZ_animal-ave-aguilaharpia-100px.svg",
+              "filename": "animal-ave-aguilaharpia-100px.svg",
+              "size": 5456,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/0dhUC7arQjutDUHYbFSG_small_animal-ave-aguilaharpia-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/XmxoENF2RTCUbuohRynN_large_animal-ave-aguilaharpia-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Harpy eagle",
+          "Descripción Español": "Importante para wao, ave como simbolo representativo de la selva virgen, sus plumas son favoritos para elaborar coronas. Antiguamente al nido criaban como mascota y era como guardia, le avisaba cuando alguien llegaba de otro lugar. Es bravo y peligroso.",
+          "Nombre Wao": "gïgamowë "
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recdeTGw3yut71aEf",
+        "properties": {
+          "Preset": "liana/liana_oneta",
+          "Tipo de cosa": "Lianas",
+          "Nombre Español": "árbol con corteza como liana",
+          "Symbol": [
+            {
+              "id": "attsgLqZLsa9GHzkl",
+              "url": "https://dl.airtable.com/1i0iG6n3RUG9J7CDRKij_liana-oneta-100px.svg",
+              "filename": "liana-oneta-100px.svg",
+              "size": 1092,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/xKzJdDk6R1mNHdWoWQHd_small_liana-oneta-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/I7A8jVr8TjaMiwb44yRK_large_liana-oneta-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Liana",
+          "Descripción Español": "Árbol envuelto llenos de lianas en su alrededor de la corteza de cualquier especie.",
+          "Nombre Wao": "önenta"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recdytNDOoJC9861k",
+        "properties": {
+          "Preset": "planta/wenekinka",
+          "Tipo de cosa": "Plantas",
+          "Nombre Español": "tomate de árbol",
+          "Symbol": [
+            {
+              "id": "attheRUpuZ8VmauI8",
+              "url": "https://dl.airtable.com/l2G4AoTjSyaobbZTxM1O_planta-tomatedearbol-100px.svg",
+              "filename": "planta-tomatedearbol-100px.svg",
+              "size": 1335,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/9e4ZfJnTT1CJgag5B8GQ_small_planta-tomatedearbol-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/6eu2wOUZR86h0MhgPWev_large_planta-tomatedearbol-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Tree tomato",
+          "Descripción Español": "Fruta comestible.",
+          "Nombre Wao": "meñeka"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "rece6CfI1Xdo5BmJX",
+        "properties": {
+          "Preset": "fauna/aguila",
+          "Tipo de cosa": "Aves",
+          "Nombre Español": "aguila",
+          "Symbol": [
+            {
+              "id": "att8hiNOZSOx91hhf",
+              "url": "https://dl.airtable.com/idO8yWrSvSmwkeAB0uLP_animal-ave-gigamoe-aguila-100px.svg",
+              "filename": "animal-ave-gigamoe-aguila-100px.svg",
+              "size": 4283,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/w5SznqKSC6OGESVXntFi_small_animal-ave-gigamoe-aguila-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/rhyetsFfQXCINZWFoaNs_large_animal-ave-gigamoe-aguila-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Eagle",
+          "Descripción Español": "Aguila de cualquier especies.",
+          "Nombre Wao": "kegïnwë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "receDTXdsUs1LtLdY",
+        "properties": {
+          "Preset": "fauna/colibri",
+          "Tipo de cosa": "Aves",
+          "Nombre Español": "colibrí",
+          "Symbol": [
+            {
+              "id": "attdxVlVsN57hFTvi",
+              "url": "https://dl.airtable.com/5SbnHTxTQNyMAEBJAOd6_animal-ave-colibri-100px.svg",
+              "filename": "animal-ave-colibri-100px.svg",
+              "size": 1941,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/4ahManQ1Soq70iSs5HZw_small_animal-ave-colibri-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/9HL3KsChSia22TU3cdbA_large_animal-ave-colibri-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Hummingbird",
+          "Descripción Español": "Es importante saber cuando cruza un colibrí dentro de la casa, interpreta que alguien van llegar en casa.( Tambien puede ser algun pajaro).",
+          "Nombre Wao": "mingo"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "receViGzyPeXap7ZL",
+        "properties": {
+          "Preset": "fauna/sahino",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "sahino",
+          "Symbol": [
+            {
+              "id": "att9bWlpXqe0dBFvS",
+              "url": "https://dl.airtable.com/oK3POpsLT8m5xfTeN6Ae_animal-sahino-100px.svg",
+              "filename": "animal-sahino-100px.svg",
+              "size": 1403,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/ypMb1eTVKzpElbvpM21w_small_animal-sahino-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/4y27WIioRN4c3Xxh88ws_large_animal-sahino-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "collared peccary",
+          "Descripción Español": "Carne favorito y muy rica para el consumo, ademas sus deintes elaboran collares para artesanias. Tambien es muy peligrosos cuando esta con sus crias recien nacidos.",
+          "Nombre Wao": "ämö"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recfTlqQm1UfOn3PO",
+        "properties": {
+          "Preset": "fauna/abeja_brea",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "brea de abeja",
+          "Symbol": [
+            {
+              "id": "attvuP3czqNfbMq3D",
+              "url": "https://dl.airtable.com/8QhGkJjTGCUxVeyH2yhs_animal-abeja-brea-100px.svg",
+              "filename": "animal-abeja-brea-100px.svg",
+              "size": 3402,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/Q2UGeJdS0G2SkHnw3ow8_small_animal-abeja-brea-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/TUpvJPkoTPyN9roDSLel_large_animal-abeja-brea-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "bees wax",
+          "Descripción Español": "Es útil para Waorani, usan para la artesanía en la bodoquera.",
+          "Nombre Wao": "gogätawë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recfjEJMFm0NhcMCc",
+        "properties": {
+          "Preset": "historia/zona_de_guerra",
+          "Tipo de cosa": "elementos waorani",
+          "Nombre Español": "zona de guerra ancestral",
+          "Symbol": [
+            {
+              "id": "attGjspD7L0wXluNv",
+              "url": "https://dl.airtable.com/zQfwSX7qRVmcoTVAU3C7_historia-zonadeguerra-100px.svg",
+              "filename": "historia-zonadeguerra-100px.svg",
+              "size": 1668,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/g8EcFUiaQamSAcBiZYyx_small_historia-zonadeguerra-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/sZb0mDSeRCi7o2c0s5PR_large_historia-zonadeguerra-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Ancestral war site",
+          "Descripción Español": "Sitio donde hubo guerras de muerte.",
+          "Nombre Wao": "dorani tënonte wëgäïñömö"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recgKryNWZjnTnax8",
+        "properties": {
+          "Preset": "agua/lago",
+          "Tipo de cosa": "Agua",
+          "Nombre Español": "lago",
+          "Symbol": [
+            {
+              "id": "attguy3gAMEHnNQGK",
+              "url": "https://dl.airtable.com/Kv1V2dlnQi7A3Fcr2uCA_agua-lago-100px.svg",
+              "filename": "agua-lago-100px.svg",
+              "size": 1553,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/ObcgvXxsQtlJHDgutPHn_small_agua-lago-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/313D1AanTHO6rMYuB2Xh_large_agua-lago-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "lake",
+          "Descripción Español": "En un lugar donde hay pocas cantidades de peces pequeñas como: viejas, sardinas, guanchichis, piranas, etc.",
+          "Nombre Wao": "gawape"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recgWchWeXzWvnwsX",
+        "properties": {
+          "Preset": "fauna/coati",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "coatí",
+          "Symbol": [
+            {
+              "id": "attkCqzvs6P9yaxZe",
+              "url": "https://dl.airtable.com/8zPkxwOcSzevJWtFpPKq_animal-coati-100px.svg",
+              "filename": "animal-coati-100px.svg",
+              "size": 5514,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/PuL6ds3WSo6IW1heVWFE_small_animal-coati-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/vwHiAZbVRJivHMKRwZ2j_large_animal-coati-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "coati",
+          "Descripción Español": "Sirve para cazar y comer. La gente a las crias tienen como cascotas. Las pieles sirven para elaborar artezanías.",
+          "Nombre Wao": "koba"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "rech8OaBJoK0Ev9UT",
+        "properties": {
+          "Preset": "fauna/raya",
+          "Tipo de cosa": "Peces",
+          "Nombre Español": "raya",
+          "Symbol": [
+            {
+              "id": "attW6iDn4GbOwnb5B",
+              "url": "https://dl.airtable.com/MyQE7V5Sfyco6CEajH27_animal-obatibe-100px.svg",
+              "filename": "animal-obatibe-100px.svg",
+              "size": 5989,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/WZvB9gBR6KTNCV30VaKN_small_animal-obatibe-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/eYbE5d3Rn2utjv4G5cuA_large_animal-obatibe-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Ray",
+          "Descripción Español": "Pez peligroso cuando pisan la gente puede pichar por su cola que tiene como espino con veneno, su carne es rico y sabroso.",
+          "Nombre Wao": "boyotai"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "rechjMe3R56JyKXCA",
+        "properties": {
+          "Preset": "fauna/pez_camaron",
+          "Tipo de cosa": "Peces",
+          "Nombre Español": "camarón",
+          "Symbol": [
+            {
+              "id": "atttRb5FTCMOS0N80",
+              "url": "https://dl.airtable.com/a0nkf02QSISdzlL30MxB_animal-pez-camaron-100px.svg",
+              "filename": "animal-pez-camaron-100px.svg",
+              "size": 2844,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/AskrBeZRAWAz4dfCnhg5_small_animal-pez-camaron-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/UHeZJESMqsUQ6UHT5uDg_large_animal-pez-camaron-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "River shrimp",
+          "Descripción Español": "Sirve para comer y algunos camarones son para curar a las personas que tienen mal de corazón y asmas.",
+          "Nombre Wao": "koniwë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recjCODjtTE1q2oFc",
+        "properties": {
+          "Preset": "fauna/guatuza",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "guatuzo",
+          "Symbol": [
+            {
+              "id": "attepVQwfMDowfnFD",
+              "url": "https://dl.airtable.com/iz9aPyBSQruOibY9iXjx_animal-guatuza-100px.svg",
+              "filename": "animal-guatuza-100px.svg",
+              "size": 1730,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/wgczKz5SkadaXScdzzA5_small_animal-guatuza-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/CMkDyewHSX2PUAnuJTKZ_large_animal-guatuza-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "agouti",
+          "Descripción Español": "Leyenda Waorani cuentan, guatuza era como abuela. Ademas es util para el consumo.",
+          "Nombre Wao": "penë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recjYyb5Yi5V0lqon",
+        "properties": {
+          "Preset": "fauna/goibe",
+          "Tipo de cosa": "Aves",
+          "Symbol": [
+            {
+              "id": "att0Xbn4Lc9YUAAbS",
+              "url": "https://dl.airtable.com/BHL3HUFVQaaWNyeeegyp_animal-ave-goibe-100px.svg",
+              "filename": "animal-ave-goibe-100px.svg",
+              "size": 1581,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/LZyRag4QSHKNfzydpqP8_small_animal-ave-goibe-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/HyQnA2cTKy9LTCrIkWOA_large_animal-ave-goibe-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Goibe bird",
+          "Descripción Español": "Vive en cierto lugar en la selva, es saltarin y sus plumas son para elaborar coronas de color rojo.",
+          "Nombre Wao": "goibe"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recjfk2PK3O5CA4Ne",
+        "properties": {},
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "reckLqh7qa97p1XFC",
+        "properties": {
+          "Preset": "camino/imaginado",
+          "Tipo de cosa": "elementos waorani",
+          "Nombre Español": "camino imaginario ",
+          "Symbol": [
+            {
+              "id": "attVAz4v7oNVL1Fsx",
+              "url": "https://dl.airtable.com/sI0iE8AQeuw8mPsiIFwo_wao-camino-imaginado-100px.svg",
+              "filename": "wao-camino-imaginado-100px.svg",
+              "size": 2676,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/fLxFsWCgT6CZHFDMjpQT_small_wao-camino-imaginado-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/snH1GSJhRZO6O9orOssD_large_wao-camino-imaginado-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Small path",
+          "Descripción Español": "Camino donde se puede ir por las lomas y valles naturalmente.",
+          "Nombre Wao": "öwëyaro"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "reckfwt7v3GXUGsQ0",
+        "properties": {
+          "Preset": "artificial/linea_sismica",
+          "Tipo de cosa": "Otros",
+          "Nombre Español": "antigua linea sismica",
+          "Symbol": [
+            {
+              "id": "attmg06NbR9qJfckY",
+              "url": "https://dl.airtable.com/OaCT8YajRCKxwVlULlhg_otros-linea-sismica-100px.svg",
+              "filename": "otros-linea-sismica-100px.svg",
+              "size": 2151,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/usNdmiAThuIF7Pct2yWU_small_otros-linea-sismica-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/DAedfziAQ666KKGb0eR5_large_otros-linea-sismica-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Old seismic line",
+          "Descripción Español": "Linea de la sísmica que había abierto antes.",
+          "Nombre Wao": "x"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "reckgjncrYv9Ldz03",
+        "properties": {
+          "Preset": "fauna/mono_barizochico",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "mono barizo chico",
+          "Symbol": [
+            {
+              "id": "att3np4hGQZkLxUxP",
+              "url": "https://dl.airtable.com/GqnPRaKITMaEsuVZm6MB_animal-mono-barizochico-100px.svg",
+              "filename": "animal-mono-barizochico-100px.svg",
+              "size": 3618,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/icgr1ZbqREq48nr183hx_small_animal-mono-barizochico-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/tGvNaGk6RaCK7Sk1GDpp_large_animal-mono-barizochico-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "squirrel monkey",
+          "Descripción Español": "Las personas las crias barizos le mantienen en casa como mascota, ademas este mono es traviezo.",
+          "Nombre Wao": "gekire"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "reckq8pyWItLIpfX5",
+        "properties": {
+          "Preset": "camino/tapir",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "camino de danta",
+          "Symbol": [
+            {
+              "id": "attnUvPS6bfgn52wV",
+              "url": "https://dl.airtable.com/Ar4erVeSRDqGC9F8HkNL_animal-camino-huellatapir-100px.svg",
+              "filename": "animal-camino-huellatapir-100px.svg",
+              "size": 990,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/7jkmiV5TKgGLlwHDjfkQ_small_animal-camino-huellatapir-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/WjlArdjCSXiuSTiglMCM_large_animal-camino-huellatapir-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "tapir path",
+          "Descripción Español": "Sendero de tapir terrestre.",
+          "Nombre Wao": "tite önowä"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "reclvPcKA5obYOios",
+        "properties": {
+          "Preset": "camino/huanta",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "camino de huanta",
+          "Nombre Ingles": "paca path",
+          "Descripción Español": "Sendero de guanta",
+          "Nombre Wao": "ore önowä"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recmMHwU4S7pVgsuB",
+        "properties": {
+          "Preset": "palmera/toketibo",
+          "Tipo de cosa": "Palmeras",
+          "Nombre Español": "toketibo",
+          "Nombre Ingles": "Toketibo palm",
+          "Descripción Español": "Las raices que tienen árboles grande y enormes.",
+          "Categoria leyenda": "palmera"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recmyPA8oLf3wmvUq",
+        "properties": {
+          "Preset": "palmera/ungurahua",
+          "Tipo de cosa": "Palmeras",
+          "Nombre Español": "ungurahua",
+          "Symbol": [
+            {
+              "id": "att0S5rWMwaAdtH4x",
+              "url": "https://dl.airtable.com/S6G6uD7eQFWfPVRjkz3F_palmera-petoweungurahua-100px.svg",
+              "filename": "palmera-petoweungurahua-100px.svg",
+              "size": 19173,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/wVDxRo7RLmn0OKcHS73i_small_palmera-petoweungurahua-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/li6CySiUQ0CprQ64UjMZ_large_palmera-petoweungurahua-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Ungurahua palm",
+          "Descripción Español": "Palmera util que tiene para multiples uso: para construcción de vivienda típica wao, canasto natural, pepas para comer y hacer jugos y  las fibras para elaborar flechas.",
+          "Nombre Wao": "petowe"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recnWuxtgdYJQJCBo",
+        "properties": {
+          "Preset": "camino/jaguar",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "camino de jaguar",
+          "Symbol": [
+            {
+              "id": "att6fc3ZGlFPnKcJ6",
+              "url": "https://dl.airtable.com/biNrDXFSK2QPOxmRvOCJ_animal-camino-huellajaguar-100px.svg",
+              "filename": "animal-camino-huellajaguar-100px.svg",
+              "size": 1052,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/uK6Lgm56S9Chn4c2YwzR_small_animal-camino-huellajaguar-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/BILadzi8Re2tfMi6FHkl_large_animal-camino-huellajaguar-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "jaguar path",
+          "Descripción Español": "Sendero de jaguar.",
+          "Nombre Wao": "meñë önowä"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recpA5mD0RC5UUAXZ",
+        "properties": {
+          "Preset": "fauna/huangana",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "huangana",
+          "Symbol": [
+            {
+              "id": "att0LOMgepf6EctoF",
+              "url": "https://dl.airtable.com/aP7I5e0VQfKIsOap0kT0_animal-huangana-100px.svg",
+              "filename": "animal-huangana-100px.svg",
+              "size": 3201,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/6n5cKwyiSzS8nnPsyXoC_small_animal-huangana-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/ZglIcTsoTX6iHN2KaFEh_large_animal-huangana-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "peccary",
+          "Descripción Español": "Carne es rico y sabroso. Sus dientes elaboran para collares. Ejemplo; Un dia un joven yendo para cazar guangana se fue convirtiendo como ellos en el grupo, se casó y tuvo dos hijos, con el tiempo solo él regreso donde su familia. ",
+          "Nombre Wao": "ore"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recpFKDylPgAiaP8J",
+        "properties": {
+          "Preset": "fauna/loro",
+          "Tipo de cosa": "Aves",
+          "Nombre Español": "loro",
+          "Symbol": [
+            {
+              "id": "attnjLVTi6qI3E5Vy",
+              "url": "https://dl.airtable.com/zXBQmIaS7iXUf1N2OI1f_animal-ave-loro-100px.svg",
+              "filename": "animal-ave-loro-100px.svg",
+              "size": 2849,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/RFE5VcnWQqyDRhwimCvS_small_animal-ave-loro-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/EZWPetpURaa9sa5J1Sit_large_animal-ave-loro-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Parrot",
+          "Descripción Español": "Es favorito para tener en casa como mascota, es muy mansito y puede silvar y hablar con las imitaciones de las personas.",
+          "Nombre Wao": "ganke"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recpcZZdbBs3WTB6F",
+        "properties": {
+          "Preset": "fauna/buho",
+          "Tipo de cosa": "Aves",
+          "Nombre Español": "buho",
+          "Symbol": [
+            {
+              "id": "attebeF4XQBN8e0sB",
+              "url": "https://dl.airtable.com/xvvr38DyS9akKRVvpppQ_animal-ave-buho-100px.svg",
+              "filename": "animal-ave-buho-100px.svg",
+              "size": 4224,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/tKx70l9bTkCR56eOkzvD_small_animal-ave-buho-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/Ol6CX5i0TeeT8hGtQ2Xi_large_animal-ave-buho-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Owl",
+          "Descripción Español": "Ave noturno, se alimenta a los insectos por la noche y de día duerme.",
+          "Nombre Wao": "mögatapo"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recpkjsJkGE3EwPbI",
+        "properties": {
+          "Preset": "fauna/pez_electrico",
+          "Tipo de cosa": "Peces",
+          "Nombre Español": "pez eléctrico",
+          "Symbol": [
+            {
+              "id": "attzqAJV3sXTshb0L",
+              "url": "https://dl.airtable.com/NvhZNTaYToq2tc1AIiLz_animal-pez-pezelectrico-100px.svg",
+              "filename": "animal-pez-pezelectrico-100px.svg",
+              "size": 2245,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/iRbmdkIQKuAUg0DGVqbF_small_animal-pez-pezelectrico-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/SQkJ1fUtRueSeqwSpwII_large_animal-pez-pezelectrico-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Electric eel",
+          "Descripción Español": "Pez eléctrico y peligroso, ademas es rico y sabroso, donde exiten este pez hay otros peces bastantes.",
+          "Nombre Wao": "pogö"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recqmA9P8wVqpDyAt",
+        "properties": {
+          "Preset": "fauna/mono_chorongo",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "mono chorongo",
+          "Symbol": [
+            {
+              "id": "attecwyRsmGWVrPNe",
+              "url": "https://dl.airtable.com/2A029uxPSSiHJs16epCE_animal-mono-chorongo-100px.svg",
+              "filename": "animal-mono-chorongo-100px.svg",
+              "size": 3038,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/ITYv6nONSxmCjw3cF3f8_small_animal-mono-chorongo-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/TggRUnQlSRWNqWc2xwQr_large_animal-mono-chorongo-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "woolly monkey",
+          "Descripción Español": "Carne favorito para waorani, en temporada de engordura se cazan bastantes y sus crias son mas queridos para tener como mascotas.",
+          "Nombre Wao": "gata"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recrHTd0eRwTF7ZwN",
+        "properties": {
+          "Preset": "palmera/wamomo",
+          "Tipo de cosa": "Áreas/zonas",
+          "Nombre Español": "zona de palma de fibra",
+          "Symbol": [
+            {
+              "id": "attJxp2g0fn3lDgca",
+              "url": "https://dl.airtable.com/axNx9qaTnamEXwM8Vr6A_area-wamontape-128.svg",
+              "filename": "area-wamontape-128.svg",
+              "size": 252691,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/DVFmg4PQraX3yMXmbeGQ_small_area-wamontape-128.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/nWTxiTVFTlyWKYWxPeEk_large_area-wamontape-128.svg",
+                  "width": 128,
+                  "height": 128
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Palm area",
+          "Descripción Español": "Lugar donde hay bastante palma de fibras. Tiene buenas fibras para elaborar escobas. Tambien es rico comer lo que carga pepas( se alimentan personas y animales ( guanta, guatuza y guanta).",
+          "Nombre Wao": "wamontape"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recrbYlPHwJKdpwGr",
+        "properties": {
+          "Preset": "flora/paca-toquilla",
+          "Tipo de cosa": "Plantas",
+          "Nombre Español": "paja toquilla",
+          "Symbol": [
+            {
+              "id": "att7peLDCcIrM5Mz3",
+              "url": "https://dl.airtable.com/DJhFvS5SMl96sNLoJ9g7_planta-paca-toquilla-100px.svg",
+              "filename": "planta-paca-toquilla-100px.svg",
+              "size": 1146,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/5jph3cXsTNyZ3qLmyYaI_small_planta-paca-toquilla-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/t5DRN6NDSuakM6Cr4zUQ_large_planta-paca-toquilla-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Paja",
+          "Descripción Español": "Sirve, para la contruccion de casa tipica.",
+          "Nombre Wao": "pagöman"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recrggL40k0kaYQuR",
+        "properties": {
+          "Preset": "flora/arbol_huito",
+          "Tipo de cosa": "Árboles",
+          "Nombre Español": "huito",
+          "Symbol": [
+            {
+              "id": "att20da9swqO3NfWA",
+              "url": "https://dl.airtable.com/uSHKNVySLmGQFia4d6eg_arbol-huito-100px.svg",
+              "filename": "arbol-huito-100px.svg",
+              "size": 1318,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/K3XEGzDfSEy2iB26HLxl_small_arbol-huito-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/9ckttSueQG8skeoF02sw_large_arbol-huito-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Huito tree",
+          "Descripción Español": "Sirve para pintar cuerpo, especialmente en los brazos, espalda y en la rodillas para mostrar la cultura Waorani. (pintan para eventos y en las fiestas).",
+          "Nombre Wao": "wënka"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recsUVmGs2QwPGNkq",
+        "properties": {
+          "Preset": "flora/arbol_ceibo_algodon",
+          "Tipo de cosa": "Árboles",
+          "Nombre Español": "ceibo",
+          "Symbol": [
+            {
+              "id": "attjFXigb7rCEaU6H",
+              "url": "https://dl.airtable.com/45JebtkTwyZ4pNb0O6Mf_arbol-ceibo-100px.svg",
+              "filename": "arbol-ceibo-100px.svg",
+              "size": 8143,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/kkoMPN2zRx6nhnBH6mPK_small_arbol-ceibo-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/gd1ND1WPQFrcE85p36G9_large_arbol-ceibo-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Ceibo tree",
+          "Descripción Español": "Parecido como ceibo, en épocas de verano las pepas revientan  algodones de color café.",
+          "Nombre Wao": "gemenewë copy"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recst9dpsMA2ZtRlW",
+        "properties": {
+          "Preset": "agua/playa",
+          "Tipo de cosa": "Elementos del bosque",
+          "Nombre Español": "playa",
+          "Symbol": [
+            {
+              "id": "attDEIjGh0yTspqb7",
+              "url": "https://dl.airtable.com/szfKvwdgQ8S8tEPffjX4_agua-playa-100px.svg",
+              "filename": "agua-playa-100px.svg",
+              "size": 2164,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/IYQ7CTwuR1mtQS8o58E7_small_agua-playa-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/A08hzamLTSK37IxlEQPB_large_agua-playa-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Beach",
+          "Descripción Español": "Es un espacio de playa.",
+          "Nombre Wao": "emonaiya"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "rectNzLXaC1KX9x0w",
+        "properties": {
+          "Preset": "fauna/abeja_miel",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "miel de abeja",
+          "Symbol": [
+            {
+              "id": "att3OWhAgYVokwSoh",
+              "url": "https://dl.airtable.com/UqfTsVGeT6OBsOZaoW2j_animal-abeja-miel-100px.svg",
+              "filename": "animal-abeja-miel-100px.svg",
+              "size": 1783,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/tjz3RVloTzafpYTqUnDL_small_animal-abeja-miel-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/twxqtvfwTv2p5kmw1umJ_large_animal-abeja-miel-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "honey",
+          "Descripción Español": "Sirve para desparasitar a los niños que tiene bichos. Tambien usan principalmente las mujeres para enseñarle a las niñas de temparana edad poniendo miel en su lengua. Tambien, es favorito para el animal cabeza de mate.",
+          "Nombre Wao": "gëngë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "rectPZnRCz455JNR7",
+        "properties": {
+          "Preset": "comunidad/especial",
+          "Tipo de cosa": "Áreas/zonas",
+          "Nombre Español": "zona especial",
+          "Symbol": [
+            {
+              "id": "attTh7NMW5x5V8cbb",
+              "url": "https://dl.airtable.com/bXmN4WHhTJWodE8vdzq8_area-especial-128.svg",
+              "filename": "area-especial-128.svg",
+              "size": 236,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/i8zSJLXR9qRzNOuQonn7_small_area-especial-128.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/JroDzUmVTrGvUFsTN9eg_large_area-especial-128.svg",
+                  "width": 128,
+                  "height": 128
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Special zone",
+          "Descripción Español": "Nadie puede tocar o ingresar a realizar cualquier actividad.",
+          "Nombre Wao": "gamporamai ïgïñömo"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "rectn8kn7kLVIuStL",
+        "properties": {
+          "Preset": "historia/cementerio",
+          "Tipo de cosa": "elementos waorani",
+          "Nombre Español": "cementerio antiguo",
+          "Symbol": [
+            {
+              "id": "attPOC6YvHLPcgvzH",
+              "url": "https://dl.airtable.com/DQ0MybkXRDW3wy7k7Wyn_historia-cementerio-100px.svg",
+              "filename": "historia-cementerio-100px.svg",
+              "size": 1749,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/gW3FfJ0QAiwysHFBTE8S_small_historia-cementerio-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/ZwvdO2DJRa5pK45ov5rk_large_historia-cementerio-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Old cemetary",
+          "Descripción Español": "Lugar de muertes de los antepasados.",
+          "Nombre Wao": "doranï wegaiñömö"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recukj1XIIb6etcWU",
+        "properties": {
+          "Preset": "arbol/bocabo",
+          "Tipo de cosa": "Árboles",
+          "Nombre Español": "zapote",
+          "Symbol": [
+            {
+              "id": "attFfOSUE3vrilsa8",
+              "url": "https://dl.airtable.com/J5NaGz7ySAa1d5xLf8HY_arbol-bokabo-100px.svg",
+              "filename": "arbol-bokabo-100px.svg",
+              "size": 4199,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/OwsHwHvRZKDEONbOw6yg_small_arbol-bokabo-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/e6hr9slPSRW0eidCYksO_large_arbol-bokabo-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Zapote fruit",
+          "Descripción Español": "Es comestible para personas y animales (machines, monos arañas, monos noturnos y guantas). Tradición wao es enseñar a los niños, para que aprenda a lanzear la pepa de zapote, cuando botan en un terreno inclinado. ",
+          "Nombre Wao": "bokawe"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recuvd6zpNBJ9dW3X",
+        "properties": {
+          "Preset": "fauna/nutria",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "nutria",
+          "Symbol": [
+            {
+              "id": "attMzMdNMNeMWe6Rq",
+              "url": "https://dl.airtable.com/WwzUsLHwR3Cy0BwDTXeO_animal-nutria-100px.svg",
+              "filename": "animal-nutria-100px.svg",
+              "size": 1728,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/PsUOhBHHRhO4r7ea5nnD_small_animal-nutria-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/9KxrJVrzRpamPGPYCWcJ_large_animal-nutria-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "otter",
+          "Descripción Español": "Busca especialmente para cazar y comer mas a los pescados, siempre en la orilla pasan del rio, estero o quebrada.",
+          "Nombre Wao": "ömpore"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recv6kpcd69YHJa6B",
+        "properties": {
+          "Preset": "fauna/ardilla",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "ardilla",
+          "Symbol": [
+            {
+              "id": "attQmvk0lepGhqe7G",
+              "url": "https://dl.airtable.com/jHTrCiIRpSoCTPGeexVW_animal-ardilla-100px.svg",
+              "filename": "animal-ardilla-100px.svg",
+              "size": 1300,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/KrzIEAtTCGsn3zH48Gng_small_animal-ardilla-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/jcF8CQNQruoCzRQ7BZDQ_large_animal-ardilla-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "squirrel",
+          "Descripción Español": "Mono ardilla, la gente cazan para comer y sacan sus pieles para elaborar corona, en tiempos de fiestas o en eventos se usan.",
+          "Nombre Wao": "nene"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recv739Jnx6GjZHVe",
+        "properties": {
+          "Preset": "fauna/caiman",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "lagarto",
+          "Symbol": [
+            {
+              "id": "attceM3PTGgDFzFBy",
+              "url": "https://dl.airtable.com/CNHfcqn0RSu36OdLEQX9_animal-lagarto-100px.svg",
+              "filename": "animal-lagarto-100px.svg",
+              "size": 2024,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/qAEp1oYCRJWuA0hWm8Td_small_animal-lagarto-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/8uf29bLmQQOfuv3Nf7gt_large_animal-lagarto-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "alligator",
+          "Descripción Español": "Carne de lagarto es favorito para le gente. Ademas es peligroso por la noche, porque sale a buscar presas.",
+          "Nombre Wao": "noma"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recvNNs4fGBlFTLUe",
+        "properties": {
+          "Preset": "actividad/recoleccion",
+          "Tipo de cosa": "elementos waorani",
+          "Nombre Español": "zona de recolección",
+          "Symbol": [
+            {
+              "id": "attKaCoWZ1aoRH5vk",
+              "url": "https://dl.airtable.com/biJbt4TAROo46dt8tNMg_wao-comunidad-recoleccion-100px.svg",
+              "filename": "wao-comunidad-recoleccion-100px.svg",
+              "size": 1951,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/s0LMebTHRcGec7Sw07Ew_small_wao-comunidad-recoleccion-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/7rsDnxpzQet8uDZMVGkE_large_wao-comunidad-recoleccion-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Gathering area",
+          "Descripción Español": "Lugares donde las mujeres realizan diferentes tipos de recolección en la selva.",
+          "Nombre Wao": "okiyenani gote ëïñömö"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recvSGlwzMY1lcbNn",
+        "properties": {
+          "Preset": "natural/mirador",
+          "Tipo de cosa": "Elementos del bosque",
+          "Nombre Español": "mirador/montaña",
+          "Symbol": [
+            {
+              "id": "attwqc0FbDcws9Yqt",
+              "url": "https://dl.airtable.com/weyfY7k1RWSOZC8ihJCU_paisaje-mirador-100px.svg",
+              "filename": "paisaje-mirador-100px.svg",
+              "size": 4005,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/T0hAZ89cTRCzKXGW32oH_small_paisaje-mirador-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/JC7XAk2gTw9DhJW0ZeVQ_large_paisaje-mirador-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Mountains / view point",
+          "Descripción Español": "Lugar donde se pude mirar desde muy lejos.",
+          "Nombre Wao": "goma akiñömo"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recvSjZMSqfsWouzT",
+        "properties": {
+          "Preset": "natural/montaña",
+          "Tipo de cosa": "Elementos del bosque",
+          "Nombre Español": "mirador/montaña",
+          "Symbol": [
+            {
+              "id": "attwqc0FbDcws9Yqt",
+              "url": "https://dl.airtable.com/weyfY7k1RWSOZC8ihJCU_paisaje-mirador-100px.svg",
+              "filename": "paisaje-mirador-100px.svg",
+              "size": 4005,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/T0hAZ89cTRCzKXGW32oH_small_paisaje-mirador-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/JC7XAk2gTw9DhJW0ZeVQ_large_paisaje-mirador-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Mountains / view point",
+          "Descripción Español": "Lugar donde se pude mirar desde muy lejos.",
+          "Nombre Wao": "goma akiñömo copy"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recvuym0X5YCIiBgW",
+        "properties": {
+          "Preset": "arbol/frutal",
+          "Tipo de cosa": "Árboles",
+          "Nombre Español": "árbol frutal",
+          "Symbol": [
+            {
+              "id": "attxqtwKofWuvdtj0",
+              "url": "https://dl.airtable.com/gPLY0hpJRPiSPM5YfHUd_arbol-frutal-100px.svg",
+              "filename": "arbol-frutal-100px.svg",
+              "size": 3351,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/s2fsttn0Rm1XjGlwCdbT_small_arbol-frutal-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/CbUABtqMQ4yHUOSZju0y_large_arbol-frutal-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "fruit tree",
+          "Descripción Español": "Árbol frutal de diferente especies que carga pepas para el consumo de personas y animales. ",
+          "Nombre Wao": "meñëkawë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recwESyAaSj2zPy1F",
+        "properties": {
+          "Preset": "arbol/koyiwe",
+          "Tipo de cosa": "Árboles",
+          "Nombre Español": "sangre de grado",
+          "Symbol": [
+            {
+              "id": "attQYHyLwchTKl4aD",
+              "url": "https://dl.airtable.com/ixlUftQhRcWKVkeqeGZE_arbol-sangredrago-100px.svg",
+              "filename": "arbol-sangredrago-100px.svg",
+              "size": 554,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/M5zEKN2TVuhMSx5I3qgO_small_arbol-sangredrago-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/KCk4RoKTRxWldQbK3fjg_large_arbol-sangredrago-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Sangre de grado tree",
+          "Descripción Español": "Sirve para comer. Además, es para curar, especialmente a la tempana edad a los niños que tiene mal de corazon y gripes con asmas.",
+          "Nombre Wao": "koyiwë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recwl49UGARCSHROZ",
+        "properties": {
+          "Preset": "palmera/palmera",
+          "Tipo de cosa": "Palmeras",
+          "Nombre Español": "otras palmeras",
+          "Nombre Ingles": "Palm",
+          "Descripción Español": "Diferentes especie de las palmas.",
+          "Categoria leyenda": "palmera"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recwmLqlV0ntXl4fm",
+        "properties": {
+          "Preset": "fauna/garza",
+          "Tipo de cosa": "Aves",
+          "Nombre Español": "garza",
+          "Symbol": [
+            {
+              "id": "attoyCwZCNAKA3PFy",
+              "url": "https://dl.airtable.com/KZw7vABWTK2H7PshoSHc_animal-ave-garza-100px.svg",
+              "filename": "animal-ave-garza-100px.svg",
+              "size": 1691,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/ERxHTqZSiqydtwq8sUpt_small_animal-ave-garza-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/vQU7LT6CSWMPdQ7BPTyP_large_animal-ave-garza-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Heron",
+          "Descripción Español": "Ave que tiene plumas de color blanco, comen pescado en las orillas del rio o en lagunas.",
+          "Nombre Wao": "nawäñä"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recwnRAUuafx0vsU6",
+        "properties": {
+          "Preset": "fauna/puma",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "puma",
+          "Symbol": [
+            {
+              "id": "attlx8umANMZUwXs7",
+              "url": "https://dl.airtable.com/ezXJeXDoQSKObrs3lpLL_animal-puma-100px.svg",
+              "filename": "animal-puma-100px.svg",
+              "size": 2140,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/ohue9rYSdGiwnMs5COF7_small_animal-puma-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/EvpPZzcNT1mlhKHTWVVS_large_animal-puma-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "puma",
+          "Descripción Español": "Es muy engañoso se puede perseguir por atrás. Los dientes son favoritos para waos elaborar collares para adornos.",
+          "Nombre Wao": "ääwë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recxmbwQhQ8AcDRRb",
+        "properties": {
+          "Preset": "palmera/wamomo",
+          "Tipo de cosa": "Palmeras",
+          "Nombre Español": "palma fibra comestible/artesanal",
+          "Symbol": [
+            {
+              "id": "attKmBLMH4tqqJcZ1",
+              "url": "https://dl.airtable.com/kcorZcA0TMKjrkOA7O9a_palmera-wamomo-100px.svg",
+              "filename": "palmera-wamomo-100px.svg",
+              "size": 25807,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/wvI1fqKSs6gsFwi62kOJ_small_palmera-wamomo-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/7r7MYqKqSIGiH6DMR5Mi_large_palmera-wamomo-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Wamomo palm",
+          "Descripción Español": "Pepa que carga de la palma comen personas y animales.",
+          "Nombre Wao": "wamomo"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recxrcm0Ov2ifw3VP",
+        "properties": {},
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recxztaWnkkEynxfZ",
+        "properties": {
+          "Preset": "fauna/perdis",
+          "Tipo de cosa": "Aves",
+          "Nombre Español": "perdíz",
+          "Symbol": [
+            {
+              "id": "attMpbCqGlESeB5e3",
+              "url": "https://dl.airtable.com/7vGeRAaMQBGxVzpvrady_animal-ave-perdiz-100px.svg",
+              "filename": "animal-ave-perdiz-100px.svg",
+              "size": 1740,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/uwS7YW2ROqBs4MsPsBFh_small_animal-ave-perdiz-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/ydC39ghwRz6ma3aOsg7i_large_animal-ave-perdiz-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Partridge",
+          "Descripción Español": "Carne muy rico. Al anochecer cuando va llover canta.",
+          "Nombre Wao": "abamo"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recy6gguT4LzPVCkP",
+        "properties": {
+          "Preset": "fauna/hormiga-voladora",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "hormiga voladora",
+          "Symbol": [
+            {
+              "id": "attCD5eby6maOX4Po",
+              "url": "https://dl.airtable.com/yDrbRb6NRRuHg2MetxoO_animal-hormiga-100px.svg",
+              "filename": "animal-hormiga-100px.svg",
+              "size": 4031,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/SzCvdVoTVOO25WrLvZl9_small_animal-hormiga-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/PJut0upESvK5sglXToXb_large_animal-hormiga-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "flying ants",
+          "Descripción Español": "En temporadas en cada año vuelan las hormigas que comen las personas. Ademas, antiguamente a los niños le mojaban aguas calientes cocidas con hormigas, para que al azarmente la persona  sopla y que pueda llover.",
+          "Nombre Wao": "bore"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recymVxa4NEnavh6P",
+        "properties": {
+          "Preset": "arbol/construccion",
+          "Tipo de cosa": "Árboles",
+          "Nombre Español": "árbol para construcción",
+          "Symbol": [
+            {
+              "id": "attgxGE7yPIVYiuUN",
+              "url": "https://dl.airtable.com/bLGJNf2QA6wj4k9M84Kl_arbol-construccion-100px.svg",
+              "filename": "arbol-construccion-100px.svg",
+              "size": 4105,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/FSmL5GB6SKmQFlCUwD6Y_small_arbol-construccion-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/anx8oabSSKNgqLZS8j2A_large_arbol-construccion-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "tree for construction",
+          "Descripción Español": "Principalmente árboles para las construcciones de vivienda de diferentes especies que sean buenas y resistentes.",
+          "Nombre Wao": "awë öko menöngïnwë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recysSfS4Kvo7KaTY",
+        "properties": {
+          "Preset": "fauna/armadillo",
+          "Tipo de cosa": "Animales",
+          "Nombre Español": "armadillo",
+          "Symbol": [
+            {
+              "id": "attauW6cMCrlcieHU",
+              "url": "https://dl.airtable.com/ImfD83j0S6OJm1Th5rZr_animal-armadillo-100px.svg",
+              "filename": "animal-armadillo-100px.svg",
+              "size": 4500,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/z2fyceSMQqSniindzDiO_small_animal-armadillo-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/Spxq986xSUeb0OuO9LLW_large_animal-armadillo-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "armadillo ",
+          "Descripción Español": "Armadillo pequeño/armadillo grande, en algun camino cuando el armadillo grande deja excabando, le gente ya saben  quien abrió el sendero primera vez van morir mas pronto.",
+          "Nombre Wao": "okeme / goma"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "recz7Nluj7neS7dBg",
+        "properties": {
+          "Preset": "flora/medicinal",
+          "Tipo de cosa": "Plantas",
+          "Nombre Español": "plantas medicinales",
+          "Symbol": [
+            {
+              "id": "attIfiUcS4ri2HLdw",
+              "url": "https://dl.airtable.com/ICuSEqVaRzOlUIYvegwf_planta-medicinal-100px.svg",
+              "filename": "planta-medicinal-100px.svg",
+              "size": 1202,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/H0VhvSpSS425AVw1KdXo_small_planta-medicinal-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/TgZa49duSdqydG6t2VxS_large_planta-medicinal-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Medicinal plant",
+          "Descripción Español": "Las plantas mediciales que curaban antiguamente.",
+          "Nombre Wao": "dorani bete waa bai"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "reczFSSCSo8oqS4Iz",
+        "properties": {
+          "Preset": "planta/tepa",
+          "Tipo de cosa": "Plantas",
+          "Nombre Español": "pambil",
+          "Symbol": [
+            {
+              "id": "attfi2MrHPyyhSlQ9",
+              "url": "https://dl.airtable.com/wLtYHFFqT3qOFYDSh20w_planta-tepa-100px.svg",
+              "filename": "planta-tepa-100px.svg",
+              "size": 9806,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/wo01vAfTW2YhZ5BnFIrA_small_planta-tepa-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/80y4fEIJR9GbchyG8yhs_large_planta-tepa-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Pambil palm",
+          "Descripción Español": "Muy util para elaborar lanzas, cerbatanas, chuzos y postes para la construcción de vvivienda.",
+          "Nombre Wao": "tepawë"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "reczGrV1ODM8nx7WL",
+        "properties": {
+          "Preset": "flora/planta",
+          "Tipo de cosa": "Plantas",
+          "Nombre Español": "otras plantas",
+          "Nombre Ingles": "Other plants",
+          "Descripción Español": "Diferentes especies o tipos de plantas."
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "reczM5NzPXXOltyRf",
+        "properties": {
+          "Preset": "liana/meneko",
+          "Tipo de cosa": "Lianas",
+          "Nombre Español": "barbasco ancestral",
+          "Symbol": [
+            {
+              "id": "att9UAmHtZRRbvcMS",
+              "url": "https://dl.airtable.com/SXIUT6UhQUqDthKBmql0_liana-menekome-100px.svg",
+              "filename": "liana-menekome-100px.svg",
+              "size": 2732,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/0qlNqamIQjW1GpL9Efs2_small_liana-menekome-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/uIfKqGVRoKZzXf53Y4IA_large_liana-menekome-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Old fish poison",
+          "Descripción Español": "Barbasco silvestre que existen en la selva, mata a los pescados.",
+          "Nombre Wao": "mënëko"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
+        "id": "reczk0tDNyiKpDsFc",
+        "properties": {
+          "Preset": "fauna/bagre",
+          "Tipo de cosa": "Peces",
+          "Nombre Español": "bagre",
+          "Symbol": [
+            {
+              "id": "attUflKURSK8UfKQ0",
+              "url": "https://dl.airtable.com/lzzHrZ0mSlaUS5LqmidI_animal-pez-bagre-100px.svg",
+              "filename": "animal-pez-bagre-100px.svg",
+              "size": 1569,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/R5mQsBGPQJu6ddanKLpN_small_animal-pez-bagre-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/r3hBPJL7RcSNFhqOQoI5_large_animal-pez-bagre-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Ingles": "Catfish",
+          "Descripción Español": "Pescado grande de cualquier especie.",
+          "Nombre Wao": "ömare"
+        },
+        "geometry": null
       }
     ]
   }
