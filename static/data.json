@@ -783,6 +783,42 @@
       },
       {
         "type": "Feature",
+        "id": "rec7AtvIwAlHP64mn",
+        "properties": {
+          "Preset": "arbol/awenkatowe",
+          "Nombre Wao": "Awenkatowe",
+          "Symbol": [
+            {
+              "id": "attgxGE7yPIVYiuUN",
+              "url": "https://dl.airtable.com/bLGJNf2QA6wj4k9M84Kl_arbol-construccion-100px.svg",
+              "filename": "arbol-construccion-100px.svg",
+              "size": 4105,
+              "type": "image/svg+xml",
+              "thumbnails": {
+                "small": {
+                  "url": "https://dl.airtable.com/FSmL5GB6SKmQFlCUwD6Y_small_arbol-construccion-100px.svg",
+                  "width": 36,
+                  "height": 36
+                },
+                "large": {
+                  "url": "https://dl.airtable.com/anx8oabSSKNgqLZS8j2A_large_arbol-construccion-100px.svg",
+                  "width": 100,
+                  "height": 100
+                },
+                "full": {
+                  "url": "https://dl.airtable.com/3YQAtG4WRaiSMCuq1Imd_full_arbol-construccion-100px.svg",
+                  "width": 100,
+                  "height": 100
+                }
+              }
+            }
+          ],
+          "Nombre Español": "Hachcaspi"
+        },
+        "geometry": null
+      },
+      {
+        "type": "Feature",
         "id": "rec7DX27BGuIba2bg",
         "properties": {
           "Preset": "fauna/charapa",
