@@ -705,12 +705,6 @@
       },
       {
         "type": "Feature",
-        "id": "rec6zGGHZDbA72F2y",
-        "properties": {},
-        "geometry": null
-      },
-      {
-        "type": "Feature",
         "id": "rec73gLeWyWsPgXTl",
         "properties": {
           "Preset": "natural/cueva",
@@ -1613,12 +1607,6 @@
           "Descripción Español": "Es peligroso y demonio. Cuando chupa la sangre puede contagiar alguna enfermedad grave.",
           "Nombre Wao": "tonkire"
         },
-        "geometry": null
-      },
-      {
-        "type": "Feature",
-        "id": "recCTMeUDuRpFhvoK",
-        "properties": {},
         "geometry": null
       },
       {
@@ -4945,12 +4933,6 @@
       },
       {
         "type": "Feature",
-        "id": "recjfk2PK3O5CA4Ne",
-        "properties": {},
-        "geometry": null
-      },
-      {
-        "type": "Feature",
         "id": "reckLqh7qa97p1XFC",
         "properties": {
           "Preset": "camino/imaginado",
@@ -6195,12 +6177,6 @@
           "Descripción Español": "Pepa que carga de la palma comen personas y animales.",
           "Nombre Wao": "wamomo"
         },
-        "geometry": null
-      },
-      {
-        "type": "Feature",
-        "id": "recxrcm0Ov2ifw3VP",
-        "properties": {},
         "geometry": null
       },
       {
