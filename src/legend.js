@@ -66,16 +66,6 @@ Legend.prototype._getElement = function () {
           cursor: pointer;
         }
       }
-
-      @media (max-width: 750px) {
-        .legend {
-          min-width: auto;
-          max-height: 300px;
-          justify-content: flex-start;
-          overflow: auto;
-        }
-
-        .legend p { margin-block-start: 0; }
     }
   `
   var el = yo`<div style="display: none;">
